@@ -5,6 +5,7 @@
   "main": "dist/index",
   "types": "dist/index",
   "license": "MIT",
+  "repository": "github:sketch-hq/sketch-lint-core",
   "keywords": [
     "sketch",
     "sketch files",
