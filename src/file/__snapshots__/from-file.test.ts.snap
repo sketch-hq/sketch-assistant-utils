@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Unzips and parses a zip file 1`] = `
+Object {
+  "document": Object {
+    "_class": "document",
+    "assets": Object {
+      "_class": "assetCollection",
+      "colorAssets": Array [],
+      "colors": Array [],
+      "gradientAssets": Array [],
+      "gradients": Array [],
+      "imageCollection": Object {
+        "_class": "imageCollection",
+        "images": Object {},
+      },
+      "images": Array [],
+    },
+    "colorSpace": 0,
+    "currentPageIndex": 0,
+    "do_objectID": "2DC3B5C1-8C40-44E3-BA03-7369047497F4",
+    "foreignLayerStyles": Array [],
+    "foreignSymbols": Array [],
+    "foreignTextStyles": Array [],
+    "layerStyles": Object {
+      "_class": "sharedStyleContainer",
+      "objects": Array [],
+    },
+    "layerSymbols": Object {
+      "_class": "symbolContainer",
+      "objects": Array [],
+    },
+    "layerTextStyles": Object {
+      "_class": "sharedTextStyleContainer",
+      "objects": Array [],
+    },
+    "pages": Array [
+      Object {
+        "_class": "page",
+        "booleanOperation": -1,
+        "clippingMaskMode": 0,
+        "do_objectID": "9AD22B94-A05B-4F49-8EDD-A38D62BD6181",
+        "exportOptions": Object {
+          "_class": "exportOptions",
+          "exportFormats": Array [],
+          "includedLayerIds": Array [],
+          "layerOptions": 0,
+          "shouldTrim": false,
+        },
+        "frame": Object {
+          "_class": "rect",
+          "constrainProportions": false,
+          "height": 0,
+          "width": 0,
+          "x": 0,
+          "y": 0,
+        },
+        "groupLayout": Object {
+          "_class": "MSImmutableFreeformGroupLayout",
+        },
+        "hasClickThrough": true,
+        "hasClippingMask": false,
+        "horizontalRulerData": Object {
+          "_class": "rulerData",
+          "base": 0,
+          "guides": Array [],
+        },
+        "includeInCloudUpload": true,
+        "isFixedToViewport": false,
+        "isFlippedHorizontal": false,
+        "isFlippedVertical": false,
+        "isLocked": false,
+        "isVisible": true,
+        "layerListExpandedType": 0,
+        "layers": Array [],
+        "name": "Page 1",
+        "nameIsFixed": false,
+        "resizingConstraint": 63,
+        "resizingType": 0,
+        "rotation": 0,
+        "shouldBreakMaskChain": false,
+        "style": Object {
+          "_class": "style",
+          "endMarkerType": 0,
+          "miterLimit": 10,
+          "startMarkerType": 0,
+          "windingRule": 1,
+        },
+        "verticalRulerData": Object {
+          "_class": "rulerData",
+          "base": 0,
+          "guides": Array [],
+        },
+      },
+    ],
+  },
+  "meta": Object {
+    "app": "com.bohemiancoding.sketch3",
+    "appVersion": "55.2",
+    "autosaved": 0,
+    "build": 78181,
+    "commit": "a2e30aef259be5c485eab715facbe2ce37d36013",
+    "compatibilityVersion": 99,
+    "created": Object {
+      "app": "com.bohemiancoding.sketch3",
+      "appVersion": "55.2",
+      "build": 78181,
+      "commit": "a2e30aef259be5c485eab715facbe2ce37d36013",
+      "compatibilityVersion": 99,
+      "variant": "NONAPPSTORE",
+      "version": 119,
+    },
+    "fonts": Array [],
+    "pagesAndArtboards": Object {
+      "9AD22B94-A05B-4F49-8EDD-A38D62BD6181": Object {
+        "artboards": Object {},
+        "name": "Page 1",
+      },
+    },
+    "saveHistory": Array [
+      "NONAPPSTORE.78181",
+    ],
+    "variant": "NONAPPSTORE",
+    "version": 119,
+  },
+  "user": Object {
+    "9AD22B94-A05B-4F49-8EDD-A38D62BD6181": Object {
+      "scrollOrigin": "{0, 0}",
+      "zoomValue": 1,
+    },
+    "document": Object {
+      "pageListCollapsed": 0,
+      "pageListHeight": 85,
+    },
+  },
+}
+`;

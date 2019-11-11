@@ -1,0 +1,69 @@
+{
+  "name": "@sketch-hq/sketch-lint-core",
+  "private": true,
+  "version": "1.0.0",
+  "main": "dist/index",
+  "types": "dist/index",
+  "license": "MIT",
+  "keywords": [
+    "sketch",
+    "sketch files",
+    "linting",
+    "lint",
+    "design linting"
+  ],
+  "scripts": {
+    "build": "rm -rf ./dist && tsc",
+    "package-tarball": "yarn build && mkdir -p tarballs && yarn pack --filename=tarballs/sketch-lint-core-$(node -p -e \"require('./package.json').version\").tgz",
+    "test": "jest",
+    "lint": "eslint --ext .ts src",
+    "format-check": "prettier --check **/*.{ts,md,json}",
+    "commitlint": "commitlint --from HEAD~1 --to HEAD --verbose",
+    "release": "HUSKY_SKIP_HOOKS=1 standard-version --no-verify",
+    "prepublishOnly": "yarn build"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "ajv": "6.10.2",
+    "deepdash": "4.2.17",
+    "mem": "6.0.0",
+    "node-stream-zip": "1.8.2",
+    "p-map": "3.0.0",
+    "probe-image-size": "5.0.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "8.2.0",
+    "@commitlint/config-conventional": "8.2.0",
+    "@types/jest": "24.0.22",
+    "@types/node": "12.12.7",
+    "@typescript-eslint/eslint-plugin": "2.6.1",
+    "@typescript-eslint/parser": "2.6.1",
+    "commitizen": "4.0.3",
+    "cz-conventional-changelog": "3.0.2",
+    "eslint": "6.6.0",
+    "eslint-config-prettier": "6.5.0",
+    "husky": "3.0.9",
+    "jest": "24.9.0",
+    "prettier": "1.19.1",
+    "standard-version": "7.0.0",
+    "ts-jest": "24.1.0",
+    "typescript": "3.7.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+    }
+  },
+  "standard-version": {
+    "scripts": {
+      "prerelease": "yarn build && yarn tsc && yarn validate && yarn integration-test && yarn test && yarn format-check"
+    }
+  }
+}
