@@ -29,7 +29,11 @@ declare module 'deepdash/standalone' {
     context: IterateeContext<T>,
   ) => void | false
 
-  export function reduceDeep<T, K>(obj: T, iteratee: ReduceIteratee<T, K>, acc: K): K
+  export function reduceDeep<T, K>(
+    obj: T,
+    iteratee: ReduceIteratee<T, K>,
+    acc: K,
+  ): K
 
   export function eachDeep<T>(obj: T, iteratee: Iteratee<T>): void
 }
@@ -44,14 +48,19 @@ declare module 'node-stream-zip' {
 
     public entryDataSync(name: string): string
 
-    public stream (ref: string, handler: (error: string, stream: NodeJS.ReadStream) => void): void
+    public stream(
+      ref: string,
+      handler: (error: string, stream: NodeJS.ReadStream) => void,
+    ): void
 
     public close(): void
   }
 }
 
 declare module 'probe-image-size' {
-  type ProbeImageSize = (input: NodeJS.ReadStream) => Promise<{ width: number, height: number }>
-  const probeImageSize:ProbeImageSize
+  type ProbeImageSize = (
+    input: NodeJS.ReadStream,
+  ) => Promise<{ width: number; height: number }>
+  const probeImageSize: ProbeImageSize
   export default probeImageSize
 }
