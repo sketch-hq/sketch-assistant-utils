@@ -46,7 +46,8 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
           data.node.layers.length}`,
         ruleId: id,
         ruleSetId: ruleSet.id,
-        data,
+        // TODO
+        path: '',
       }),
     ),
   )

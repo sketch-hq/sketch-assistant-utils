@@ -1,11 +1,12 @@
 import { eachDeep } from 'deepdash/standalone'
+import FileFormat from '@sketch-hq/sketch-file-format-ts'
 
 import {
-  Contents,
   WalkerCache,
   VisitorData,
-  FileFormat,
   LintOperation,
+  ObjectClass,
+  SketchFile,
 } from '..'
 
 /**
@@ -20,21 +21,21 @@ import {
  * grouping like `allLayers`, `allGroups` etc.
  */
 const createWalkerCache = (
-  contents: Contents,
+  file: SketchFile,
   operation: LintOperation,
 ): WalkerCache => {
   const cache: WalkerCache = {
     allLayers: [],
     allGroups: [],
   }
-  eachDeep<FileFormat.DocumentData>(
-    contents.data.document,
+  eachDeep<FileFormat.Contents['document']>(
+    file.contents.document,
     (value, _key, parentValue, context): void | false => {
       // Bail if the operation should cancel or the current value is falsey
       if (operation.cancelled || !value) return false
-      const node = value as FileFormat.Node
-      const nodeClass: FileFormat.Class = (node._class as unknown) as FileFormat.Class
-      const parent = parentValue as FileFormat.Node
+      const node = value as FileFormat.AnyObject
+      const nodeClass: ObjectClass = (node._class as unknown) as ObjectClass
+      const parent = parentValue as FileFormat.AnyObject
       // We're only interested in grouping nodes with a `_class` in the cache
       if (typeof nodeClass === 'string') {
         // Initialise the cache array for this class type if it hasn't been defined yet

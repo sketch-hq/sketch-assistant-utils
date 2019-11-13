@@ -14,7 +14,7 @@ const { rule, id } = ruleModule
 
 test('Generates violations correctly', async (): Promise<void> => {
   expect.assertions(1)
-  const contents = await fromFile(
+  const file = await fromFile(
     resolve(__dirname, '../../../fixtures/10-layers.sketch'),
   )
   const config: Config = {
@@ -24,7 +24,7 @@ test('Generates violations correctly', async (): Promise<void> => {
   }
   const violations: LintViolation[] = []
   const lintOperationContext = createLintOperationContext(
-    contents,
+    file,
     config,
     violations,
     { cancelled: false },
@@ -39,8 +39,7 @@ test('Generates violations correctly', async (): Promise<void> => {
     Array [
       Object {
         "context": Object {
-          "id": "9C2047B4-71D5-48C9-9DEE-34C0009FF5A9",
-          "path": "pages[0]",
+          "path": "",
         },
         "message": "Expected 9 or less layers, found 10",
         "ruleId": "groups-max-layers",
@@ -53,7 +52,7 @@ test('Generates violations correctly', async (): Promise<void> => {
 
 test('Does not generate false negatives', async (): Promise<void> => {
   expect.assertions(1)
-  const contents = await fromFile(
+  const file = await fromFile(
     resolve(__dirname, '../../../fixtures/10-layers.sketch'),
   )
   const config: Config = {
@@ -63,7 +62,7 @@ test('Does not generate false negatives', async (): Promise<void> => {
   }
   const violations: LintViolation[] = []
   const lintOperationContext = createLintOperationContext(
-    contents,
+    file,
     config,
     violations,
     { cancelled: false },

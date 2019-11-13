@@ -25,19 +25,13 @@ test('Reports violations by pushing to the passed in array', (): void => {
       message: 'Violation',
       ruleId: 'foo',
       ruleSetId: 'foo',
-      data: {
-        node: {
-          ['do_objectID']: '123',
-        },
-        path: 'pages[0]',
-      },
+      path: 'pages[0]',
     },
   ])
   expect(violations).toMatchInlineSnapshot(`
     Array [
       Object {
         "context": Object {
-          "id": "123",
           "path": "pages[0]",
         },
         "message": "Violation",

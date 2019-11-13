@@ -1,23 +1,18 @@
 import StreamZip from 'node-stream-zip'
-
-import { Contents } from '..'
-import { DocumentData } from '../file-format'
+import FileFormat from '@sketch-hq/sketch-file-format-ts'
+import { SketchFile } from '..'
 
 /**
  * Given a path to a Sketch file on the file system, this function unzips the
  * JSON entries and parses them out into a File object.
  */
-const fromFile = async (filepath: string): Promise<Contents> => {
+const fromFile = async (filepath: string): Promise<SketchFile> => {
   const archive = new StreamZip({
     file: filepath,
     storeEntries: true,
   })
 
-  const data: {
-    document: DocumentData
-    user: {}
-    meta: {}
-  } = await new Promise((resolve): void => {
+  const contents: FileFormat.Contents = await new Promise((resolve): void => {
     archive.on('ready', (): void => {
       const document = JSON.parse(
         archive.entryDataSync('document.json').toString(),
@@ -38,10 +33,7 @@ const fromFile = async (filepath: string): Promise<Contents> => {
 
   archive.close()
 
-  return {
-    data,
-    filepath,
-  }
+  return { filepath, contents }
 }
 
 export { fromFile }

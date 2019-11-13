@@ -1,5 +1,4 @@
 import {
-  Contents,
   LintOperationContext,
   LintViolation,
   Config,
@@ -7,29 +6,30 @@ import {
   createWalkerCache,
   createRuleUtilsCreator,
   GetImageMetadata,
+  SketchFile,
 } from '..'
 
 /**
  * Build a LintOperationContext object.
  */
 const createLintOperationContext = (
-  contents: Contents,
+  file: SketchFile,
   config: Config,
   violations: LintViolation[],
   operation: LintOperation,
   getImageMetadata: GetImageMetadata,
 ): LintOperationContext => {
-  const cache = createWalkerCache(contents, operation)
+  const cache = createWalkerCache(file, operation)
   const createUtils = createRuleUtilsCreator(
     cache,
     violations,
     config,
     operation,
-    contents,
+    file,
     getImageMetadata,
   )
   return {
-    contents,
+    file,
     cache,
     config,
     createUtils,

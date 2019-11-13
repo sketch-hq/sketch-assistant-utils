@@ -2,7 +2,6 @@ import {
   Rule,
   RuleModule,
   RuleInvocationContext,
-  FileFormat,
   VisitorData,
   ReportItem,
   JSONSchema,
@@ -27,7 +26,7 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
   const maxRatio = utils.getOption<number>('maxRatio') || Infinity
   const invalid: VisitorData[] = []
   await utils.walk({
-    async [FileFormat.Class.bitmap](data): Promise<void> {
+    async bitmap(data): Promise<void> {
       if (
         'image' in data.node &&
         'frame' in data.node &&
@@ -48,11 +47,12 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
   })
   utils.report(
     invalid.map(
-      (data): ReportItem => ({
+      (): ReportItem => ({
         message: `Unexpected x${maxRatio} oversized image`,
         ruleId: id,
         ruleSetId: ruleSet.id,
-        data,
+        // TODO
+        path: '',
       }),
     ),
   )

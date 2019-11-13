@@ -10,12 +10,12 @@ import {
   createWalker,
   LintOperation,
   ImageMetadata,
-  Contents,
   RuleUtilsCreator,
   RuleModule,
   GetImageMetadata,
   getOption,
   ConfigItemOption,
+  SketchFile,
 } from '..'
 
 /**
@@ -27,7 +27,7 @@ const createRuleUtilsCreator = (
   violations: LintViolation[],
   config: Config,
   operation: LintOperation,
-  contents: Contents,
+  file: SketchFile,
   getImageMetadata: GetImageMetadata,
 ): RuleUtilsCreator => {
   const memoizedGetImageMetaData = mem(getImageMetadata)
@@ -50,8 +50,7 @@ const createRuleUtilsCreator = (
             message: item.message,
             severity,
             context: {
-              id: item.data.node.do_objectID,
-              path: item.data.path,
+              path: item.path,
             },
           }),
         ),
@@ -59,7 +58,7 @@ const createRuleUtilsCreator = (
     },
     walk: createWalker(cache, operation),
     getImageMetadata: (ref: string): Promise<ImageMetadata> => {
-      return memoizedGetImageMetaData(ref, contents.filepath || '')
+      return memoizedGetImageMetaData(ref, file.filepath || '')
     },
   }
   const utilsCreator: RuleUtilsCreator = (

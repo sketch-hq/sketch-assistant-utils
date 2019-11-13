@@ -19,11 +19,7 @@ const working: RuleModule = {
       message: 'Foo',
       ruleId: 'working',
       ruleSetId: 'working-set',
-      data: {
-        path: '/',
-        node: {},
-        parent: {},
-      },
+      path: '/',
     })
   },
   id: 'working',
@@ -50,12 +46,10 @@ test('No errors for working rules', async (): Promise<void> => {
     description: '',
     rules: [working, working],
   }
-  const contents = await fromFile(
-    resolve(__dirname, '../../fixtures/empty.sketch'),
-  )
+  const file = await fromFile(resolve(__dirname, '../../fixtures/empty.sketch'))
   const violations: LintViolation[] = []
   const context: LintOperationContext = createLintOperationContext(
-    contents,
+    file,
     config,
     violations,
     { cancelled: false },
@@ -70,7 +64,6 @@ test('No errors for working rules', async (): Promise<void> => {
     Array [
       Object {
         "context": Object {
-          "id": undefined,
           "path": "/",
         },
         "message": "Foo",
@@ -80,7 +73,6 @@ test('No errors for working rules', async (): Promise<void> => {
       },
       Object {
         "context": Object {
-          "id": undefined,
           "path": "/",
         },
         "message": "Foo",
@@ -100,12 +92,10 @@ test('Produces errors for broken rules', async (): Promise<void> => {
     description: '',
     rules: [broken, working],
   }
-  const contents = await fromFile(
-    resolve(__dirname, '../../fixtures/empty.sketch'),
-  )
+  const file = await fromFile(resolve(__dirname, '../../fixtures/empty.sketch'))
   const violations: LintViolation[] = []
   const context: LintOperationContext = createLintOperationContext(
-    contents,
+    file,
     config,
     violations,
     { cancelled: false },
@@ -122,7 +112,6 @@ test('Produces errors for broken rules', async (): Promise<void> => {
     Array [
       Object {
         "context": Object {
-          "id": undefined,
           "path": "/",
         },
         "message": "Foo",

@@ -14,7 +14,7 @@ const { rule, id } = ruleModule
 
 test('Generates violations correctly', async (): Promise<void> => {
   expect.assertions(1)
-  const contents = await fromFile(
+  const file = await fromFile(
     resolve(__dirname, '../../../fixtures/outsized-image.sketch'),
   )
   const config: Config = {
@@ -24,7 +24,7 @@ test('Generates violations correctly', async (): Promise<void> => {
   }
   const violations: LintViolation[] = []
   const lintOperationContext = createLintOperationContext(
-    contents,
+    file,
     config,
     violations,
     { cancelled: false },
@@ -39,8 +39,7 @@ test('Generates violations correctly', async (): Promise<void> => {
     Array [
       Object {
         "context": Object {
-          "id": "64BBDE2F-D786-4078-B332-97D777E9D07B",
-          "path": "pages[0].layers[0]",
+          "path": "",
         },
         "message": "Unexpected x2 oversized image",
         "ruleId": "images-no-outsized",
@@ -53,7 +52,7 @@ test('Generates violations correctly', async (): Promise<void> => {
 
 test('Does not generate false negatives', async (): Promise<void> => {
   expect.assertions(1)
-  const contents = await fromFile(
+  const file = await fromFile(
     resolve(__dirname, '../../../fixtures/empty.sketch'),
   )
   const config: Config = {
@@ -63,7 +62,7 @@ test('Does not generate false negatives', async (): Promise<void> => {
   }
   const violations: LintViolation[] = []
   const lintOperationContext = createLintOperationContext(
-    contents,
+    file,
     config,
     violations,
     { cancelled: false },

@@ -2,6 +2,7 @@ import NodeStreamZip from 'node-stream-zip'
 import probeImageSize from 'probe-image-size'
 
 import { ImageMetadata, GetImageMetadata } from '..'
+
 /**
  * Efficiently access image metadata from a zipped Sketch document. Streams
  * the image from the zip, and returns as soon as the image dimensions are

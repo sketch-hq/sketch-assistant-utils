@@ -1,11 +1,9 @@
-import * as FileFormat from './file-format'
+import FileFormat from '@sketch-hq/sketch-file-format-ts'
 
 export * from './linter'
 export * from './file'
 export * from './walker'
 export * from './ruleset'
-
-export { FileFormat }
 
 // Utils
 
@@ -13,19 +11,17 @@ export type Maybe<T> = T | undefined | null
 
 // Sketch files
 
-export type Contents = {
-  filepath?: string
-  data: {
-    document: FileFormat.DocumentData
-    meta: { [key: string]: unknown }
-    user: { [key: string]: unknown }
-  }
-}
+export type ObjectClass = FileFormat.AnyObject['_class']
 
 export type ImageMetadata = {
   width: number
   height: number
   ref: string
+}
+
+export type SketchFile = {
+  filepath: string
+  contents: FileFormat.Contents
 }
 
 // Isomorphic linter utility functions
@@ -44,7 +40,7 @@ export type LintOperation =
   | { cancelled: 1 | 0 }
 
 export type LintOperationContext = {
-  contents: Contents
+  file: SketchFile
   cache: WalkerCache
   createUtils: RuleUtilsCreator
   config: Config
@@ -54,10 +50,10 @@ export type LintOperationContext = {
 
 // File walking
 
-export type VisitorData<T = FileFormat.Node> = {
+export type VisitorData<T = FileFormat.AnyObject> = {
   node: T
   parent?: T
-  path: string // lodash path
+  path: string // lodash path (pointer)
 }
 
 export type Visitor =
@@ -67,13 +63,13 @@ export type Visitor =
 export type Walker = (config: WalkerConfig) => Promise<void>
 
 export type WalkerConfig = {
-  [key in FileFormat.Class | 'allLayers' | 'allGroups']?: Visitor
+  [key in ObjectClass | 'allLayers' | 'allGroups']?: Visitor
 }
 
 export type WalkerCache = {
   allLayers: VisitorData[]
   allGroups: VisitorData[]
-} & { [key in FileFormat.Class]?: VisitorData[] }
+} & { [key in ObjectClass]?: VisitorData[] }
 
 // Lint results
 
@@ -84,7 +80,6 @@ export type LintViolation = {
   severity: ViolationSeverity
   context: {
     path: string
-    id?: string
   }
 }
 
@@ -129,7 +124,7 @@ export type ReportItem = {
   message: string
   ruleId: string
   ruleSetId: string
-  data: VisitorData
+  path: string
 }
 
 export type RuleUtilsCreator = (ruleModule: RuleModule) => RuleUtils

@@ -7,10 +7,10 @@ test('Can extract image metadata from a Sketch document', async (): Promise<
 > => {
   expect.assertions(1)
   const filepath = resolve(__dirname, '../../fixtures/outsized-image.sketch')
-  const contents = await fromFile(filepath)
+  const file = await fromFile(filepath)
   // eslint-disable-next-line
   // @ts-ignore
-  const ref: string = contents.data.document.pages[0].layers[0].image._ref
+  const ref: string = file.contents.document.pages[0].layers[0].image._ref
   expect(await getImageMetadata(ref, filepath)).toMatchInlineSnapshot(`
     Object {
       "height": 749,

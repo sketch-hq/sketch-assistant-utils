@@ -21,11 +21,12 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
   })
   utils.report(
     invalid.map(
-      (data): ReportItem => ({
+      (): ReportItem => ({
         message: 'Unexpected hidden layer',
         ruleId: id,
         ruleSetId: ruleSet.id,
-        data,
+        // TODO
+        path: '',
       }),
     ),
   )
