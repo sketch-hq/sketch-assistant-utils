@@ -4,19 +4,21 @@ import {
   RuleModule,
   ReportItem,
   RuleInvocationContext,
-  JSONSchema,
 } from '../../types'
+import {
+  buildRuleOptionSchema,
+  numberOption,
+} from '../../utils/build-rule-option-schema'
 
-const optionSchema: JSONSchema = {
-  type: 'object',
-  properties: {
-    maxLayers: {
-      type: 'number',
-      minimum: 1,
-    },
-  },
-  required: ['maxLayers'],
-}
+const optionSchema = buildRuleOptionSchema(
+  numberOption({
+    name: 'maxLayers',
+    title: 'Maximum layers',
+    defaultValue: 50,
+    description: 'Maximum layers in a group',
+    minimum: 1,
+  }),
+)
 
 const name = 'groups-max-layers'
 

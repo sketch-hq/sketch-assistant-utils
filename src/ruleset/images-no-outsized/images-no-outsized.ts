@@ -4,19 +4,21 @@ import {
   RuleInvocationContext,
   Node,
   ReportItem,
-  JSONSchema,
 } from '../../types'
+import {
+  buildRuleOptionSchema,
+  numberOption,
+} from '../../utils/build-rule-option-schema'
 
-const optionSchema: JSONSchema = {
-  type: 'object',
-  properties: {
-    maxRatio: {
-      type: 'number',
-      minimum: 1,
-    },
-  },
-  required: ['maxRatio'],
-}
+const optionSchema = buildRuleOptionSchema(
+  numberOption({
+    name: 'maxRatio',
+    title: 'Maxium ratio',
+    defaultValue: 1,
+    description: 'How much larger an image can be than its frame',
+    minimum: 1,
+  }),
+)
 
 const name = 'images-no-outsized'
 
