@@ -7,7 +7,7 @@ import { createCache } from './create-cache'
 
 test('Finds and caches layers, groups and objects', async (): Promise<void> => {
   expect.assertions(3)
-  const filepath = resolve(__dirname, '../../fixtures/empty.sketch')
+  const filepath = resolve(__dirname, '../fixtures/empty.sketch')
   const file = await fromFile(filepath)
   const cache = createCache()
   processFileContents(file.contents, cache, { cancelled: false })
@@ -18,7 +18,7 @@ test('Finds and caches layers, groups and objects', async (): Promise<void> => {
 
 test('Short-circuits when passed a cancelled op', async (): Promise<void> => {
   expect.assertions(3)
-  const filepath = resolve(__dirname, '../../fixtures/empty.sketch')
+  const filepath = resolve(__dirname, '../fixtures/empty.sketch')
   const file = await fromFile(filepath)
   const cache = createCache()
   processFileContents(file.contents, cache, { cancelled: true })
@@ -29,7 +29,7 @@ test('Short-circuits when passed a cancelled op', async (): Promise<void> => {
 
 test('Augments objects with valid JSON Pointers', async (): Promise<void> => {
   expect.assertions(1)
-  const filepath = resolve(__dirname, '../../fixtures/empty.sketch')
+  const filepath = resolve(__dirname, '../fixtures/empty.sketch')
   const file = await fromFile(filepath)
   const cache = createCache()
   processFileContents(file.contents, cache, { cancelled: false })

@@ -4,7 +4,7 @@ import {
   Config,
   LintViolation,
   RuleSet,
-} from '../types'
+} from './types'
 import { getOption } from './get-option'
 
 /**

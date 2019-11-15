@@ -14,7 +14,7 @@ import {
   ConfigItemOption,
   SketchFile,
   RuleSet,
-} from '../types'
+} from './types'
 import { getOption } from './get-option'
 import { createWalker } from './create-walker'
 import { report } from './report'

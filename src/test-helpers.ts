@@ -9,10 +9,10 @@ import {
   LintViolation,
   Config,
 } from './types'
-import { fromFile } from './utils/from-file'
-import { createLintOperationContext } from './utils/create-lint-operation-context'
-import { getImageMetadata } from './utils/get-image-metadata.node'
-import { createRuleInvocationContext } from './utils/create-rule-invocation-context'
+import { fromFile } from './from-file'
+import { createLintOperationContext } from './create-lint-operation-context'
+import { getImageMetadata } from './get-image-metadata.node'
+import { createRuleInvocationContext } from './create-rule-invocation-context'
 
 const createDummyRuleModule = ({
   title,

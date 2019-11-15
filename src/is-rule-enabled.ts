@@ -1,4 +1,4 @@
-import { Config, ConfigItem, Maybe } from '../types'
+import { Config, ConfigItem, Maybe } from './types'
 
 /**
  * Determine if a rule is enabled according to its configuration.

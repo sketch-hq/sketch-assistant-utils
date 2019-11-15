@@ -3,7 +3,7 @@ import {
   ViolationSeverity,
   JSONSchema,
   JSONSchemaProps,
-} from '../types'
+} from './types'
 
 const severitySchema: JSONSchema = {
   type: 'number',

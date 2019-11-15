@@ -7,7 +7,7 @@ import {
   booleanOption,
   stringEnumOption,
   stringArrayOption,
-} from '../../utils/build-rule-option-schema'
+} from '../../build-rule-option-schema'
 
 const optionSchema = buildRuleOptionSchema(
   numberOption({

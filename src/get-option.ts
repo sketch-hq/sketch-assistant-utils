@@ -1,4 +1,4 @@
-import { Config, ConfigItem, Maybe, ConfigItemOption } from '../types'
+import { Config, ConfigItem, Maybe, ConfigItemOption } from './types'
 
 /**
  * Extracts a config option from the config. Rule options must be keyed in the

@@ -1,4 +1,4 @@
-import { JSONSchemaProps, JSONSchema } from '../types'
+import { JSONSchemaProps, JSONSchema } from './types'
 
 /**
  * Create a floating point number option, rendered as a number input in Sketch.

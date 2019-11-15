@@ -1,6 +1,6 @@
 import StreamZip from 'node-stream-zip'
 import FileFormat from '@sketch-hq/sketch-file-format-ts'
-import { SketchFile } from '../types'
+import { SketchFile } from './types'
 
 /**
  * Given a path to a Sketch file on the file system, this function unzips the

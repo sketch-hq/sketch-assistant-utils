@@ -3,7 +3,7 @@ import {
   LintOperationContext,
   RuleInvocationContext,
   RuleSet,
-} from '../types'
+} from './types'
 
 /**
  * The RuleInvocationContext is a version of LintOperationContext customised for

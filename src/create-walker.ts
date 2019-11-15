@@ -4,7 +4,7 @@ import {
   WalkerConfig,
   LintOperation,
   SketchClass,
-} from '../types'
+} from './types'
 
 /**
  * Create a Sketch file walker - a function that iterates over a cache

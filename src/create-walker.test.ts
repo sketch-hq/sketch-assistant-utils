@@ -7,7 +7,7 @@ import { processFileContents } from './process-file-contents'
 
 test('Calls visitors for nodes', async (): Promise<void> => {
   expect.assertions(1)
-  const file = await fromFile(resolve(__dirname, '../../fixtures/empty.sketch'))
+  const file = await fromFile(resolve(__dirname, '../fixtures/empty.sketch'))
   const op = { cancelled: false }
   const cache = createCache()
   processFileContents(file.contents, cache, op)
@@ -27,7 +27,7 @@ test('Calls visitors for nodes', async (): Promise<void> => {
 
 test('Short-circuits when cancelled', async (): Promise<void> => {
   expect.assertions(1)
-  const file = await fromFile(resolve(__dirname, '../../fixtures/empty.sketch'))
+  const file = await fromFile(resolve(__dirname, '../fixtures/empty.sketch'))
   const op = { cancelled: true }
   const cache = createCache()
   processFileContents(file.contents, cache, op)

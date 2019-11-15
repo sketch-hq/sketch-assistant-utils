@@ -1,4 +1,4 @@
-import { WalkerCache } from '../types'
+import { WalkerCache } from './types'
 
 /**
  * Return a minimal cache object.

@@ -1,5 +1,5 @@
 import FileFormat from '@sketch-hq/sketch-file-format-ts'
-import { WalkerCache, LintOperation } from '../types'
+import { WalkerCache, LintOperation } from './types'
 
 /**
  * Recursively prepare Sketch document data in preparation for performing a lint

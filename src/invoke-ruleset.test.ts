@@ -8,8 +8,8 @@ import {
   LintOperationContext,
   LintViolation,
   RuleInvocationContext,
-} from '../types'
-import { createDummyRectNode } from '../test-helpers'
+} from './types'
+import { createDummyRectNode } from './test-helpers'
 import { getImageMetadata } from './get-image-metadata.node'
 import { fromFile } from './from-file'
 import { createLintOperationContext } from './create-lint-operation-context'
@@ -46,7 +46,7 @@ test('No errors for working rules', async (): Promise<void> => {
     description: 'Foo ruleset',
     rules: [working],
   }
-  const file = await fromFile(resolve(__dirname, '../../fixtures/empty.sketch'))
+  const file = await fromFile(resolve(__dirname, '../fixtures/empty.sketch'))
   const violations: LintViolation[] = []
   const context: LintOperationContext = createLintOperationContext(
     file,
@@ -84,7 +84,7 @@ test('Produces errors for broken rules', async (): Promise<void> => {
     description: 'Foo ruleset',
     rules: [broken],
   }
-  const file = await fromFile(resolve(__dirname, '../../fixtures/empty.sketch'))
+  const file = await fromFile(resolve(__dirname, '../fixtures/empty.sketch'))
   const violations: LintViolation[] = []
   const context: LintOperationContext = createLintOperationContext(
     file,

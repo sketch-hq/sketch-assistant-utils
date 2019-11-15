@@ -1,4 +1,4 @@
-import { Config } from '../types'
+import { Config } from './types'
 import { isRuleEnabled } from './is-rule-enabled'
 
 test('Returns false for an unconfigured rule', (): void => {

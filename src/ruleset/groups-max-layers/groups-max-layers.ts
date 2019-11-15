@@ -8,7 +8,7 @@ import {
 import {
   buildRuleOptionSchema,
   numberOption,
-} from '../../utils/build-rule-option-schema'
+} from '../../build-rule-option-schema'
 
 const optionSchema = buildRuleOptionSchema(
   numberOption({

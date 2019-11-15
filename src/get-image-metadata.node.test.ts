@@ -6,7 +6,7 @@ test('Can extract image metadata from a Sketch document', async (): Promise<
   void
 > => {
   expect.assertions(1)
-  const filepath = resolve(__dirname, '../../fixtures/outsized-image.sketch')
+  const filepath = resolve(__dirname, '../fixtures/outsized-image.sketch')
   const file = await fromFile(filepath)
   // eslint-disable-next-line
   // @ts-ignore

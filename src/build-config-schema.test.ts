@@ -1,8 +1,8 @@
 import Ajv from 'ajv'
 
-import { Config } from '../types'
+import { Config } from './types'
 import { buildConfigSchema } from './build-config-schema'
-import { createDummyRuleModule, createDummyRuleSet } from '../test-helpers'
+import { createDummyRuleModule, createDummyRuleSet } from './test-helpers'
 
 test('Validates a valid simple config', (): void => {
   const ruleSet = createDummyRuleSet({

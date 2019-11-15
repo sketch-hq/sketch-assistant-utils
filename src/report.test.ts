@@ -1,6 +1,6 @@
 import { report } from './report'
-import { LintViolation, ViolationSeverity } from '../types'
-import { createDummyRuleSet, createDummyRectNode } from '../test-helpers'
+import { LintViolation, ViolationSeverity } from './types'
+import { createDummyRuleSet, createDummyRectNode } from './test-helpers'
 
 test('Maps a single report to violations', (): void => {
   expect.assertions(1)

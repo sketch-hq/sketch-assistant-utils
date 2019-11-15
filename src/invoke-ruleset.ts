@@ -1,5 +1,5 @@
 import pMap from 'p-map'
-import { RuleSet, LintOperationContext } from '../types'
+import { RuleSet, LintOperationContext } from './types'
 import { createRuleInvocationContext } from './create-rule-invocation-context'
 
 class RuleInvocationError extends Error {

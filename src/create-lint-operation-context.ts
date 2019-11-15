@@ -5,7 +5,7 @@ import {
   LintOperation,
   GetImageMetadata,
   SketchFile,
-} from '../types'
+} from './types'
 import { createRuleUtilsCreator } from './create-rule-utils-creator'
 import { createCache } from './create-cache'
 import { processFileContents } from './process-file-contents'

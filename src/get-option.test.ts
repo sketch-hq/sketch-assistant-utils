@@ -1,5 +1,5 @@
 import { getOption } from './get-option'
-import { Config } from '../types'
+import { Config } from './types'
 
 const ruleSetName = `@sketch-hq/foo-ruleset`
 
