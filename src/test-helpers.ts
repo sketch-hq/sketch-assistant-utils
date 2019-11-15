@@ -1,8 +1,20 @@
 import FileFormat from '@sketch-hq/sketch-file-format-ts'
 
-import { RuleModule, Rule, JSONSchema, RuleSet, Node } from './types'
+import {
+  RuleModule,
+  Rule,
+  JSONSchema,
+  RuleSet,
+  Node,
+  LintViolation,
+  Config,
+} from './types'
+import { fromFile } from './utils/from-file'
+import { createLintOperationContext } from './utils/create-lint-operation-context'
+import { getImageMetadata } from './utils/get-image-metadata.node'
+import { createRuleInvocationContext } from './utils/create-rule-invocation-context'
 
-const createRuleModule = ({
+const createDummyRuleModule = ({
   title,
   description,
   rule,
@@ -22,7 +34,7 @@ const createRuleModule = ({
   optionSchema,
 })
 
-const createRuleSet = ({
+const createDummyRuleSet = ({
   title,
   description,
   id,
@@ -49,4 +61,34 @@ const createDummyNode = (): Node<FileFormat.Rect> => ({
   $pointer: '/',
 })
 
-export { createRuleModule, createRuleSet, createDummyNode }
+const invokeRule = async (
+  filepath: string,
+  config: Config,
+  ruleSet: RuleSet,
+  ruleModule: RuleModule,
+): Promise<LintViolation[]> => {
+  const file = await fromFile(filepath)
+  const violations: LintViolation[] = []
+  const lintOperationContext = createLintOperationContext(
+    file,
+    config,
+    violations,
+    { cancelled: false },
+    getImageMetadata,
+  )
+  const invocationContext = createRuleInvocationContext(
+    ruleSet,
+    ruleModule,
+    lintOperationContext,
+  )
+  const { rule } = ruleModule
+  await rule(invocationContext)
+  return violations
+}
+
+export {
+  createDummyRuleModule,
+  createDummyRuleSet,
+  createDummyNode,
+  invokeRule,
+}

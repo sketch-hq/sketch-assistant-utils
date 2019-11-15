@@ -2,38 +2,22 @@ import { resolve } from 'path'
 
 import { ruleModule } from '.'
 import { ruleSet } from '..'
-import { LintViolation, Config } from '../../types'
-import { getImageMetadata } from '../../utils/get-image-metadata.node'
-import { fromFile } from '../../utils/from-file'
-import { createRuleInvocationContext } from '../../utils/create-rule-invocation-context'
-import { createLintOperationContext } from '../../utils/create-lint-operation-context'
+import { invokeRule } from '../../test-helpers'
 
-const { rule, id } = ruleModule
+const { id } = ruleModule
 
 test('Generates violations correctly', async (): Promise<void> => {
   expect.assertions(1)
-  const file = await fromFile(
+  const violations = await invokeRule(
     resolve(__dirname, '../../../fixtures/10-layers.sketch'),
-  )
-  const config: Config = {
-    rules: {
-      [id]: { active: true, maxLayers: 9 },
+    {
+      rules: {
+        [id]: { active: true, maxLayers: 9 },
+      },
     },
-  }
-  const violations: LintViolation[] = []
-  const lintOperationContext = createLintOperationContext(
-    file,
-    config,
-    violations,
-    { cancelled: false },
-    getImageMetadata,
-  )
-  const invocationContext = createRuleInvocationContext(
     ruleSet,
     ruleModule,
-    lintOperationContext,
   )
-  await rule(invocationContext)
   expect(violations).toMatchInlineSnapshot(`
     Array [
       Object {
@@ -52,27 +36,15 @@ test('Generates violations correctly', async (): Promise<void> => {
 
 test('Does not generate false negatives', async (): Promise<void> => {
   expect.assertions(1)
-  const file = await fromFile(
+  const violations = await invokeRule(
     resolve(__dirname, '../../../fixtures/10-layers.sketch'),
-  )
-  const config: Config = {
-    rules: {
-      [id]: { active: true, maxLayers: 10 },
+    {
+      rules: {
+        [id]: { active: true, maxLayers: 10 },
+      },
     },
-  }
-  const violations: LintViolation[] = []
-  const lintOperationContext = createLintOperationContext(
-    file,
-    config,
-    violations,
-    { cancelled: false },
-    getImageMetadata,
-  )
-  const invocationContext = createRuleInvocationContext(
     ruleSet,
     ruleModule,
-    lintOperationContext,
   )
-  await rule(invocationContext)
   expect(violations).toMatchInlineSnapshot(`Array []`)
 })
