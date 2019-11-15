@@ -9,7 +9,7 @@ import {
   LintViolation,
   RuleInvocationContext,
 } from '../types'
-import { createDummyNode } from '../test-helpers'
+import { createDummyRectNode } from '../test-helpers'
 import { getImageMetadata } from './get-image-metadata.node'
 import { fromFile } from './from-file'
 import { createLintOperationContext } from './create-lint-operation-context'
@@ -19,7 +19,7 @@ const working: RuleModule = {
     context.utils.report({
       message: 'Foo',
       ruleId: 'working',
-      node: createDummyNode(),
+      node: createDummyRectNode(),
     })
   },
   id: 'working',

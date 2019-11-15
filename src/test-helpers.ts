@@ -44,14 +44,14 @@ const createDummyRuleSet = ({
   id?: string
   description?: string
   rules?: RuleModule[]
-}): RuleSet => ({
+} = {}): RuleSet => ({
   id: id || '',
   title: title || '',
   description: description || '',
   rules: rules || [],
 })
 
-const createDummyNode = (): Node<FileFormat.Rect> => ({
+const createDummyRectNode = (): Node<FileFormat.Rect> => ({
   _class: 'rect',
   constrainProportions: false,
   height: 10,
@@ -89,6 +89,6 @@ const invokeRule = async (
 export {
   createDummyRuleModule,
   createDummyRuleSet,
-  createDummyNode,
+  createDummyRectNode,
   invokeRule,
 }

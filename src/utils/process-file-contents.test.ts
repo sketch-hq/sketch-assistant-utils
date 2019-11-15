@@ -1,8 +1,8 @@
 import { resolve } from 'path'
 
-import { fromFile } from '..'
+import { fromFile } from './from-file'
 import { processFileContents } from './process-file-contents'
-import { get } from '.'
+import { get } from './get'
 import { createCache } from './create-cache'
 
 test('Finds and caches layers, groups and objects', async (): Promise<void> => {

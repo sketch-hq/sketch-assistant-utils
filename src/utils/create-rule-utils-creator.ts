@@ -6,7 +6,6 @@ import {
   ReportItem,
   RuleUtils,
   Config,
-  ViolationSeverity,
   LintOperation,
   ImageMetadata,
   RuleUtilsCreator,
@@ -18,6 +17,7 @@ import {
 } from '../types'
 import { getOption } from './get-option'
 import { createWalker } from './create-walker'
+import { report } from './report'
 
 /**
  * Returns a RuleUtilsCreator function, which can be used to build util objects
@@ -36,32 +36,8 @@ const createRuleUtilsCreator = (
     ruleSet: RuleSet,
     ruleModule: RuleModule,
   ): RuleUtils => ({
-    report(report: ReportItem | ReportItem[]): void {
-      if (Array.isArray(report) && report.length === 0) return
-      const severity =
-        getOption<ViolationSeverity>(
-          config,
-          Array.isArray(report) ? report[0].ruleId : report.ruleId,
-          'severity',
-        ) ||
-        config.defaultSeverity ||
-        ViolationSeverity.error
-      violations.push(
-        ...(Array.isArray(report) ? report : [report]).map(
-          (item): LintViolation => ({
-            ruleId: item.ruleId,
-            ruleSetId: ruleSet.id,
-            message: item.message,
-            severity,
-            context: {
-              pointer: item?.node?.$pointer,
-              // eslint-disable-next-line
-              // @ts-ignore
-              objectId: item?.node?.do_objectID,
-            },
-          }),
-        ),
-      )
+    report(items: ReportItem | ReportItem[]): void {
+      report(items, config, violations, ruleSet)
     },
     walk: createWalker(cache, operation),
     getImageMetadata: (ref: string): Promise<ImageMetadata> => {
