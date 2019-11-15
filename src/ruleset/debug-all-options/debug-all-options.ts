@@ -1,14 +1,13 @@
+import { Rule, RuleModule } from '../../types'
 import {
-  Rule,
-  RuleModule,
   buildRuleOptionSchema,
   numberOption,
   stringOption,
   integerOption,
   booleanOption,
   stringEnumOption,
-} from '../..'
-import { stringArrayOption } from '../../linter'
+  stringArrayOption,
+} from '../../utils/build-rule-option-schema'
 
 const id = 'debug-all-options'
 

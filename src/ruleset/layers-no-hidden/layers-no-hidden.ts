@@ -1,32 +1,29 @@
 import {
   Rule,
   RuleModule,
-  VisitorData,
+  Node,
   ReportItem,
   RuleInvocationContext,
-} from '../..'
-import { ruleSet } from '../'
+} from '../../types'
 
 const id = 'layers-no-hidden'
 
 const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
   const { utils } = context
-  const invalid: VisitorData[] = []
+  const invalid: Node[] = []
   await utils.walk({
-    allLayers(data): void {
-      if ('isVisible' in data.node && data.node.isVisible === false) {
-        invalid.push(data)
+    $layers(node): void {
+      if ('isVisible' in node && node.isVisible === false) {
+        invalid.push(node)
       }
     },
   })
   utils.report(
     invalid.map(
-      (): ReportItem => ({
+      (node): ReportItem => ({
         message: 'Unexpected hidden layer',
         ruleId: id,
-        ruleSetId: ruleSet.id,
-        // TODO
-        path: '',
+        node,
       }),
     ),
   )

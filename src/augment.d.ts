@@ -1,43 +1,3 @@
-declare module 'deepdash/standalone' {
-  type ObjNode = {
-    value: unknown
-    key: number | string
-    path: string
-    parent?: ObjNode
-  }
-
-  type IterateeContext<Obj> = {
-    path: string
-    parent?: ObjNode
-    parents: ObjNode[]
-    obj: Obj
-    depth: number
-  }
-
-  type ReduceIteratee<T, K> = (
-    acc: K,
-    value: unknown,
-    key: number | string,
-    parentValue: unknown | undefined,
-    context: IterateeContext<T>,
-  ) => K
-
-  type Iteratee<T> = (
-    value: unknown,
-    key: number | string,
-    parentValue: unknown | undefined,
-    context: IterateeContext<T>,
-  ) => void | false
-
-  export function reduceDeep<T, K>(
-    obj: T,
-    iteratee: ReduceIteratee<T, K>,
-    acc: K,
-  ): K
-
-  export function eachDeep<T>(obj: T, iteratee: Iteratee<T>): void
-}
-
 declare module 'node-stream-zip' {
   export default class StreamZip {
     public constructor(options: { file: string; storeEntries: boolean })
@@ -63,4 +23,17 @@ declare module 'probe-image-size' {
   ) => Promise<{ width: number; height: number }>
   const probeImageSize: ProbeImageSize
   export default probeImageSize
+}
+
+declare module 'json-ptr' {
+  type Pojo =
+    | string
+    | number
+    | boolean
+    | null
+    | Pojo[]
+    | undefined
+    | { [property: string]: Pojo }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  export function get(data: any, pointer: string): Pojo | undefined
 }

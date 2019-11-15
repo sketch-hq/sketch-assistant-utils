@@ -1,14 +1,12 @@
 import { resolve } from 'path'
 
-import {
-  fromFile,
-  LintViolation,
-  createLintOperationContext,
-  createRuleInvocationContext,
-  Config,
-  getImageMetadata,
-} from '../..'
+import { LintViolation, Config } from '../../types'
 import { ruleModule } from './'
+import { ruleSet } from '../'
+import { getImageMetadata } from '../../utils/get-image-metadata.node'
+import { createRuleInvocationContext } from '../../utils/create-rule-invocation-context'
+import { createLintOperationContext } from '../../utils/create-lint-operation-context'
+import { fromFile } from '../../utils/from-file'
 
 const { rule, id } = ruleModule
 
@@ -31,6 +29,7 @@ test('Generates violations correctly', async (): Promise<void> => {
     getImageMetadata,
   )
   const invocationContext = createRuleInvocationContext(
+    ruleSet,
     ruleModule,
     lintOperationContext,
   )
@@ -39,7 +38,8 @@ test('Generates violations correctly', async (): Promise<void> => {
     Array [
       Object {
         "context": Object {
-          "path": "",
+          "objectId": "64BBDE2F-D786-4078-B332-97D777E9D07B",
+          "pointer": "/document/pages/0/layers/0",
         },
         "message": "Unexpected x2 oversized image",
         "ruleId": "images-no-outsized",
@@ -69,6 +69,7 @@ test('Does not generate false negatives', async (): Promise<void> => {
     getImageMetadata,
   )
   const invocationContext = createRuleInvocationContext(
+    ruleSet,
     ruleModule,
     lintOperationContext,
   )

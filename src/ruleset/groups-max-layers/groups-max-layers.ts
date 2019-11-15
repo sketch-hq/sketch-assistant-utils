@@ -1,12 +1,11 @@
 import {
   Rule,
-  VisitorData,
+  Node,
   RuleModule,
   ReportItem,
   RuleInvocationContext,
   JSONSchema,
-} from '../..'
-import { ruleSet } from '../'
+} from '../../types'
 
 const optionSchema: JSONSchema = {
   type: 'object',
@@ -24,30 +23,28 @@ const id = 'groups-max-layers'
 const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
   const { utils } = context
   const maxLayers = utils.getOption<number>('maxLayers')
-  const invalid: VisitorData[] = []
+  const invalid: Node[] = []
   await utils.walk({
-    allGroups(data): void {
+    $groups(node): void {
       if (
-        'layers' in data.node &&
-        data.node.layers &&
+        'layers' in node &&
+        node.layers &&
         typeof maxLayers === 'number' &&
-        data.node.layers.length > maxLayers
+        node.layers.length > maxLayers
       ) {
-        invalid.push(data)
+        invalid.push(node)
       }
     },
   })
   utils.report(
     invalid.map(
-      (data): ReportItem => ({
+      (node): ReportItem => ({
         message: `Expected ${maxLayers} or less layers, found ${'layers' in
-          data.node &&
-          data.node.layers &&
-          data.node.layers.length}`,
+          node &&
+          node.layers &&
+          node.layers.length}`,
         ruleId: id,
-        ruleSetId: ruleSet.id,
-        // TODO
-        path: '',
+        node,
       }),
     ),
   )

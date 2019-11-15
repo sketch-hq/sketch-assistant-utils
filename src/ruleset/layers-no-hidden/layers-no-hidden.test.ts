@@ -1,14 +1,12 @@
 import { resolve } from 'path'
 
-import {
-  fromFile,
-  LintViolation,
-  createLintOperationContext,
-  getImageMetadata,
-  Config,
-} from '../..'
+import { LintViolation, Config } from '../../types'
 import { ruleModule } from './'
-import { createRuleInvocationContext } from '../../linter'
+import { ruleSet } from '../'
+import { createRuleInvocationContext } from '../../utils/create-rule-invocation-context'
+import { getImageMetadata } from '../../utils/get-image-metadata.node'
+import { createLintOperationContext } from '../../utils/create-lint-operation-context'
+import { fromFile } from '../../utils/from-file'
 
 const { rule, id } = ruleModule
 
@@ -32,6 +30,7 @@ test('Generates violations correctly', async (): Promise<void> => {
     getImageMetadata,
   )
   const invocationContext = createRuleInvocationContext(
+    ruleSet,
     ruleModule,
     lintOperationContext,
   )
@@ -40,7 +39,8 @@ test('Generates violations correctly', async (): Promise<void> => {
     Array [
       Object {
         "context": Object {
-          "path": "",
+          "objectId": "D1BE0048-A6FC-4A8F-8BC7-A46BE3925F18",
+          "pointer": "/document/pages/0/layers/0",
         },
         "message": "Unexpected hidden layer",
         "ruleId": "layers-no-hidden",
@@ -65,6 +65,7 @@ test('Does not generate false negatives', async (): Promise<void> => {
     getImageMetadata,
   )
   const invocationContext = createRuleInvocationContext(
+    ruleSet,
     ruleModule,
     lintOperationContext,
   )

@@ -1,4 +1,4 @@
-import { Rule, RuleModule } from '../..'
+import { Rule, RuleModule } from '../../types'
 
 const id = 'debug-throws-error'
 

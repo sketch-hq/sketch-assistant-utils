@@ -1,14 +1,12 @@
 import { resolve } from 'path'
 
 import { ruleModule } from '.'
-import {
-  createLintOperationContext,
-  createRuleInvocationContext,
-  LintViolation,
-  Config,
-  fromFile,
-  getImageMetadata,
-} from '../..'
+import { ruleSet } from '..'
+import { LintViolation, Config } from '../../types'
+import { getImageMetadata } from '../../utils/get-image-metadata.node'
+import { fromFile } from '../../utils/from-file'
+import { createRuleInvocationContext } from '../../utils/create-rule-invocation-context'
+import { createLintOperationContext } from '../../utils/create-lint-operation-context'
 
 const { rule, id } = ruleModule
 
@@ -31,6 +29,7 @@ test('Generates violations correctly', async (): Promise<void> => {
     getImageMetadata,
   )
   const invocationContext = createRuleInvocationContext(
+    ruleSet,
     ruleModule,
     lintOperationContext,
   )
@@ -39,7 +38,8 @@ test('Generates violations correctly', async (): Promise<void> => {
     Array [
       Object {
         "context": Object {
-          "path": "",
+          "objectId": "9C2047B4-71D5-48C9-9DEE-34C0009FF5A9",
+          "pointer": "/document/pages/0",
         },
         "message": "Expected 9 or less layers, found 10",
         "ruleId": "groups-max-layers",
@@ -69,6 +69,7 @@ test('Does not generate false negatives', async (): Promise<void> => {
     getImageMetadata,
   )
   const invocationContext = createRuleInvocationContext(
+    ruleSet,
     ruleModule,
     lintOperationContext,
   )

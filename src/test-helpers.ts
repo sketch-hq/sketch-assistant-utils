@@ -1,4 +1,6 @@
-import { RuleModule, Rule, JSONSchema, RuleSet } from './'
+import FileFormat from '@sketch-hq/sketch-file-format-ts'
+
+import { RuleModule, Rule, JSONSchema, RuleSet, Node } from './types'
 
 const createRuleModule = ({
   title,
@@ -37,4 +39,14 @@ const createRuleSet = ({
   rules: rules || [],
 })
 
-export { createRuleModule, createRuleSet }
+const createDummyNode = (): Node<FileFormat.Rect> => ({
+  _class: 'rect',
+  constrainProportions: false,
+  height: 10,
+  width: 10,
+  x: 0,
+  y: 0,
+  $pointer: '/',
+})
+
+export { createRuleModule, createRuleSet, createDummyNode }

@@ -2,11 +2,10 @@ import {
   Rule,
   RuleModule,
   RuleInvocationContext,
-  VisitorData,
+  Node,
   ReportItem,
   JSONSchema,
-} from '../..'
-import { ruleSet } from '../'
+} from '../../types'
 
 const optionSchema: JSONSchema = {
   type: 'object',
@@ -24,35 +23,26 @@ const id = 'images-no-outsized'
 const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
   const { utils } = context
   const maxRatio = utils.getOption<number>('maxRatio') || Infinity
-  const invalid: VisitorData[] = []
+  const invalid: Node[] = []
   await utils.walk({
-    async bitmap(data): Promise<void> {
-      if (
-        'image' in data.node &&
-        'frame' in data.node &&
-        data.node.image &&
-        data.node.frame
-      ) {
-        const { width, height } = await utils.getImageMetadata(
-          data.node.image._ref,
-        )
-        const { frame } = data.node
+    async bitmap(node): Promise<void> {
+      if ('image' in node && 'frame' in node && node.image && node.frame) {
+        const { width, height } = await utils.getImageMetadata(node.image._ref)
+        const { frame } = node
         const isWidthOversized = frame.width * maxRatio < width
         const isHeightOversized = frame.height * maxRatio < height
         if (isWidthOversized || isHeightOversized) {
-          invalid.push(data)
+          invalid.push(node)
         }
       }
     },
   })
   utils.report(
     invalid.map(
-      (): ReportItem => ({
+      (node): ReportItem => ({
         message: `Unexpected x${maxRatio} oversized image`,
         ruleId: id,
-        ruleSetId: ruleSet.id,
-        // TODO
-        path: '',
+        node,
       }),
     ),
   )

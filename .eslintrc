@@ -4,6 +4,9 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
     "prettier",
     "prettier/@typescript-eslint"
   ],
@@ -13,6 +16,9 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "@typescript-eslint/prefer-interface": "off"
+    "@typescript-eslint/prefer-interface": "off",
+    "@typescript-eslint/camelcase": "off",
+    "import/no-cycle": 2,
+    "import/default": "off"
   }
 }

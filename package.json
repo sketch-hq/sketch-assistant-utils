@@ -28,7 +28,7 @@
   ],
   "dependencies": {
     "ajv": "6.10.2",
-    "deepdash": "4.2.17",
+    "json-ptr": "1.2.0",
     "mem": "6.0.0",
     "node-stream-zip": "1.8.2",
     "p-map": "3.0.0",
@@ -46,6 +46,7 @@
     "cz-conventional-changelog": "3.0.2",
     "eslint": "6.6.0",
     "eslint-config-prettier": "6.5.0",
+    "eslint-plugin-import": "2.18.2",
     "husky": "3.0.9",
     "jest": "24.9.0",
     "prettier": "1.19.1",

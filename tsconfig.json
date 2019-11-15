@@ -12,8 +12,9 @@
     "strict": true,
     "target": "es6",
     "removeComments": true,
-    "outDir": "dist",
-    "rootDir": "src"
+    "outDir": "./dist",
+    "rootDir": "./src"
   },
+  "include": ["./src"],
   "exclude": ["node_modules", "dist"]
 }
