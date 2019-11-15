@@ -425,10 +425,10 @@
     mkdirp "^0.5.1"
     rimraf "^2.5.2"
 
-"@sketch-hq/sketch-file-format-ts@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@sketch-hq/sketch-file-format-ts/-/sketch-file-format-ts-2.0.0.tgz#3062bb67a88fe5a9c60c59642ef5fb2bd32afecd"
-  integrity sha512-v6I7T66XybPgr8Ar0q65lg9jKiRMj/j29a5DReZpB4Lyw5UlS8WtCToyq3ywp9GraCKUu47LL04uJup6hc9E0w==
+"@sketch-hq/sketch-file-format-ts@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@sketch-hq/sketch-file-format-ts/-/sketch-file-format-ts-3.0.0.tgz#4f07cd375a9740152baf01996073e36f9d43673d"
+  integrity sha512-m4Rg+QO02BQVqL9nJTVUb0VXjhev6PToxwH0YCAD9Ojk0YPeMrcz5IeNpppXdkZWtvPbzJJeyx+OQMVqA38SQg==
 
 "@types/babel__core@^7.1.0":
   version "7.1.3"
