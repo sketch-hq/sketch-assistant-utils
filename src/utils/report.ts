@@ -20,7 +20,8 @@ const report = (
   const severity =
     getOption<ViolationSeverity>(
       config,
-      Array.isArray(report) ? report[0].ruleId : report.ruleId,
+      ruleSet.name,
+      Array.isArray(report) ? report[0].ruleName : report.ruleName,
       'severity',
     ) ||
     config.defaultSeverity ||
@@ -28,8 +29,8 @@ const report = (
   violations.push(
     ...(Array.isArray(report) ? report : [report]).map(
       (item): LintViolation => ({
-        ruleId: item.ruleId,
-        ruleSetId: ruleSet.id,
+        ruleName: item.ruleName,
+        ruleSetName: ruleSet.name,
         message: item.message,
         severity,
         context: {

@@ -19,15 +19,15 @@ const createDummyRuleModule = ({
   description,
   rule,
   optionSchema,
-  id,
+  name,
 }: {
   title?: string
   description?: string
   rule?: Rule
-  id?: string
+  name?: string
   optionSchema?: JSONSchema
 }): RuleModule => ({
-  id: id || '',
+  name: name || '',
   title: title || '',
   description: description || '',
   rule: rule || ((): void => {}),
@@ -37,15 +37,15 @@ const createDummyRuleModule = ({
 const createDummyRuleSet = ({
   title,
   description,
-  id,
+  name,
   rules,
 }: {
   title?: string
-  id?: string
+  name?: string
   description?: string
   rules?: RuleModule[]
 } = {}): RuleSet => ({
-  id: id || '',
+  name: name || '',
   title: title || '',
   description: description || '',
   rules: rules || [],

@@ -18,7 +18,7 @@ const optionSchema: JSONSchema = {
   required: ['maxRatio'],
 }
 
-const id = 'images-no-outsized'
+const name = 'images-no-outsized'
 
 const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
   const { utils } = context
@@ -41,7 +41,7 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
     invalid.map(
       (node): ReportItem => ({
         message: `Unexpected x${maxRatio} oversized image`,
-        ruleId: id,
+        ruleName: name,
         node,
       }),
     ),
@@ -50,7 +50,7 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
 
 const ruleModule: RuleModule = {
   rule,
-  id,
+  name,
   optionSchema,
   title: 'No outsized images',
   description:

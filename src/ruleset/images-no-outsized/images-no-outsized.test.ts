@@ -5,11 +5,11 @@ import { ruleModule } from './'
 import { ruleSet } from '../'
 import { invokeRule } from '../../test-helpers'
 
-const { id } = ruleModule
+const { name } = ruleModule
 
 const config: Config = {
   rules: {
-    [id]: { active: true, maxRatio: 2 },
+    [`${ruleSet.name}/${name}`]: { active: true, maxRatio: 2 },
   },
 }
 
@@ -29,8 +29,8 @@ test('Generates violations correctly', async (): Promise<void> => {
           "pointer": "/document/pages/0/layers/0",
         },
         "message": "Unexpected x2 oversized image",
-        "ruleId": "images-no-outsized",
-        "ruleSetId": "sketch",
+        "ruleName": "images-no-outsized",
+        "ruleSetName": "@sketch-hq/sketch-lint-ruleset-core",
         "severity": 3,
       },
     ]

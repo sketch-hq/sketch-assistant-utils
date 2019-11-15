@@ -6,7 +6,7 @@ import { createDummyRuleModule, createDummyRuleSet } from '../test-helpers'
 
 test('Validates a valid simple config', (): void => {
   const ruleSet = createDummyRuleSet({
-    rules: [createDummyRuleModule({ id: 'foo' })],
+    rules: [createDummyRuleModule({ name: 'foo' })],
   })
   const schema = buildConfigSchema(ruleSet)
   const ajv = new Ajv()
@@ -20,7 +20,7 @@ test('Validates a valid simple config', (): void => {
 
 test('Validates a custom severity value', (): void => {
   const ruleSet = createDummyRuleSet({
-    rules: [createDummyRuleModule({ id: 'foo' })],
+    rules: [createDummyRuleModule({ name: 'foo' })],
   })
   const schema = buildConfigSchema(ruleSet)
   const ajv = new Ajv()
@@ -34,7 +34,7 @@ test('Validates a custom severity value', (): void => {
 
 test('Fails for unrecognised rules', (): void => {
   const ruleSet = createDummyRuleSet({
-    rules: [createDummyRuleModule({ id: 'foo' })],
+    rules: [createDummyRuleModule({ name: 'foo' })],
   })
   const schema = buildConfigSchema(ruleSet)
   const ajv = new Ajv()
@@ -48,7 +48,7 @@ test('Fails for unrecognised rules', (): void => {
 
 test('Fails for malformed rule options', (): void => {
   const ruleSet = createDummyRuleSet({
-    rules: [createDummyRuleModule({ id: 'foo' })],
+    rules: [createDummyRuleModule({ name: 'foo' })],
   })
   const schema = buildConfigSchema(ruleSet)
   const ajv = new Ajv()

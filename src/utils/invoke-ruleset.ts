@@ -4,14 +4,14 @@ import { createRuleInvocationContext } from './create-rule-invocation-context'
 
 class RuleInvocationError extends Error {
   public cause: Error
-  public ruleId: string
-  public ruleSetId: string
+  public ruleName: string
+  public ruleSetName: string
 
-  public constructor(cause: Error, ruleId: string, ruleSetId: string) {
+  public constructor(cause: Error, ruleName: string, ruleSetName: string) {
     super('Error thrown during rule invocation')
     this.cause = cause
-    this.ruleId = ruleId
-    this.ruleSetId = ruleSetId
+    this.ruleName = ruleName
+    this.ruleSetName = ruleSetName
     this.name = 'RuleInvocationError'
     Object.setPrototypeOf(this, new.target.prototype)
   }
@@ -30,7 +30,7 @@ const invokeRuleSet = async (
       async (context: LintOperationContext, i: number): Promise<void> => {
         if (!context.operation.cancelled) {
           const ruleModule = ruleSet.rules[i]
-          const { rule, id } = ruleModule
+          const { rule, name } = ruleModule
           try {
             const invocationContext = createRuleInvocationContext(
               ruleSet,
@@ -39,7 +39,7 @@ const invokeRuleSet = async (
             )
             await rule(invocationContext)
           } catch (error) {
-            throw new RuleInvocationError(error, id, ruleSet.id)
+            throw new RuleInvocationError(error, name, ruleSet.name)
           }
         }
       },

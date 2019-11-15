@@ -4,7 +4,7 @@ import { ruleModule } from '.'
 import { ruleSet } from '..'
 import { invokeRule } from '../../test-helpers'
 
-const { id } = ruleModule
+const { name } = ruleModule
 
 test('Generates violations correctly', async (): Promise<void> => {
   expect.assertions(1)
@@ -12,7 +12,7 @@ test('Generates violations correctly', async (): Promise<void> => {
     resolve(__dirname, '../../../fixtures/10-layers.sketch'),
     {
       rules: {
-        [id]: { active: true, maxLayers: 9 },
+        [`${ruleSet.name}/${name}`]: { active: true, maxLayers: 9 },
       },
     },
     ruleSet,
@@ -26,8 +26,8 @@ test('Generates violations correctly', async (): Promise<void> => {
           "pointer": "/document/pages/0",
         },
         "message": "Expected 9 or less layers, found 10",
-        "ruleId": "groups-max-layers",
-        "ruleSetId": "sketch",
+        "ruleName": "groups-max-layers",
+        "ruleSetName": "@sketch-hq/sketch-lint-ruleset-core",
         "severity": 3,
       },
     ]
@@ -40,7 +40,7 @@ test('Does not generate false negatives', async (): Promise<void> => {
     resolve(__dirname, '../../../fixtures/10-layers.sketch'),
     {
       rules: {
-        [id]: { active: true, maxLayers: 10 },
+        [`${ruleSet.name}/${name}`]: { active: true, maxLayers: 10 },
       },
     },
     ruleSet,

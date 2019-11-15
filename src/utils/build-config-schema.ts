@@ -29,10 +29,10 @@ const buildConfigSchema = (ruleSet: RuleSet): JSONSchema => ({
       additionalProperties: false,
       properties: ruleSet.rules.reduce<JSONSchemaProps>(
         (acc, ruleModule): JSONSchemaProps => {
-          const { id, optionSchema } = ruleModule
+          const { name, optionSchema } = ruleModule
           return {
             ...acc,
-            [id]: {
+            [name]: {
               type: 'object',
               additionalProperties: false,
               properties: {

@@ -6,7 +6,7 @@ import {
   RuleInvocationContext,
 } from '../../types'
 
-const id = 'layers-no-hidden'
+const name = 'layers-no-hidden'
 
 const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
   const { utils } = context
@@ -22,7 +22,7 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
     invalid.map(
       (node): ReportItem => ({
         message: 'Unexpected hidden layer',
-        ruleId: id,
+        ruleName: name,
         node,
       }),
     ),
@@ -31,7 +31,7 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
 
 const ruleModule: RuleModule = {
   rule,
-  id,
+  name,
   title: 'No hidden layers',
   description: 'Enable this rule to disallow hidden layers from the document',
 }

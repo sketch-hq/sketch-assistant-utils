@@ -44,7 +44,7 @@ const createRuleUtilsCreator = (
       return memoizedGetImageMetaData(ref, file.filepath || '')
     },
     getOption<T extends ConfigItemOption>(option: string): T | null {
-      return getOption<T>(config, ruleModule.id, option)
+      return getOption<T>(config, ruleSet.name, ruleModule.name, option)
     },
   })
   return utilsCreator

@@ -18,11 +18,11 @@ const working: RuleModule = {
   rule: (context: RuleInvocationContext) => {
     context.utils.report({
       message: 'Foo',
-      ruleId: 'working',
+      ruleName: 'working',
       node: createDummyRectNode(),
     })
   },
-  id: 'working',
+  name: 'working',
   title: 'Working rule',
   description: 'A working rule',
 }
@@ -31,7 +31,7 @@ const broken: RuleModule = {
   rule: () => {
     throw new Error('Explode!')
   },
-  id: 'broken',
+  name: 'broken',
   title: 'Broken rule',
   description: 'A broken rule',
 }
@@ -41,7 +41,7 @@ const config: Config = { rules: {} }
 test('No errors for working rules', async (): Promise<void> => {
   expect.assertions(2)
   const ruleSet: RuleSet = {
-    id: 'foo',
+    name: 'foo',
     title: 'Foo',
     description: 'Foo ruleset',
     rules: [working],
@@ -68,8 +68,8 @@ test('No errors for working rules', async (): Promise<void> => {
           "pointer": "/",
         },
         "message": "Foo",
-        "ruleId": "working",
-        "ruleSetId": "foo",
+        "ruleName": "working",
+        "ruleSetName": "foo",
         "severity": 3,
       },
     ]
@@ -79,7 +79,7 @@ test('No errors for working rules', async (): Promise<void> => {
 test('Produces errors for broken rules', async (): Promise<void> => {
   expect.assertions(2)
   const ruleSet: RuleSet = {
-    id: 'foo',
+    name: 'foo',
     title: 'Foo',
     description: 'Foo ruleset',
     rules: [broken],

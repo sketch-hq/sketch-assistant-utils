@@ -5,11 +5,11 @@ import { ruleModule } from './'
 import { ruleSet } from '../'
 import { invokeRule } from '../../test-helpers'
 
-const { id } = ruleModule
+const { name } = ruleModule
 
 const config: Config = {
   rules: {
-    [id]: { active: true },
+    [name]: { active: true },
   },
 }
 
@@ -29,8 +29,8 @@ test('Generates violations correctly', async (): Promise<void> => {
           "pointer": "/document/pages/0/layers/0",
         },
         "message": "Unexpected hidden layer",
-        "ruleId": "layers-no-hidden",
-        "ruleSetId": "sketch",
+        "ruleName": "layers-no-hidden",
+        "ruleSetName": "@sketch-hq/sketch-lint-ruleset-core",
         "severity": 3,
       },
     ]

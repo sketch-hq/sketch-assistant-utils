@@ -8,7 +8,7 @@ test('Maps a single report to violations', (): void => {
   report(
     {
       message: 'Foo',
-      ruleId: 'foo',
+      ruleName: 'foo',
       node: createDummyRectNode(),
     },
     {
@@ -25,8 +25,8 @@ test('Maps a single report to violations', (): void => {
           "pointer": "/",
         },
         "message": "Foo",
-        "ruleId": "foo",
-        "ruleSetId": "",
+        "ruleName": "foo",
+        "ruleSetName": "",
         "severity": 3,
       },
     ]
@@ -40,12 +40,12 @@ test('Maps multiple violations', (): void => {
     [
       {
         message: 'Foo',
-        ruleId: 'foo',
+        ruleName: 'foo',
         node: createDummyRectNode(),
       },
       {
         message: 'Bar',
-        ruleId: 'bar',
+        ruleName: 'bar',
         node: createDummyRectNode(),
       },
     ],
@@ -63,8 +63,8 @@ test('Maps multiple violations', (): void => {
           "pointer": "/",
         },
         "message": "Foo",
-        "ruleId": "foo",
-        "ruleSetId": "",
+        "ruleName": "foo",
+        "ruleSetName": "",
         "severity": 3,
       },
       Object {
@@ -73,8 +73,8 @@ test('Maps multiple violations', (): void => {
           "pointer": "/",
         },
         "message": "Bar",
-        "ruleId": "bar",
-        "ruleSetId": "",
+        "ruleName": "bar",
+        "ruleSetName": "",
         "severity": 3,
       },
     ]
@@ -87,19 +87,19 @@ test('Picks up a custom severity option', (): void => {
   report(
     {
       message: 'Foo',
-      ruleId: 'foo',
+      ruleName: 'foo',
       node: createDummyRectNode(),
     },
     {
       rules: {
-        foo: {
+        'bar/foo': {
           active: true,
           severity: ViolationSeverity.info,
         },
       },
     },
     violations,
-    createDummyRuleSet(),
+    createDummyRuleSet({ name: 'bar' }),
   )
   expect(violations).toMatchInlineSnapshot(`
     Array [
@@ -109,8 +109,8 @@ test('Picks up a custom severity option', (): void => {
           "pointer": "/",
         },
         "message": "Foo",
-        "ruleId": "foo",
-        "ruleSetId": "",
+        "ruleName": "foo",
+        "ruleSetName": "bar",
         "severity": 1,
       },
     ]

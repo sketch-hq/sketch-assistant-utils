@@ -18,7 +18,7 @@ const optionSchema: JSONSchema = {
   required: ['maxLayers'],
 }
 
-const id = 'groups-max-layers'
+const name = 'groups-max-layers'
 
 const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
   const { utils } = context
@@ -43,7 +43,7 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
           node &&
           node.layers &&
           node.layers.length}`,
-        ruleId: id,
+        ruleName: name,
         node,
       }),
     ),
@@ -52,7 +52,7 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
 
 const ruleModule: RuleModule = {
   rule,
-  id,
+  name,
   optionSchema,
   title: 'Maximum layers in a group',
   description:

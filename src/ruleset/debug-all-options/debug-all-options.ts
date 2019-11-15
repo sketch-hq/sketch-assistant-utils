@@ -9,8 +9,6 @@ import {
   stringArrayOption,
 } from '../../utils/build-rule-option-schema'
 
-const id = 'debug-all-options'
-
 const optionSchema = buildRuleOptionSchema(
   numberOption({
     name: 'numberOption',
@@ -66,7 +64,7 @@ const rule: Rule = (): void => {}
 
 const ruleModule: RuleModule = {
   rule,
-  id,
+  name: 'debug-all-options',
   title: 'All options',
   description:
     'This rule exports examples of all available option schema types',

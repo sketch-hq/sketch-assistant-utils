@@ -64,8 +64,8 @@ export type WalkerCache = {
 
 export type LintViolation = {
   message: string
-  ruleId: string
-  ruleSetId: string
+  ruleName: string
+  ruleSetName: string
   severity: ViolationSeverity
   context: {
     pointer?: string
@@ -112,7 +112,7 @@ export type RuleInvocationContext = Omit<
 
 export type ReportItem = {
   message: string
-  ruleId: string
+  ruleName: string
   node?: Node
 }
 
@@ -135,13 +135,13 @@ export type Rule =
 export type RuleSet = {
   title: string
   description: string
-  id: string
+  name: string
   rules: RuleModule[]
 }
 
 export type RuleModule = {
   rule: Rule
-  id: string
+  name: string
   title: string
   description: string
   optionSchema?: JSONSchema
