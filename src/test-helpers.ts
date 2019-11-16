@@ -26,7 +26,7 @@ const createDummyRuleModule = ({
   rule?: Rule
   name?: string
   optionSchema?: JSONSchema
-}): RuleModule => ({
+} = {}): RuleModule => ({
   name: name || '',
   title: title || '',
   description: description || '',

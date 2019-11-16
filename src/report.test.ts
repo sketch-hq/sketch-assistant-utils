@@ -1,6 +1,17 @@
 import { report } from './report'
-import { LintViolation, ViolationSeverity } from './types'
-import { createDummyRuleSet, createDummyRectNode } from './test-helpers'
+import { LintViolation } from './types'
+import {
+  createDummyRuleSet,
+  createDummyRectNode,
+  createDummyRuleModule,
+} from './test-helpers'
+
+const ruleSet = createDummyRuleSet({
+  name: 'rule-set',
+  rules: [createDummyRuleModule({ name: 'rule-1' })],
+})
+
+const ruleModule = ruleSet.rules[0]
 
 test('Maps a single report to violations', (): void => {
   expect.assertions(1)
@@ -8,14 +19,14 @@ test('Maps a single report to violations', (): void => {
   report(
     {
       message: 'Foo',
-      ruleName: 'foo',
       node: createDummyRectNode(),
     },
     {
       rules: {},
     },
     violations,
-    createDummyRuleSet(),
+    ruleSet,
+    ruleModule,
   )
   expect(violations).toMatchInlineSnapshot(`
     Array [
@@ -25,8 +36,8 @@ test('Maps a single report to violations', (): void => {
           "pointer": "/",
         },
         "message": "Foo",
-        "ruleName": "foo",
-        "ruleSetName": "",
+        "ruleName": "rule-1",
+        "ruleSetName": "rule-set",
         "severity": 3,
       },
     ]
@@ -40,12 +51,10 @@ test('Maps multiple violations', (): void => {
     [
       {
         message: 'Foo',
-        ruleName: 'foo',
         node: createDummyRectNode(),
       },
       {
         message: 'Bar',
-        ruleName: 'bar',
         node: createDummyRectNode(),
       },
     ],
@@ -53,7 +62,8 @@ test('Maps multiple violations', (): void => {
       rules: {},
     },
     violations,
-    createDummyRuleSet(),
+    ruleSet,
+    ruleModule,
   )
   expect(violations).toMatchInlineSnapshot(`
     Array [
@@ -63,8 +73,8 @@ test('Maps multiple violations', (): void => {
           "pointer": "/",
         },
         "message": "Foo",
-        "ruleName": "foo",
-        "ruleSetName": "",
+        "ruleName": "rule-1",
+        "ruleSetName": "rule-set",
         "severity": 3,
       },
       Object {
@@ -73,45 +83,9 @@ test('Maps multiple violations', (): void => {
           "pointer": "/",
         },
         "message": "Bar",
-        "ruleName": "bar",
-        "ruleSetName": "",
+        "ruleName": "rule-1",
+        "ruleSetName": "rule-set",
         "severity": 3,
-      },
-    ]
-  `)
-})
-
-test('Picks up a custom severity option', (): void => {
-  expect.assertions(1)
-  const violations: LintViolation[] = []
-  report(
-    {
-      message: 'Foo',
-      ruleName: 'foo',
-      node: createDummyRectNode(),
-    },
-    {
-      rules: {
-        'bar/foo': {
-          active: true,
-          severity: ViolationSeverity.info,
-        },
-      },
-    },
-    violations,
-    createDummyRuleSet({ name: 'bar' }),
-  )
-  expect(violations).toMatchInlineSnapshot(`
-    Array [
-      Object {
-        "context": Object {
-          "objectId": undefined,
-          "pointer": "/",
-        },
-        "message": "Foo",
-        "ruleName": "foo",
-        "ruleSetName": "bar",
-        "severity": 1,
       },
     ]
   `)

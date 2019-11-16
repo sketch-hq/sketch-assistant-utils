@@ -11,13 +11,14 @@ import {
   RuleUtilsCreator,
   RuleModule,
   GetImageMetadata,
-  ConfigItemOption,
   SketchFile,
   RuleSet,
+  ConfigItemOption,
+  Maybe,
 } from './types'
-import { getOption } from './get-option'
 import { createWalker } from './create-walker'
 import { report } from './report'
+import { getRuleOption } from './config-utils'
 
 /**
  * Returns a RuleUtilsCreator function, which can be used to build util objects
@@ -37,15 +38,14 @@ const createRuleUtilsCreator = (
     ruleModule: RuleModule,
   ): RuleUtils => ({
     report(items: ReportItem | ReportItem[]): void {
-      report(items, config, violations, ruleSet)
+      report(items, config, violations, ruleSet, ruleModule)
     },
     walk: createWalker(cache, operation),
     getImageMetadata: (ref: string): Promise<ImageMetadata> => {
       return memoizedGetImageMetaData(ref, file.filepath || '')
     },
-    getOption<T extends ConfigItemOption>(option: string): T | null {
-      return getOption<T>(config, ruleSet.name, ruleModule.name, option)
-    },
+    getOption: (option: string): Maybe<ConfigItemOption> =>
+      getRuleOption(config, ruleSet, ruleModule, option),
   })
   return utilsCreator
 }

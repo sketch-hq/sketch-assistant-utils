@@ -3,14 +3,15 @@ import { WalkerCache, LintOperation } from './types'
 
 /**
  * Recursively prepare Sketch document data in preparation for performing a lint
- * run. The objective of this documen traversal is to be as performant as
- * possible in terms of run time and memory usage. In practice this means
- * performing two things:
+ * run. In practice this means performing two things:
  *
  *   1. Augmenting each object in the document data with an RFC 6901 compliant
- *      JSON Pointer string
+ *      JSON Pointer string on the `$pointer` key, unlikely to clash with other
+ *      object keys. The pointer values enable objects to indicate their location
+ *      in the document structure, even when observed in isolation, for example
+ *      in a lint rule.
  *   2. Populating a minimal cache of Sketch document objects keyed by their
- *      _class prop values, for efficient access and iteration in rules
+ *      `_class` prop values, for efficient access and iteration in rule logic.
  *
  * TODO: Can we use ts-ignore less here?
  */

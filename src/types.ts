@@ -112,7 +112,6 @@ export type RuleInvocationContext = Omit<
 
 export type ReportItem = {
   message: string
-  ruleName: string
   node?: Node
 }
 
@@ -124,7 +123,7 @@ export type RuleUtilsCreator = (
 export type RuleUtils = {
   report: (report: ReportItem | ReportItem[]) => void
   walk: (config: WalkerConfig) => Promise<void>
-  getOption: <T extends ConfigItemOption>(option: string) => T | null
+  getOption: (option: string) => Maybe<ConfigItemOption>
   getImageMetadata: (ref: string) => Promise<ImageMetadata>
 }
 

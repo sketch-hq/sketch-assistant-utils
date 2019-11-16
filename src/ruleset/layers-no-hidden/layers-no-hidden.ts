@@ -22,7 +22,6 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
     invalid.map(
       (node): ReportItem => ({
         message: 'Unexpected hidden layer',
-        ruleName: name,
         node,
       }),
     ),

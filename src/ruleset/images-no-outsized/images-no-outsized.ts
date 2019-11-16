@@ -24,7 +24,8 @@ const name = 'images-no-outsized'
 
 const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
   const { utils } = context
-  const maxRatio = utils.getOption<number>('maxRatio') || Infinity
+  const maxRatio = utils.getOption('maxRatio') || Infinity
+  if (typeof maxRatio !== 'number') return
   const invalid: Node[] = []
   await utils.walk({
     async bitmap(node): Promise<void> {
@@ -43,7 +44,6 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
     invalid.map(
       (node): ReportItem => ({
         message: `Unexpected x${maxRatio} oversized image`,
-        ruleName: name,
         node,
       }),
     ),

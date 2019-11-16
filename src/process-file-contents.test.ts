@@ -2,7 +2,7 @@ import { resolve } from 'path'
 
 import { fromFile } from './from-file'
 import { processFileContents } from './process-file-contents'
-import { get } from './get'
+import { get } from './pointers'
 import { createCache } from './create-cache'
 
 test('Finds and caches layers, groups and objects', async (): Promise<void> => {

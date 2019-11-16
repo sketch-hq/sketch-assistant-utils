@@ -18,7 +18,6 @@ const working: RuleModule = {
   rule: (context: RuleInvocationContext) => {
     context.utils.report({
       message: 'Foo',
-      ruleName: 'working',
       node: createDummyRectNode(),
     })
   },

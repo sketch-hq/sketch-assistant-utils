@@ -24,7 +24,7 @@ const name = 'groups-max-layers'
 
 const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
   const { utils } = context
-  const maxLayers = utils.getOption<number>('maxLayers')
+  const maxLayers = utils.getOption('maxLayers')
   const invalid: Node[] = []
   await utils.walk({
     $groups(node): void {
@@ -45,7 +45,6 @@ const rule: Rule = async (context: RuleInvocationContext): Promise<void> => {
           node &&
           node.layers &&
           node.layers.length}`,
-        ruleName: name,
         node,
       }),
     ),

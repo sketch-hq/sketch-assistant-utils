@@ -1,7 +1,7 @@
 import { WalkerCache } from './types'
 
 /**
- * Return a minimal cache object.
+ * Return the minimal/empty cache object.
  */
 const createCache = (): WalkerCache => ({
   $layers: [],
