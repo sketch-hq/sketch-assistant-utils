@@ -1,8 +1,10 @@
 {
   "name": "@sketch-hq/sketch-lint-core",
   "version": "1.0.0",
-  "main": "dist/index",
+  "main": "dist/cjs/index",
+  "module": "dist/esm/index",
   "types": "dist/index",
+  "sideEffects": false,
   "license": "MIT",
   "repository": "github:sketch-hq/sketch-lint-core",
   "keywords": [
@@ -13,7 +15,9 @@
     "design linting"
   ],
   "scripts": {
-    "build": "rm -rf ./dist && tsc",
+    "build": "rm -rf ./dist && yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc --module es2015 --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
     "package-tarball": "yarn build && mkdir -p tarballs && yarn pack --filename=tarballs/sketch-lint-core-$(node -p -e \"require('./package.json').version\").tgz",
     "test": "jest",
     "lint": "eslint --ext .ts src",

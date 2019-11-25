@@ -3,7 +3,6 @@
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
-    "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
@@ -12,7 +11,6 @@
     "strict": true,
     "target": "es6",
     "removeComments": true,
-    "outDir": "./dist",
     "rootDir": "./src"
   },
   "include": ["./src"],
