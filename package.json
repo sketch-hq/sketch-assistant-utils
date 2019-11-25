@@ -1,8 +1,8 @@
 {
   "name": "@sketch-hq/sketch-lint-core",
   "version": "2.0.0",
-  "main": "dist/cjs/index",
   "module": "dist/esm/index",
+  "main": "dist/cjs/index",
   "types": "dist/cjs/index",
   "sideEffects": false,
   "license": "MIT",
