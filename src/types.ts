@@ -17,29 +17,16 @@ export type SketchFile = {
   contents: FileFormat.Contents
 }
 
+export enum Constants {
+  CORE_RULESET_NAME = '@sketch-hq/sketch-lint-ruleset-core',
+}
+
 // Isomorphic linter utility functions
 
 export type GetImageMetadata = (
   ref: string,
   filepath: string,
 ) => Promise<ImageMetadata>
-
-// Operation
-
-export type LintOperation =
-  | {
-      cancelled: boolean
-    }
-  | { cancelled: 1 | 0 }
-
-export type LintOperationContext = {
-  file: SketchFile
-  cache: WalkerCache
-  createUtils: RuleUtilsCreator
-  config: Config
-  operation: LintOperation
-  getImageMetadata: GetImageMetadata
-}
 
 // Document walking
 
@@ -60,20 +47,16 @@ export type WalkerCache = {
   $groups: Node[]
 } & { [key in SketchClass]?: Node[] }
 
-// Lint results
+// Configuration
 
-export type LintViolation = {
-  message: string
-  ruleName: string
-  ruleSetName: string
-  severity: ViolationSeverity
-  context: {
-    pointer?: string
-    objectId?: string
+export type PackageJSON = {
+  name: string
+  title: string
+  description: string
+  dependencies: {
+    [key: string]: string
   }
 }
-
-// Configuration
 
 export enum ViolationSeverity {
   info = 1,
@@ -81,11 +64,19 @@ export enum ViolationSeverity {
   error = 3,
 }
 
-export type Config = {
-  defaultSeverity?: ViolationSeverity
-  rules: {
-    [key: string]: Maybe<ConfigItem>
+export type Config = PackageJSON & {
+  sketchLint: {
+    defaultSeverity?: ViolationSeverity
+    rules: {
+      [key: string]: Maybe<ConfigItem>
+    }
   }
+}
+
+export type ConfigItem = {
+  active: boolean
+  severity?: ViolationSeverity
+  [key: string]: Maybe<ConfigItemOption>
 }
 
 export type ConfigItemOption =
@@ -95,13 +86,22 @@ export type ConfigItemOption =
   | string[]
   | number
 
-export type ConfigItem = {
-  active: boolean
-  severity?: ViolationSeverity
-  [key: string]: Maybe<ConfigItemOption>
-}
+// Lint runs
 
-// Rules
+export type LintOperation =
+  | {
+      cancelled: boolean
+    }
+  | { cancelled: 1 | 0 }
+
+export type LintOperationContext = {
+  file: SketchFile
+  cache: WalkerCache
+  createUtils: RuleUtilsCreator
+  config: Config
+  operation: LintOperation
+  getImageMetadata: GetImageMetadata
+}
 
 export type RuleInvocationContext = Omit<
   LintOperationContext,
@@ -113,6 +113,15 @@ export type RuleInvocationContext = Omit<
 export type ReportItem = {
   message: string
   node?: Node
+}
+
+export type LintViolation = {
+  message: string
+  ruleSet: RuleSetDefinition
+  ruleModule: RuleModuleDefinition
+  severity: ViolationSeverity
+  pointer?: string
+  objectId?: string
 }
 
 export type RuleUtilsCreator = (
@@ -127,6 +136,8 @@ export type RuleUtils = {
   getImageMetadata: (ref: string) => Promise<ImageMetadata>
 }
 
+// Rulesets and rules
+
 export type Rule =
   | ((context: RuleInvocationContext) => Promise<void>)
   | ((context: RuleInvocationContext) => void)
@@ -138,16 +149,93 @@ export type RuleSet = {
   rules: RuleModule[]
 }
 
+export type RuleSetDefinition = Omit<RuleSet, 'rules'>
+
 export type RuleModule = {
   rule: Rule
   name: string
   title: string
   description: string
-  optionSchema?: JSONSchema
+  getOptions?: RuleOptionsCreator
   debug?: boolean
 }
 
-// JSON Schema
+export type RuleModuleDefinition = Omit<RuleModule, 'rule' | 'getOptions'>
+
+export type RuleSetDropzone = {
+  [key: string]: Maybe<RuleSet>
+}
+
+// Option schemas
+
+export type NumberOptionCreator = (ops: {
+  name: string
+  title: string
+  description: string
+  defaultValue?: number
+  minimum?: number
+  maximum?: number
+}) => JSONSchemaProps
+
+export type IntegerOptionCreator = (ops: {
+  name: string
+  title: string
+  description: string
+  defaultValue?: number
+  minimum?: number
+  maximum?: number
+}) => JSONSchemaProps
+
+export type StringOptionCreator = (ops: {
+  name: string
+  title: string
+  description: string
+  defaultValue?: string
+  minLength?: number
+  maxLength?: number
+  pattern?: string
+}) => JSONSchemaProps
+
+export type BoolOptionCreator = (ops: {
+  name: string
+  title: string
+  description: string
+  defaultValue?: boolean
+}) => JSONSchemaProps
+
+export type StringEnumOptionCreator = (ops: {
+  name: string
+  title: string
+  description: string
+  defaultValue?: string
+  values: string[]
+  valueTitles: string[]
+}) => JSONSchemaProps
+
+export type StringArrayOptionCreator = (ops: {
+  name: string
+  title: string
+  description: string
+  defaultValue?: string[]
+  minLength?: number
+  maxLength?: number
+  pattern?: string
+}) => JSONSchemaProps
+
+export type RuleOptionSchemaCreator = (ops: JSONSchemaProps[]) => JSONSchema
+
+export type RuleOptionHelpers = {
+  numberOption: NumberOptionCreator
+  integerOption: IntegerOptionCreator
+  stringOption: StringOptionCreator
+  booleanOption: BoolOptionCreator
+  stringArrayOption: StringArrayOptionCreator
+  stringEnumOption: StringEnumOptionCreator
+}
+
+export type RuleOptionsCreator = (
+  helpers: RuleOptionHelpers,
+) => JSONSchemaProps[]
 
 export type JSONSchemaType =
   | 'string'

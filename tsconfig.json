@@ -11,7 +11,8 @@
     "strict": true,
     "target": "es6",
     "removeComments": true,
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "resolveJsonModule": true
   },
   "include": ["./src"],
   "exclude": ["node_modules", "dist"]

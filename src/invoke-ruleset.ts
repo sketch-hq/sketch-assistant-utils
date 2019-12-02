@@ -8,7 +8,7 @@ class RuleInvocationError extends Error {
   public ruleSetName: string
 
   public constructor(cause: Error, ruleName: string, ruleSetName: string) {
-    super('Error thrown during rule invocation')
+    super(`Error thrown during rule invocation: ${cause.message}`)
     this.cause = cause
     this.ruleName = ruleName
     this.ruleSetName = ruleSetName

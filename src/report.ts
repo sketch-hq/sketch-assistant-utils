@@ -15,18 +15,24 @@ const report = (
   const severity = getRuleSeverity(config, ruleSet, ruleModule)
   violations.push(
     ...(Array.isArray(report) ? report : [report]).map(
-      (item): LintViolation => ({
-        ruleName: ruleModule.name,
-        ruleSetName: ruleSet.name,
-        message: item.message,
-        severity,
-        context: {
+      (item): LintViolation => {
+        const { rules: _rules, ...ruleSetDefinition } = ruleSet
+        const {
+          getOptions: _getOptions,
+          rule: _rule,
+          ...ruleModuleDefinitiuon
+        } = ruleModule
+        return {
+          ruleSet: ruleSetDefinition,
+          ruleModule: ruleModuleDefinitiuon,
+          message: item.message,
+          severity,
           pointer: item?.node?.$pointer,
           // eslint-disable-next-line
           // @ts-ignore
           objectId: item?.node?.do_objectID,
-        },
-      }),
+        }
+      },
     ),
   )
 }

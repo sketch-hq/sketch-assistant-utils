@@ -1,6 +1,6 @@
 {
   "name": "@sketch-hq/sketch-lint-core",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.0",
   "module": "dist/esm/index",
   "main": "dist/cjs/index",
   "types": "dist/cjs/index",
@@ -32,6 +32,7 @@
   "dependencies": {
     "@sketch-hq/sketch-file-format-ts": "3.0.0",
     "ajv": "6.10.2",
+    "humps": "2.0.1",
     "json-ptr": "1.2.0",
     "mem": "6.0.0",
     "node-stream-zip": "1.8.2",
@@ -41,6 +42,7 @@
   "devDependencies": {
     "@commitlint/cli": "8.2.0",
     "@commitlint/config-conventional": "8.2.0",
+    "@types/humps": "1.1.2",
     "@types/jest": "24.0.22",
     "@types/node": "12.12.7",
     "@typescript-eslint/eslint-plugin": "2.6.1",

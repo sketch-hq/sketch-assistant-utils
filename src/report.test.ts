@@ -4,6 +4,7 @@ import {
   createDummyRuleSet,
   createDummyRectNode,
   createDummyRuleModule,
+  createDummyConfig,
 } from './test-helpers'
 
 const ruleSet = createDummyRuleSet({
@@ -21,9 +22,7 @@ test('Maps a single report to violations', (): void => {
       message: 'Foo',
       node: createDummyRectNode(),
     },
-    {
-      rules: {},
-    },
+    createDummyConfig(),
     violations,
     ruleSet,
     ruleModule,
@@ -31,13 +30,19 @@ test('Maps a single report to violations', (): void => {
   expect(violations).toMatchInlineSnapshot(`
     Array [
       Object {
-        "context": Object {
-          "objectId": undefined,
-          "pointer": "/",
-        },
         "message": "Foo",
-        "ruleName": "rule-1",
-        "ruleSetName": "rule-set",
+        "objectId": undefined,
+        "pointer": "/",
+        "ruleModule": Object {
+          "description": "",
+          "name": "rule-1",
+          "title": "",
+        },
+        "ruleSet": Object {
+          "description": "",
+          "name": "rule-set",
+          "title": "",
+        },
         "severity": 3,
       },
     ]
@@ -58,9 +63,7 @@ test('Maps multiple violations', (): void => {
         node: createDummyRectNode(),
       },
     ],
-    {
-      rules: {},
-    },
+    createDummyConfig(),
     violations,
     ruleSet,
     ruleModule,
@@ -68,23 +71,35 @@ test('Maps multiple violations', (): void => {
   expect(violations).toMatchInlineSnapshot(`
     Array [
       Object {
-        "context": Object {
-          "objectId": undefined,
-          "pointer": "/",
-        },
         "message": "Foo",
-        "ruleName": "rule-1",
-        "ruleSetName": "rule-set",
+        "objectId": undefined,
+        "pointer": "/",
+        "ruleModule": Object {
+          "description": "",
+          "name": "rule-1",
+          "title": "",
+        },
+        "ruleSet": Object {
+          "description": "",
+          "name": "rule-set",
+          "title": "",
+        },
         "severity": 3,
       },
       Object {
-        "context": Object {
-          "objectId": undefined,
-          "pointer": "/",
-        },
         "message": "Bar",
-        "ruleName": "rule-1",
-        "ruleSetName": "rule-set",
+        "objectId": undefined,
+        "pointer": "/",
+        "ruleModule": Object {
+          "description": "",
+          "name": "rule-1",
+          "title": "",
+        },
+        "ruleSet": Object {
+          "description": "",
+          "name": "rule-set",
+          "title": "",
+        },
         "severity": 3,
       },
     ]

@@ -18,7 +18,7 @@ import {
 } from './types'
 import { createWalker } from './create-walker'
 import { report } from './report'
-import { getRuleOption } from './config-utils'
+import { getRuleOption, getRuleConfigKey } from './config-utils'
 
 /**
  * Returns a RuleUtilsCreator function, which can be used to build util objects
@@ -44,8 +44,19 @@ const createRuleUtilsCreator = (
     getImageMetadata: (ref: string): Promise<ImageMetadata> => {
       return memoizedGetImageMetaData(ref, file.filepath || '')
     },
-    getOption: (option: string): Maybe<ConfigItemOption> =>
-      getRuleOption(config, ruleSet, ruleModule, option),
+    getOption: (option: string): Maybe<ConfigItemOption> => {
+      const item = getRuleOption(config, ruleSet, ruleModule, option)
+      if (item) {
+        return item
+      } else {
+        throw new Error(
+          `Option "${option}" for rule "${getRuleConfigKey(
+            ruleSet,
+            ruleModule,
+          )}" not found in config`,
+        )
+      }
+    },
   })
   return utilsCreator
 }

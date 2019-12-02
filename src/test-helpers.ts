@@ -3,11 +3,12 @@ import FileFormat from '@sketch-hq/sketch-file-format-ts'
 import {
   RuleModule,
   Rule,
-  JSONSchema,
   RuleSet,
   Node,
   LintViolation,
   Config,
+  RuleOptionsCreator,
+  ViolationSeverity,
 } from './types'
 import { fromFile } from './from-file'
 import { createLintOperationContext } from './create-lint-operation-context'
@@ -18,20 +19,20 @@ const createDummyRuleModule = ({
   title,
   description,
   rule,
-  optionSchema,
+  getOptions,
   name,
 }: {
   title?: string
   description?: string
   rule?: Rule
   name?: string
-  optionSchema?: JSONSchema
+  getOptions?: RuleOptionsCreator
 } = {}): RuleModule => ({
   name: name || '',
   title: title || '',
   description: description || '',
   rule: rule || ((): void => {}),
-  optionSchema,
+  getOptions,
 })
 
 const createDummyRuleSet = ({
@@ -49,6 +50,31 @@ const createDummyRuleSet = ({
   title: title || '',
   description: description || '',
   rules: rules || [],
+})
+
+const createDummyConfig = ({
+  name,
+  title,
+  description,
+  dependencies,
+  rules,
+  defaultSeverity,
+}: {
+  name?: string
+  title?: string
+  description?: string
+  dependencies?: Config['dependencies']
+  rules?: Config['sketchLint']['rules']
+  defaultSeverity?: ViolationSeverity
+} = {}): Config => ({
+  name: name || '',
+  title: title || '',
+  description: description || '',
+  dependencies: dependencies || {},
+  sketchLint: {
+    ...(typeof defaultSeverity === 'number' ? { defaultSeverity } : {}),
+    rules: rules || {},
+  },
 })
 
 const createDummyRectNode = (): Node<FileFormat.Rect> => ({
@@ -91,4 +117,5 @@ export {
   createDummyRuleSet,
   createDummyRectNode,
   invokeRule,
+  createDummyConfig,
 }
