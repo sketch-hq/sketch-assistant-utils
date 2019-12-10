@@ -134,6 +134,9 @@ export type RuleUtils = {
   walk: (config: WalkerConfig) => Promise<void>
   getOption: (option: string) => Maybe<ConfigItemOption>
   getImageMetadata: (ref: string) => Promise<ImageMetadata>
+  nodeToObject: <T extends FileFormat.AnyObject>(node: Node) => T
+  objectHash: (o: {}, ignoreObjectId: boolean) => string
+  objectsEqual: (o1: {}, o2: {}) => boolean
 }
 
 // Rulesets and rules

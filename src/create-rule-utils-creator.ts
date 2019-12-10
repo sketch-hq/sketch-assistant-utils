@@ -19,6 +19,7 @@ import {
 import { createWalker } from './create-walker'
 import { report } from './report'
 import { getRuleOption, getRuleConfigKey } from './config-utils'
+import { nodeToObject, objectHash, objectsEqual } from './object-utils'
 
 /**
  * Returns a RuleUtilsCreator function, which can be used to build util objects
@@ -57,6 +58,9 @@ const createRuleUtilsCreator = (
         )
       }
     },
+    nodeToObject,
+    objectHash,
+    objectsEqual,
   })
   return utilsCreator
 }
