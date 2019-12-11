@@ -135,7 +135,7 @@ export type RuleUtils = {
   getOption: (option: string) => Maybe<ConfigItemOption>
   getImageMetadata: (ref: string) => Promise<ImageMetadata>
   nodeToObject: <T extends FileFormat.AnyObject>(node: Node) => T
-  objectHash: (o: {}, ignoreObjectId: boolean) => string
+  objectHash: (o: {}, excludeKeys?: string[]) => string
   objectsEqual: (o1: {}, o2: {}) => boolean
 }
 

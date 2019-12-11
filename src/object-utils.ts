@@ -16,15 +16,18 @@ const nodeToObject = <T extends FileFormat.AnyObject>(node: Node): T => {
 }
 
 /**
- * Return the md5 hash of an object. Keys are sorted, and the do_objectID key
- * is optionally excluded. Useful for comparing deep similarity of Sketch
- * document objects.
+ * Return the md5 hash of an object. Keys are deeply sorted for a stable hash.
+ * Useful for comparing deep similarity of Sketch document objects. By default
+ * keys not appropriate for comparison are excluded.
  */
-const objectHash = (obj: {}, ignoreObjectId = true): string =>
+const objectHash = (
+  obj: {},
+  excludeKeys = ['do_objectID', '$pointer'],
+): string =>
   hash(obj, {
     unorderedObjects: true,
     algorithm: 'md5',
-    excludeKeys: key => (key === 'do_objectID' ? ignoreObjectId : false),
+    excludeKeys: key => excludeKeys.includes(key),
   })
 
 /**
