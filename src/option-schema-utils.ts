@@ -8,7 +8,26 @@ import {
   StringArrayOptionCreator,
   RuleOptionSchemaCreator,
   RuleOptionHelpers,
+  ObjectArrayOptionCreator,
 } from './types'
+
+/**
+ * Combine multiple rule option schemas into one. We treat _all_ custom options
+ * as required.
+ */
+const buildRuleOptionSchema: RuleOptionSchemaCreator = ops => ({
+  type: 'object',
+  properties: ops.reduce<JSONSchemaProps>(
+    (acc, props: JSONSchemaProps) => ({
+      ...acc,
+      ...props,
+    }),
+    {},
+  ),
+  required: ops
+    .map(props => Object.keys(props))
+    .reduce((acc, val) => acc.concat(val), []), // flatten
+})
 
 /**
  * Create a floating point number option.
@@ -103,21 +122,24 @@ const stringArrayOption: StringArrayOptionCreator = ops => ({
 })
 
 /**
- * Combine multiple rule option schemas into one. We treat _all_ custom options
- * as required.
+ * Create an object list option.
  */
-const buildRuleOptionSchema: RuleOptionSchemaCreator = ops => ({
-  type: 'object',
-  properties: ops.reduce<JSONSchemaProps>(
-    (acc, props: JSONSchemaProps) => ({
-      ...acc,
-      ...props,
-    }),
-    {},
-  ),
-  required: ops
-    .map(props => Object.keys(props))
-    .reduce((acc, val) => acc.concat(val), []), // flatten
+const objectArrayOption: ObjectArrayOptionCreator = ops => ({
+  [ops.name]: {
+    type: 'array',
+    title: ops.title,
+    description: ops.description,
+    items: {
+      type: 'object',
+      additionalProperties: buildRuleOptionSchema(ops.props),
+      ...(typeof ops.minLength === 'number'
+        ? { minLength: ops.minLength }
+        : {}),
+      ...(typeof ops.maxLength === 'number'
+        ? { maxLength: ops.maxLength }
+        : {}),
+    },
+  },
 })
 
 const helpers: RuleOptionHelpers = {
@@ -127,6 +149,7 @@ const helpers: RuleOptionHelpers = {
   booleanOption,
   stringEnumOption,
   stringArrayOption,
+  objectArrayOption,
 }
 
 export { buildRuleOptionSchema, helpers }

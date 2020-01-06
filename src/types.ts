@@ -80,11 +80,11 @@ export type ConfigItem = {
 }
 
 export type ConfigItemOption =
-  | boolean
-  | ViolationSeverity
   | string
-  | string[]
   | number
+  | boolean
+  | string[]
+  | { [key: string]: Maybe<string | number | boolean | string[]> }[]
 
 // Lint runs
 
@@ -225,6 +225,15 @@ export type StringArrayOptionCreator = (ops: {
   pattern?: string
 }) => JSONSchemaProps
 
+export type ObjectArrayOptionCreator = (ops: {
+  name: string
+  title: string
+  description: string
+  props: JSONSchemaProps[]
+  minLength?: number
+  maxLength?: number
+}) => JSONSchemaProps
+
 export type RuleOptionSchemaCreator = (ops: JSONSchemaProps[]) => JSONSchema
 
 export type RuleOptionHelpers = {
@@ -234,6 +243,7 @@ export type RuleOptionHelpers = {
   booleanOption: BoolOptionCreator
   stringArrayOption: StringArrayOptionCreator
   stringEnumOption: StringEnumOptionCreator
+  objectArrayOption: ObjectArrayOptionCreator
 }
 
 export type RuleOptionsCreator = (
@@ -282,7 +292,7 @@ export type JSONSchema = {
   patternProperties?: {
     [key: string]: JSONSchema
   }
-  additionalProperties?: boolean
+  additionalProperties?: boolean | JSONSchema
   dependencies?: {
     [key: string]: JSONSchema | string[]
   }

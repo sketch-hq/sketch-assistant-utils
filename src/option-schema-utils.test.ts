@@ -7,6 +7,7 @@ const {
   booleanOption,
   stringEnumOption,
   stringArrayOption,
+  objectArrayOption,
 } = helpers
 
 test('Builds number option schemas', (): void => {
@@ -156,6 +157,64 @@ test('Builds a string array option schemas', (): void => {
           "minLength": 0,
           "pattern": "^.*$",
           "type": "string",
+        },
+        "title": "My Option",
+        "type": "array",
+      },
+    }
+  `)
+})
+
+test('Builds a object array option schemas', (): void => {
+  expect(
+    objectArrayOption({
+      name: 'myOption',
+      title: 'My Option',
+      description: 'An object array option',
+      maxLength: 100,
+      minLength: 0,
+      props: [
+        stringOption({
+          name: 'foo',
+          title: 'Foo',
+          description: 'Foo',
+        }),
+        numberOption({
+          name: 'bar',
+          title: 'Bar',
+          description: 'Bar',
+        }),
+      ],
+    }),
+  ).toMatchInlineSnapshot(`
+    Object {
+      "myOption": Object {
+        "description": "An object array option",
+        "items": Object {
+          "additionalProperties": Object {
+            "properties": Object {
+              "bar": Object {
+                "default": 0,
+                "description": "Bar",
+                "title": "Bar",
+                "type": "number",
+              },
+              "foo": Object {
+                "default": "",
+                "description": "Foo",
+                "title": "Foo",
+                "type": "string",
+              },
+            },
+            "required": Array [
+              "foo",
+              "bar",
+            ],
+            "type": "object",
+          },
+          "maxLength": 100,
+          "minLength": 0,
+          "type": "object",
         },
         "title": "My Option",
         "type": "array",
