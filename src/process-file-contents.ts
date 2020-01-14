@@ -15,6 +15,13 @@ import { WalkerCache, LintOperation } from './types'
  *
  * TODO: Can we use ts-ignore less here?
  */
+
+const DO_NOT_CACHE_KEYS = [
+  'foreignLayerStyles',
+  'foreignSymbols',
+  'foreignTextStyles',
+]
+
 const processFileContents = (
   contents: FileFormat.Contents | null,
   cache: WalkerCache,
@@ -46,9 +53,11 @@ const processFileContents = (
         if ('layers' in object) cache.$groups.push(object)
         if ('frame' in object) cache.$layers.push(object)
       }
-      // eslint-disable-next-line
-      // @ts-ignore
-      processFileContents(object[key], cache, op, `${pointer}/${key}`)
+      if (!DO_NOT_CACHE_KEYS.includes(key)) {
+        // eslint-disable-next-line
+        // @ts-ignore
+        processFileContents(object[key], cache, op, `${pointer}/${key}`)
+      }
     }
   }
 }

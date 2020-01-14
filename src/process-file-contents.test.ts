@@ -38,3 +38,12 @@ test('Augments objects with valid JSON Pointers', async (): Promise<void> => {
     expect(page).toBe(get(file.contents, page.$pointer))
   }
 })
+
+test('Skips foreign symbols', async (): Promise<void> => {
+  expect.assertions(1)
+  const filepath = resolve(__dirname, '../fixtures/foreign-symbol.sketch')
+  const file = await fromFile(filepath)
+  const cache = createCache()
+  processFileContents(file.contents, cache, { cancelled: false })
+  expect(cache.symbolMaster).toBeUndefined()
+})

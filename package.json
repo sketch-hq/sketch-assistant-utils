@@ -1,6 +1,6 @@
 {
   "name": "@sketch-hq/sketch-lint-core",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "module": "dist/esm/index",
   "main": "dist/cjs/index",
   "types": "dist/cjs/index",
