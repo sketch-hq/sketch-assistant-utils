@@ -6,6 +6,7 @@ import {
   isRuleActive,
   getRuleSeverity,
   isRuleSetActive,
+  isRuleConfigValid,
 } from './config-utils'
 import {
   createDummyRuleSet,
@@ -299,4 +300,63 @@ test('isRuleSetAcitve', () => {
       genericRuleSet,
     ),
   ).toBe(false)
+})
+
+test('isRuleConfigValid', () => {
+  // Rule module declares one string option named `foo`
+  const ruleModule = createDummyRuleModule({
+    name: 'rule',
+    getOptions: helpers => [
+      helpers.stringOption({
+        name: 'foo',
+        title: '',
+        description: '',
+      }),
+    ],
+  })
+  const ruleSet = createDummyRuleSet({ name: 'rule-set' })
+
+  // Returns true for valid config
+  expect(
+    isRuleConfigValid(
+      createDummyConfig({
+        rules: {
+          'rule-set/rule': {
+            active: true,
+            foo: 'foo',
+          },
+        },
+      }),
+      ruleSet,
+      ruleModule,
+    ),
+  ).toBe(true)
+
+  // Returns AjvError array for invalid config
+  expect(
+    isRuleConfigValid(
+      createDummyConfig({
+        rules: {
+          'rule-set/rule': {
+            active: true,
+            foo: 1,
+          },
+        },
+      }),
+      ruleSet,
+      ruleModule,
+    ),
+  ).toMatchInlineSnapshot(`
+    Array [
+      Object {
+        "dataPath": ".foo",
+        "keyword": "type",
+        "message": "should be string",
+        "params": Object {
+          "type": "string",
+        },
+        "schemaPath": "#/properties/foo/type",
+      },
+    ]
+  `)
 })

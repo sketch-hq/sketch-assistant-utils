@@ -1,3 +1,5 @@
+import Ajv, { ErrorObject as AjvError } from 'ajv'
+
 import {
   Config,
   RuleSet,
@@ -7,6 +9,7 @@ import {
   ViolationSeverity,
   Constants,
 } from './types'
+import { helpers, buildRuleOptionSchema } from './option-schema-utils'
 
 /**
  * Return the key for a given rule and ruleSet combination in the config. The
@@ -61,6 +64,26 @@ const getRuleOption = (
 }
 
 /**
+ * Validate a rule's options in a config object according to the schema defined
+ * on the rule module.
+ */
+const isRuleConfigValid = (
+  config: Config,
+  ruleSet: RuleSet,
+  ruleModule: RuleModule,
+): true | AjvError[] => {
+  if (typeof ruleModule.getOptions === 'undefined') {
+    // If the rule hasn't defined an options schema we can't validate it
+    return true
+  }
+  const schema = buildRuleOptionSchema(ruleModule.getOptions(helpers))
+  const ruleConfig = getRuleConfig(config, ruleSet, ruleModule)
+  const ajv = new Ajv()
+  ajv.validate(schema, ruleConfig)
+  return ajv.errors || true
+}
+
+/**
  * Determine if a rule is active. An active rule must both be mentioned in the
  * config and have its `active` option set to `true`.
  */
@@ -109,4 +132,5 @@ export {
   isRuleActive,
   getRuleSeverity,
   isRuleSetActive,
+  isRuleConfigValid,
 }

@@ -18,12 +18,16 @@ import {
 } from './types'
 import { createWalker } from './create-walker'
 import { report } from './report'
-import { getRuleOption, getRuleConfigKey } from './config-utils'
+import {
+  getRuleOption,
+  getRuleConfigKey,
+  isRuleConfigValid,
+} from './config-utils'
 import { nodeToObject, objectHash, objectsEqual } from './object-utils'
 
 /**
  * Returns a RuleUtilsCreator function, which can be used to build util objects
- * for rules.
+ * scoped to a specific rule.
  */
 const createRuleUtilsCreator = (
   cache: WalkerCache,
@@ -45,13 +49,32 @@ const createRuleUtilsCreator = (
     getImageMetadata: (ref: string): Promise<ImageMetadata> => {
       return memoizedGetImageMetaData(ref, file.filepath || '')
     },
-    getOption: (option: string): Maybe<ConfigItemOption> => {
-      const item = getRuleOption(config, ruleSet, ruleModule, option)
+    getOption: (optionKey: string): Maybe<ConfigItemOption> => {
+      const result = isRuleConfigValid(config, ruleSet, ruleModule)
+      if (result !== true) {
+        // Convert Ajv validation errors into a human readable string
+        const details = result
+          .map(error => {
+            if (error.dataPath === '') {
+              return error.message
+            } else {
+              return `"${error.dataPath}" ${error.message}`
+            }
+          })
+          .join('. ')
+        throw new Error(
+          `Rule "${getRuleConfigKey(
+            ruleSet,
+            ruleModule,
+          )}" attempted to access an invalid config object. ${details}`,
+        )
+      }
+      const item = getRuleOption(config, ruleSet, ruleModule, optionKey)
       if (item) {
         return item
       } else {
         throw new Error(
-          `Option "${option}" for rule "${getRuleConfigKey(
+          `Option "${optionKey}" for rule "${getRuleConfigKey(
             ruleSet,
             ruleModule,
           )}" not found in config`,
