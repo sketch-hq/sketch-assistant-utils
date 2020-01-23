@@ -302,7 +302,7 @@ test('isRuleSetAcitve', () => {
   ).toBe(false)
 })
 
-test('isRuleConfigValid', () => {
+test('isRuleConfigValid 1', () => {
   // Rule module declares one string option named `foo`
   const ruleModule = createDummyRuleModule({
     name: 'rule',

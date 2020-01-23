@@ -35,7 +35,7 @@ test('Augments objects with valid JSON Pointers', async (): Promise<void> => {
   processFileContents(file.contents, cache, { cancelled: false })
   if (cache['page'] && cache['page'][0]._class === 'page') {
     const page = cache['page'][0]
-    expect(page).toBe(get(file.contents, page.$pointer))
+    expect(page).toBe(get(page.$pointer, file.contents))
   }
 })
 

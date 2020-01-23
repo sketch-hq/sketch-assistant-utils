@@ -1,5 +1,5 @@
 import FileFormat from '@sketch-hq/sketch-file-format-ts'
-import { WalkerCache, LintOperation } from './types'
+import { NodeCache, LintOperation } from './types'
 
 /**
  * Recursively prepare Sketch document data in preparation for performing a lint
@@ -24,7 +24,7 @@ const DO_NOT_CACHE_KEYS = [
 
 const processFileContents = (
   contents: FileFormat.Contents | null,
-  cache: WalkerCache,
+  cache: NodeCache,
   op: LintOperation,
   pointer = '',
 ): void => {

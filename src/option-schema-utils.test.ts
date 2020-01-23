@@ -191,29 +191,22 @@ test('Builds a object array option schemas', (): void => {
       "myOption": Object {
         "description": "An object array option",
         "items": Object {
-          "additionalProperties": Object {
-            "properties": Object {
-              "bar": Object {
-                "default": 0,
-                "description": "Bar",
-                "title": "Bar",
-                "type": "number",
-              },
-              "foo": Object {
-                "default": "",
-                "description": "Foo",
-                "title": "Foo",
-                "type": "string",
-              },
-            },
-            "required": Array [
-              "foo",
-              "bar",
-            ],
-            "type": "object",
-          },
           "maxLength": 100,
           "minLength": 0,
+          "properties": Object {
+            "bar": Object {
+              "default": 0,
+              "description": "Bar",
+              "title": "Bar",
+              "type": "number",
+            },
+            "foo": Object {
+              "default": "",
+              "description": "Foo",
+              "title": "Foo",
+              "type": "string",
+            },
+          },
           "type": "object",
         },
         "title": "My Option",

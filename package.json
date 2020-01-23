@@ -1,6 +1,6 @@
 {
   "name": "@sketch-hq/sketch-lint-core",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.11",
   "module": "dist/esm/index",
   "main": "dist/cjs/index",
   "types": "dist/cjs/index",
@@ -30,10 +30,10 @@
     "dist"
   ],
   "dependencies": {
-    "@sketch-hq/sketch-file-format-ts": "3.0.0",
+    "@json-schema-spec/json-pointer": "0.1.2",
+    "@sketch-hq/sketch-file-format-ts": "4.0.1",
     "ajv": "6.10.2",
     "humps": "2.0.1",
-    "json-ptr": "1.2.0",
     "mem": "6.0.0",
     "node-stream-zip": "1.8.2",
     "object-hash": "2.0.1",

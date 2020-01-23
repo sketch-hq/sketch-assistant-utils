@@ -131,7 +131,7 @@ const objectArrayOption: ObjectArrayOptionCreator = ops => ({
     description: ops.description,
     items: {
       type: 'object',
-      additionalProperties: buildRuleOptionSchema(ops.props),
+      properties: buildRuleOptionSchema(ops.props).properties,
       ...(typeof ops.minLength === 'number'
         ? { minLength: ops.minLength }
         : {}),

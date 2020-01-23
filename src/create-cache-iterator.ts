@@ -1,19 +1,21 @@
 import {
-  WalkerCache,
-  Walker,
-  WalkerConfig,
+  NodeCache,
+  NodeCacheIterator,
+  NodeCacheIteratorConfig,
   LintOperation,
   SketchClass,
 } from './types'
 
 /**
- * Create a Sketch file walker - a function that iterates over a cache
- * and for each entry calls any defined visitors.
+ * Create a Sketch file cache iterator, a function that iterators across objects
+ * in the cache, and calls visitor callback functions for them if defined.
  */
-const createWalker = (
-  cache: WalkerCache,
+const createCacheIterator = (
+  cache: NodeCache,
   operation: LintOperation,
-): Walker => async (walkerConf: WalkerConfig): Promise<void> => {
+): NodeCacheIterator => async (
+  walkerConf: NodeCacheIteratorConfig,
+): Promise<void> => {
   for (const key of Object.keys(walkerConf)) {
     if (operation.cancelled) break
     const cacheItem = cache[key as SketchClass]
@@ -27,4 +29,4 @@ const createWalker = (
   }
 }
 
-export { createWalker }
+export { createCacheIterator }

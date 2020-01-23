@@ -1,14 +1,40 @@
 import FileFormat from '@sketch-hq/sketch-file-format-ts'
-import ptr from 'json-ptr'
+import Ptr from '@json-schema-spec/json-pointer'
+import { Maybe, ProcessedContentsValue } from './types'
 
-type GetReturnType<T> = T | T[] | string | boolean | number | undefined | null
-
-/**
- * Return a value in a FileFormat.Contents object using a JSON Pointer.
- */
-const get = <T = FileFormat.AnyObject>(
-  contents: FileFormat.Contents,
+const get = (
   pointer: string,
-): GetReturnType<T> => ptr.get(contents, pointer) as GetReturnType<T>
+  instance: FileFormat.Contents,
+): Maybe<ProcessedContentsValue> => {
+  try {
+    const ptr = Ptr.parse(pointer)
+    return ptr.eval(instance)
+  } catch (err) {
+    return undefined
+  }
+}
 
-export { get }
+const parent = (
+  pointer: string,
+  instance: FileFormat.Contents,
+): Maybe<ProcessedContentsValue> => {
+  try {
+    const ptr = Ptr.parse(pointer)
+    if (ptr.tokens.length === 0) {
+      return undefined
+    } else {
+      try {
+        const parentPtr = new Ptr(
+          ptr.tokens.splice(0, ptr.tokens.length - 1),
+        ).toString()
+        return get(parentPtr, instance)
+      } catch (err) {
+        return undefined
+      }
+    }
+  } catch (err) {
+    return undefined
+  }
+}
+
+export { get, parent }

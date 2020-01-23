@@ -99,3 +99,46 @@ test('getOption', async (): Promise<void> => {
     )
   }
 })
+
+test('pointers', async (): Promise<void> => {
+  expect.assertions(2)
+
+  const operation = { cancelled: false }
+  const cache = createCache()
+  const file: SketchFile = await fromFile(
+    resolve(__dirname, '../fixtures/empty.sketch'),
+  )
+  processFileContents(file.contents, cache, operation)
+
+  const createUtils = createRuleUtilsCreator(
+    cache,
+    [],
+    createDummyConfig(),
+    operation,
+    file,
+    getImageMetadata,
+  )
+
+  const ruleModule = createDummyRuleModule({
+    name: 'rule',
+  })
+
+  const ruleSet = createDummyRuleSet({
+    name: 'ruleset',
+    rules: [ruleModule],
+  })
+
+  const utils = createUtils(ruleSet, ruleModule)
+
+  // Can get a value in the file contents by pointer string
+  const page = utils.get('/document/pages/0')
+  if (page && typeof page === 'object' && '_class' in page) {
+    expect(page._class).toBe('page')
+
+    // Can get the parent value for a pointer string
+    const pageParent = utils.parent(page.$pointer)
+    if (Array.isArray(pageParent)) {
+      expect(pageParent).toHaveLength(1)
+    }
+  }
+})

@@ -28,26 +28,47 @@ export type GetImageMetadata = (
   filepath: string,
 ) => Promise<ImageMetadata>
 
-// Document walking
+// Document traversal and caching
 
 export type Node<T = FileFormat.AnyObject> = T & {
   $pointer: string
 }
 
-export type Visitor = ((data: Node) => Promise<void>) | ((data: Node) => void)
+export type NodeCacheVisitor =
+  | ((data: Node) => Promise<void>)
+  | ((data: Node) => void)
 
-export type WalkerConfig = {
-  [key in keyof WalkerCache]?: Visitor
+export type NodeCacheIteratorConfig = {
+  [key in keyof NodeCache]?: NodeCacheVisitor
 }
 
-export type Walker = (config: WalkerConfig) => Promise<void>
+export type NodeCacheIterator = (
+  config: NodeCacheIteratorConfig,
+) => Promise<void>
 
-export type WalkerCache = {
+export type NodeCache = {
   $layers: Node[]
   $groups: Node[]
 } & { [key in SketchClass]?: Node[] }
 
-// Configuration
+export type ProcessedContentsValue =
+  | Node
+  | Node[]
+  | Node<FileFormat.Contents>
+  | Node<FileFormat.Contents['document']>
+  | Node<FileFormat.Contents['meta']>
+  | Node<FileFormat.Contents['user']>
+  | string
+  | number
+  | boolean
+
+// Lint configurations
+
+export enum ViolationSeverity {
+  info = 1,
+  warn = 2,
+  error = 3,
+}
 
 export type PackageJSON = {
   name: string
@@ -56,12 +77,6 @@ export type PackageJSON = {
   dependencies: {
     [key: string]: string
   }
-}
-
-export enum ViolationSeverity {
-  info = 1,
-  warn = 2,
-  error = 3,
 }
 
 export type Config = PackageJSON & {
@@ -96,7 +111,7 @@ export type LintOperation =
 
 export type LintOperationContext = {
   file: SketchFile
-  cache: WalkerCache
+  cache: NodeCache
   createUtils: RuleUtilsCreator
   config: Config
   operation: LintOperation
@@ -131,12 +146,14 @@ export type RuleUtilsCreator = (
 
 export type RuleUtils = {
   report: (report: ReportItem | ReportItem[]) => void
-  walk: (config: WalkerConfig) => Promise<void>
+  iterateCache: (config: NodeCacheIteratorConfig) => Promise<void>
   getOption: (option: string) => Maybe<ConfigItemOption>
   getImageMetadata: (ref: string) => Promise<ImageMetadata>
   nodeToObject: <T extends FileFormat.AnyObject>(node: Node) => T
   objectHash: (o: {}, excludeKeys?: string[]) => string
   objectsEqual: (o1: {}, o2: {}) => boolean
+  get: (pointer: string) => Maybe<ProcessedContentsValue>
+  parent: (pointer: string) => Maybe<ProcessedContentsValue>
 }
 
 // Rulesets and rules
@@ -152,7 +169,7 @@ export type RuleSet = {
   rules: RuleModule[]
 }
 
-export type RuleSetDefinition = Omit<RuleSet, 'rules'>
+export type RuleSetDefinition = Omit<RuleSet, 'rules' | 'init'>
 
 export type RuleModule = {
   rule: Rule

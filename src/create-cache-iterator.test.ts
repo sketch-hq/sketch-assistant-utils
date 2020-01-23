@@ -1,6 +1,6 @@
 import { resolve } from 'path'
 
-import { createWalker } from './create-walker'
+import { createCacheIterator } from './create-cache-iterator'
 import { fromFile } from './from-file'
 import { createCache } from './create-cache'
 import { processFileContents } from './process-file-contents'
@@ -11,7 +11,7 @@ test('Calls visitors for nodes', async (): Promise<void> => {
   const op = { cancelled: false }
   const cache = createCache()
   processFileContents(file.contents, cache, op)
-  const walker = createWalker(cache, op)
+  const walker = createCacheIterator(cache, op)
   const results: string[] = []
   await walker({
     style: (node): void => {
@@ -31,7 +31,7 @@ test('Short-circuits when cancelled', async (): Promise<void> => {
   const op = { cancelled: true }
   const cache = createCache()
   processFileContents(file.contents, cache, op)
-  const walker = createWalker(cache, op)
+  const walker = createCacheIterator(cache, op)
   const results: string[] = []
   await walker({
     style: (node): void => {

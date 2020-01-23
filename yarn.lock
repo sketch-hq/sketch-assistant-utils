@@ -416,6 +416,11 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
+"@json-schema-spec/json-pointer@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@json-schema-spec/json-pointer/-/json-pointer-0.1.2.tgz#5153d5d01b94134015ee829deca5a970cf0406fd"
+  integrity sha512-BYY7IavBjwsWWSmVcMz2A9mKiDD9RvacnsItgmy1xV8cmgbtxFfKmKMtkVpD7pYtkx4mIW4800yZBXueVFIWPw==
+
 "@marionebl/sander@^0.6.0":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@marionebl/sander/-/sander-0.6.1.tgz#1958965874f24bc51be48875feb50d642fc41f7b"
@@ -425,10 +430,10 @@
     mkdirp "^0.5.1"
     rimraf "^2.5.2"
 
-"@sketch-hq/sketch-file-format-ts@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@sketch-hq/sketch-file-format-ts/-/sketch-file-format-ts-3.0.0.tgz#4f07cd375a9740152baf01996073e36f9d43673d"
-  integrity sha512-m4Rg+QO02BQVqL9nJTVUb0VXjhev6PToxwH0YCAD9Ojk0YPeMrcz5IeNpppXdkZWtvPbzJJeyx+OQMVqA38SQg==
+"@sketch-hq/sketch-file-format-ts@4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@sketch-hq/sketch-file-format-ts/-/sketch-file-format-ts-4.0.1.tgz#22940875d0c1222b88bfa2857c5259d5e4ede479"
+  integrity sha512-qMTpRG7u7dJoq3qenlkLNjWEnuY+Iv0GltTISK+pq12ROkpLFrbAav9cF5dVhJv8LomSGE8bKzSVWkNEgtsa4Q==
 
 "@types/babel__core@^7.1.0":
   version "7.1.3"
@@ -3360,11 +3365,6 @@ json-parse-better-errors@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
   integrity sha512-mrqyZKfX5EhL7hvqcV6WG1yYjnjeuYDzDhhcAAUrq8Po85NBQBJP+ZDUT75qZQ98IkUoBqdkExkukOU7Ts2wrw==
-
-json-ptr@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/json-ptr/-/json-ptr-1.2.0.tgz#e588fa5f937f220f59f73e7f480f9f52a6f79328"
-  integrity sha512-wkqozzmmyu+vtazHF11uvIDbLsgkE4juY41QoXgKYSy166KQalyc72PqveII21f8UWKtYN7btUXg16vya+9xnw==
 
 json-schema-traverse@^0.4.1:
   version "0.4.1"

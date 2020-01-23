@@ -1,7 +1,7 @@
 import mem from 'mem'
 
 import {
-  WalkerCache,
+  NodeCache,
   LintViolation,
   ReportItem,
   RuleUtils,
@@ -15,8 +15,9 @@ import {
   RuleSet,
   ConfigItemOption,
   Maybe,
+  ProcessedContentsValue,
 } from './types'
-import { createWalker } from './create-walker'
+import { createCacheIterator } from './create-cache-iterator'
 import { report } from './report'
 import {
   getRuleOption,
@@ -24,13 +25,14 @@ import {
   isRuleConfigValid,
 } from './config-utils'
 import { nodeToObject, objectHash, objectsEqual } from './object-utils'
+import { get, parent } from './pointers'
 
 /**
  * Returns a RuleUtilsCreator function, which can be used to build util objects
  * scoped to a specific rule.
  */
 const createRuleUtilsCreator = (
-  cache: WalkerCache,
+  cache: NodeCache,
   violations: LintViolation[],
   config: Config,
   operation: LintOperation,
@@ -42,10 +44,16 @@ const createRuleUtilsCreator = (
     ruleSet: RuleSet,
     ruleModule: RuleModule,
   ): RuleUtils => ({
+    get(pointer: string): Maybe<ProcessedContentsValue> {
+      return get(pointer, file.contents)
+    },
+    parent(pointer: string): Maybe<ProcessedContentsValue> {
+      return parent(pointer, file.contents)
+    },
     report(items: ReportItem | ReportItem[]): void {
       report(items, config, violations, ruleSet, ruleModule)
     },
-    walk: createWalker(cache, operation),
+    iterateCache: createCacheIterator(cache, operation),
     getImageMetadata: (ref: string): Promise<ImageMetadata> => {
       return memoizedGetImageMetaData(ref, file.filepath || '')
     },
