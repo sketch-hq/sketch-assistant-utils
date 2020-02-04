@@ -1,12 +1,12 @@
 import humps from 'humps'
 
-import { RuleSet, Config, Constants, RuleSetDropzone } from './types'
+import { RuleSet, LintConfig, Constants, RuleSetDropzone } from './types'
 
 /**
  * Return the set of ruleset names in use by a given config. A ruleset is deemed
  * to be in use when one or more of its rules are configured.
  */
-const getActiveRuleSetsForConfig = (config: Config): string[] => {
+const getActiveRuleSetsForConfig = (config: LintConfig): string[] => {
   const ruleSetNames = Object.keys(config.sketchLint.rules).map(key => {
     if (key.includes('/')) {
       const parts = key.split('/')
@@ -44,7 +44,7 @@ class RuleSetNotFoundError extends Error {
  * error is thrown.
  */
 const resolveRuleSets = (
-  config: Config,
+  config: LintConfig,
   dropzone: RuleSetDropzone,
   coreRuleSet: RuleSet,
 ): RuleSet[] => {

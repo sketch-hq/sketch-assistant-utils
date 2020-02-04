@@ -5,7 +5,7 @@ import {
   LintViolation,
   ReportItem,
   RuleUtils,
-  Config,
+  LintConfig,
   LintOperation,
   ImageMetadata,
   RuleUtilsCreator,
@@ -13,11 +13,12 @@ import {
   GetImageMetadata,
   SketchFile,
   RuleSet,
-  ConfigItemOption,
+  RuleOption,
   Maybe,
   PointerValue,
   NodeArray,
   Node,
+  ParentIterator,
 } from './types'
 import { createCacheIterator } from './create-cache-iterator'
 import { report } from './report'
@@ -37,19 +38,14 @@ import FileFormat from '@sketch-hq/sketch-file-format-ts'
 const createRuleUtilsCreator = (
   cache: NodeCache,
   violations: LintViolation[],
-  config: Config,
+  config: LintConfig,
   operation: LintOperation,
   file: SketchFile,
   getImageMetadata: GetImageMetadata,
 ): RuleUtilsCreator => {
   const memoizedGetImageMetaData = mem(getImageMetadata)
 
-  const iterateParents = (
-    node: Node | NodeArray,
-    callback: (
-      target: Node | NodeArray | Node<FileFormat.Contents['document']>,
-    ) => void,
-  ): void => {
+  const iterateParents: ParentIterator = (node, callback) => {
     let parent = pointers.parent(node.$pointer, file.contents)
     while (parent) {
       callback(
@@ -74,14 +70,14 @@ const createRuleUtilsCreator = (
       return pointers.parent(pointer, file.contents)
     },
     report(items: ReportItem | ReportItem[]): void {
-      report(items, config, violations, ruleSet, ruleModule)
+      report(items, config, violations, ruleSet, ruleModule, iterateParents)
     },
     iterateCache: createCacheIterator(cache, operation),
     getImageMetadata: (ref: string): Promise<ImageMetadata> => {
       return memoizedGetImageMetaData(ref, file.filepath || '')
     },
     iterateParents,
-    getOption: (optionKey: string): Maybe<ConfigItemOption> => {
+    getOption: (optionKey: string): Maybe<RuleOption> => {
       const result = isRuleConfigValid(config, ruleSet, ruleModule)
       if (result !== true) {
         // Convert Ajv validation errors into a human readable string

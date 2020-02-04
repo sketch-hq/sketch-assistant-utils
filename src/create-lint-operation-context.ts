@@ -1,7 +1,7 @@
 import {
   LintOperationContext,
   LintViolation,
-  Config,
+  LintConfig,
   LintOperation,
   GetImageMetadata,
   SketchFile,
@@ -15,7 +15,7 @@ import { processFileContents } from './process-file-contents'
  */
 const createLintOperationContext = (
   file: SketchFile,
-  config: Config,
+  config: LintConfig,
   violations: LintViolation[],
   operation: LintOperation,
   getImageMetadata: GetImageMetadata,

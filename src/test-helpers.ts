@@ -6,14 +6,20 @@ import {
   RuleSet,
   Node,
   LintViolation,
-  Config,
+  LintConfig,
   RuleOptionsCreator,
   ViolationSeverity,
+  RuleUtils,
+  SketchFile,
+  NodeCache,
 } from './types'
 import { fromFile } from './from-file'
 import { createLintOperationContext } from './create-lint-operation-context'
 import { getImageMetadata } from './get-image-metadata.node'
 import { createRuleInvocationContext } from './create-rule-invocation-context'
+import { createCache } from './create-cache'
+import { processFileContents } from './process-file-contents'
+import { createRuleUtilsCreator } from './create-rule-utils-creator'
 
 const createDummyRuleModule = ({
   title,
@@ -63,10 +69,10 @@ const createDummyConfig = ({
   name?: string
   title?: string
   description?: string
-  dependencies?: Config['dependencies']
-  rules?: Config['sketchLint']['rules']
+  dependencies?: LintConfig['dependencies']
+  rules?: LintConfig['sketchLint']['rules']
   defaultSeverity?: ViolationSeverity
-} = {}): Config => ({
+} = {}): LintConfig => ({
   name: name || '',
   title: title || '',
   description: description || '',
@@ -89,7 +95,7 @@ const createDummyRectNode = (): Node<FileFormat.Rect> => ({
 
 const invokeRule = async (
   filepath: string,
-  config: Config,
+  config: LintConfig,
   ruleSet: RuleSet,
   ruleModule: RuleModule,
 ): Promise<LintViolation[]> => {
@@ -112,10 +118,50 @@ const invokeRule = async (
   return violations
 }
 
+const createDummyRuleUtils = async (
+  violations: LintViolation[],
+  filepath: string,
+  _config?: LintConfig,
+  _cache?: NodeCache,
+  _ruleModule?: RuleModule,
+  _ruleSet?: RuleSet,
+): Promise<RuleUtils> => {
+  const operation = { cancelled: false }
+  const cache = _cache || createCache()
+  const file: SketchFile = await fromFile(filepath)
+
+  processFileContents(file.contents, cache, operation)
+
+  const createUtils = createRuleUtilsCreator(
+    cache,
+    violations,
+    _config || createDummyConfig(),
+    operation,
+    file,
+    getImageMetadata,
+  )
+
+  const ruleModule =
+    _ruleModule ||
+    createDummyRuleModule({
+      name: 'rule',
+    })
+
+  const ruleSet =
+    _ruleSet ||
+    createDummyRuleSet({
+      name: 'ruleset',
+      rules: [ruleModule],
+    })
+
+  return createUtils(ruleSet, ruleModule)
+}
+
 export {
   createDummyRuleModule,
   createDummyRuleSet,
   createDummyRectNode,
   invokeRule,
   createDummyConfig,
+  createDummyRuleUtils,
 }

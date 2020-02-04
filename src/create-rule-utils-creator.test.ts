@@ -3,175 +3,180 @@ import {
   createDummyRuleSet,
   createDummyRuleModule,
   createDummyConfig,
+  createDummyRuleUtils,
+  createDummyRectNode,
 } from './test-helpers'
 import { createCache } from './create-cache'
-import { processFileContents } from './process-file-contents'
-import { createRuleUtilsCreator } from './create-rule-utils-creator'
-import { SketchFile } from './types'
-import { fromFile } from './from-file'
-import { getImageMetadata } from './get-image-metadata.node'
+import { LintViolation } from './types'
 
-test('getOption', async (): Promise<void> => {
-  expect.assertions(3)
+test('Can get a rule option', async (): Promise<void> => {
+  expect.assertions(1)
 
-  const operation = { cancelled: false }
-  const cache = createCache()
-  const file: SketchFile = await fromFile(
-    resolve(__dirname, '../fixtures/empty.sketch'),
-  )
-  processFileContents(file.contents, cache, operation)
+  const ruleModule = createDummyRuleModule({
+    name: 'rule',
+    getOptions: helpers => [
+      helpers.stringOption({
+        name: 'customOption',
+        title: '',
+        description: '',
+      }),
+    ],
+  })
 
-  const createUtils = createRuleUtilsCreator(
-    cache,
+  const ruleSet = createDummyRuleSet({
+    rules: [ruleModule],
+    name: 'ruleset',
+  })
+
+  const utils = await createDummyRuleUtils(
     [],
+    resolve(__dirname, '../fixtures/empty.sketch'),
     createDummyConfig({
       rules: {
-        'rule-set/rule-1': {
+        'ruleset/rule': {
           active: true,
-          foo: 'foo',
-        },
-        'rule-set/rule-2': {
-          active: true,
-          foo: 'foo', // This is wrong, rule option schema wants an array here
+          customOption: 'foobar',
         },
       },
     }),
-    operation,
-    file,
-    getImageMetadata,
+    undefined,
+    ruleModule,
+    ruleSet,
   )
 
-  const ruleModule1 = createDummyRuleModule({
-    name: 'rule-1',
+  expect(utils.getOption('customOption')).toBe('foobar')
+})
+
+test('Can throw an error accessing missing option', async (): Promise<void> => {
+  expect.assertions(1)
+
+  const ruleModule = createDummyRuleModule({
+    name: 'rule',
     getOptions: helpers => [
       helpers.stringOption({
-        name: 'foo',
+        name: 'customOption',
         title: '',
         description: '',
-      }),
-    ],
-  })
-
-  const ruleModule2 = createDummyRuleModule({
-    name: 'rule-2',
-    getOptions: helpers => [
-      helpers.objectArrayOption({
-        name: 'foo',
-        title: '',
-        description: '',
-        props: [
-          helpers.stringOption({
-            name: 'bar',
-            title: '',
-            description: '',
-          }),
-        ],
       }),
     ],
   })
 
   const ruleSet = createDummyRuleSet({
-    name: 'rule-set',
-    rules: [ruleModule1, ruleModule2],
+    rules: [ruleModule],
+    name: 'ruleset',
   })
 
-  const utils1 = createUtils(ruleSet, ruleModule1)
-  const utils2 = createUtils(ruleSet, ruleModule2)
+  const utils = await createDummyRuleUtils(
+    [],
+    resolve(__dirname, '../fixtures/empty.sketch'),
+    createDummyConfig({
+      rules: {
+        'ruleset/rule': {
+          active: true,
+          customOption: 'foobar',
+        },
+      },
+    }),
+    undefined,
+    ruleModule,
+    ruleSet,
+  )
 
-  // Getting an existing option works
-  expect(utils1.getOption('foo')).toMatchInlineSnapshot(`"foo"`)
-
-  // Getting a non-existant option throws an error
   try {
-    utils1.getOption('bar')
+    utils.getOption('missing')
   } catch (err) {
     expect(err).toMatchInlineSnapshot(
-      `[Error: Option "bar" for rule "rule-set/rule-1" not found in config]`,
-    )
-  }
-
-  // Trying to access an option from a malformed config throws an error
-  try {
-    utils2.getOption('foo')
-  } catch (err) {
-    expect(err).toMatchInlineSnapshot(
-      `[Error: Rule "rule-set/rule-2" attempted to access an invalid config object. ".foo" should be array]`,
+      `[Error: Option "missing" for rule "ruleset/rule" not found in config]`,
     )
   }
 })
 
-test('pointers', async (): Promise<void> => {
-  expect.assertions(2)
-
-  const operation = { cancelled: false }
-  const cache = createCache()
-  const file: SketchFile = await fromFile(
-    resolve(__dirname, '../fixtures/empty.sketch'),
-  )
-  processFileContents(file.contents, cache, operation)
-
-  const createUtils = createRuleUtilsCreator(
-    cache,
-    [],
-    createDummyConfig(),
-    operation,
-    file,
-    getImageMetadata,
-  )
+test('Can throw an error when config does not match rule option schema', async (): Promise<
+  void
+> => {
+  expect.assertions(1)
 
   const ruleModule = createDummyRuleModule({
     name: 'rule',
+    getOptions: helpers => [
+      helpers.stringOption({
+        name: 'customOption',
+        title: '',
+        description: '',
+      }),
+    ],
   })
 
   const ruleSet = createDummyRuleSet({
-    name: 'ruleset',
     rules: [ruleModule],
+    name: 'ruleset',
   })
 
-  const utils = createUtils(ruleSet, ruleModule)
+  const utils = await createDummyRuleUtils(
+    [],
+    resolve(__dirname, '../fixtures/empty.sketch'),
+    createDummyConfig({
+      rules: {
+        'ruleset/rule': {
+          active: true,
+          customOption: 1, // should be a string
+        },
+      },
+    }),
+    undefined,
+    ruleModule,
+    ruleSet,
+  )
 
-  // Can get a value in the file contents by pointer string
+  try {
+    utils.getOption('customOption')
+  } catch (err) {
+    expect(err).toMatchInlineSnapshot(
+      `[Error: Rule "ruleset/rule" attempted to access an invalid config object. ".customOption" should be string]`,
+    )
+  }
+})
+
+test('Can get nodes by pointer value', async (): Promise<void> => {
+  expect.assertions(1)
+
+  const utils = await createDummyRuleUtils(
+    [],
+    resolve(__dirname, '../fixtures/empty.sketch'),
+  )
+
   const page = utils.get('/document/pages/0')
   if (page && typeof page === 'object' && '_class' in page) {
     expect(page._class).toBe('page')
-
-    // Can get the parent value for a pointer string
-    const pageParent = utils.parent(page.$pointer)
-    if (Array.isArray(pageParent)) {
-      expect(pageParent).toHaveLength(1)
-    }
   }
 })
 
-test('iterateParents', async (): Promise<void> => {
+test('Can get parent nodes by pointer value', async (): Promise<void> => {
   expect.assertions(1)
 
-  const operation = { cancelled: false }
-  const cache = createCache()
-  const file: SketchFile = await fromFile(
-    resolve(__dirname, '../fixtures/layer-names.sketch'),
-  )
-  processFileContents(file.contents, cache, operation)
-
-  const createUtils = createRuleUtilsCreator(
-    cache,
+  const utils = await createDummyRuleUtils(
     [],
-    createDummyConfig(),
-    operation,
-    file,
-    getImageMetadata,
+    resolve(__dirname, '../fixtures/empty.sketch'),
   )
 
-  const ruleModule = createDummyRuleModule({
-    name: 'rule',
-  })
+  const page = utils.get('/document/pages/0')
+  if (page && typeof page === 'object' && '_class' in page) {
+    const pageParent = utils.parent(page.$pointer)
+    expect(pageParent).toHaveLength(1)
+  }
+})
 
-  const ruleSet = createDummyRuleSet({
-    name: 'ruleset',
-    rules: [ruleModule],
-  })
+test('Can iterate parents', async (): Promise<void> => {
+  expect.assertions(1)
 
-  const utils = createUtils(ruleSet, ruleModule)
+  const cache = createCache()
+
+  const utils = await createDummyRuleUtils(
+    [],
+    resolve(__dirname, '../fixtures/deep-tree.sketch'),
+    undefined,
+    cache,
+  )
 
   const rect = cache.rectangle && cache.rectangle[0]
   const parents: string[] = []
@@ -195,4 +200,78 @@ test('iterateParents', async (): Promise<void> => {
       "",
     ]
   `)
+})
+
+test('Adds reports to violations', async (): Promise<void> => {
+  expect.assertions(1)
+  const violations: LintViolation[] = []
+
+  const utils = await createDummyRuleUtils(
+    violations,
+    resolve(__dirname, '../fixtures/empty.sketch'),
+  )
+
+  utils.report({
+    node: createDummyRectNode(),
+    message: 'Violation encounterd',
+  })
+
+  expect(violations.map(violation => violation.message)).toMatchInlineSnapshot(`
+    Array [
+      "Violation encounterd",
+    ]
+  `)
+})
+
+test('Does not add reports for ignored classes', async (): Promise<void> => {
+  expect.assertions(1)
+  const violations: LintViolation[] = []
+
+  const utils = await createDummyRuleUtils(
+    violations,
+    resolve(__dirname, '../fixtures/empty.sketch'),
+    createDummyConfig({
+      rules: {
+        'ruleset/rule': {
+          active: true,
+          ignoreClasses: ['rect'],
+        },
+      },
+    }),
+  )
+
+  utils.report({
+    node: createDummyRectNode(),
+    message: 'Violation encounterd',
+  })
+
+  expect(violations).toHaveLength(0)
+})
+
+test('Does not add reports for ignored name paths', async (): Promise<void> => {
+  expect.assertions(1)
+  const violations: LintViolation[] = []
+  const cache = createCache()
+  const utils = await createDummyRuleUtils(
+    violations,
+    resolve(__dirname, '../fixtures/name-paths.sketch'),
+    createDummyConfig({
+      rules: {
+        'ruleset/rule': {
+          active: true,
+          ignoreNames: ['UI/Widgets'],
+        },
+      },
+    }),
+    cache,
+  )
+
+  if (cache.symbolInstance) {
+    utils.report({
+      node: cache.symbolInstance[0],
+      message: 'Violation encounterd',
+    })
+  }
+
+  expect(violations).toHaveLength(0)
 })

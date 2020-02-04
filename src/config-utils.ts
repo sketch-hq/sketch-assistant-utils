@@ -1,10 +1,10 @@
 import Ajv, { ErrorObject as AjvError } from 'ajv'
 
 import {
-  Config,
+  LintConfig,
   RuleSet,
   Maybe,
-  ConfigItem,
+  RuleConfig,
   RuleModule,
   ViolationSeverity,
   Constants,
@@ -24,10 +24,10 @@ const getRuleConfigKey = (ruleSet: RuleSet, ruleModule: RuleModule): string =>
  * dealing with the core ruleSet then allow bare rule names to be used as key.
  */
 const getRuleConfig = (
-  config: Config,
+  config: LintConfig,
   ruleSet: RuleSet,
   ruleModule: RuleModule,
-): Maybe<ConfigItem> => {
+): Maybe<RuleConfig> => {
   const rulesConfig = config.sketchLint.rules
   const compositeKey = getRuleConfigKey(ruleSet, ruleModule)
   const simpleKey = ruleModule.name
@@ -42,7 +42,7 @@ const getRuleConfig = (
  * Determine is a rule has been mentioned in a given config.
  */
 const isRuleConfigured = (
-  config: Config,
+  config: LintConfig,
   ruleSet: RuleSet,
   ruleModule: RuleModule,
 ): boolean => {
@@ -54,11 +54,11 @@ const isRuleConfigured = (
  * Get the value of a specific rule option.
  */
 const getRuleOption = (
-  config: Config,
+  config: LintConfig,
   ruleSet: RuleSet,
   ruleModule: RuleModule,
   optionKey: string,
-): ConfigItem[keyof ConfigItem] => {
+): RuleConfig[keyof RuleConfig] => {
   const item = getRuleConfig(config, ruleSet, ruleModule)
   return item ? (optionKey in item ? item[optionKey] : null) : null
 }
@@ -68,7 +68,7 @@ const getRuleOption = (
  * on the rule module.
  */
 const isRuleConfigValid = (
-  config: Config,
+  config: LintConfig,
   ruleSet: RuleSet,
   ruleModule: RuleModule,
 ): true | AjvError[] => {
@@ -88,7 +88,7 @@ const isRuleConfigValid = (
  * config and have its `active` option set to `true`.
  */
 const isRuleActive = (
-  config: Config,
+  config: LintConfig,
   ruleSet: RuleSet,
   ruleModule: RuleModule,
 ): boolean => {
@@ -100,7 +100,7 @@ const isRuleActive = (
  * Determine a rule's severity, falling back to default values if not specified.
  */
 const getRuleSeverity = (
-  config: Config,
+  config: LintConfig,
   ruleSet: RuleSet,
   ruleModule: RuleModule,
 ): ViolationSeverity => {
@@ -116,10 +116,48 @@ const getRuleSeverity = (
 }
 
 /**
+ * Determine a rule's ignore classes.
+ */
+const getRuleIgnoreClasses = (
+  config: LintConfig,
+  ruleSet: RuleSet,
+  ruleModule: RuleModule,
+): string[] => {
+  const rawValues = getRuleOption(config, ruleSet, ruleModule, 'ignoreClasses')
+  if (!Array.isArray(rawValues)) return []
+  const sanitizedValues: string[] = []
+  for (const value of rawValues) {
+    if (typeof value === 'string') {
+      sanitizedValues.push(value)
+    }
+  }
+  return sanitizedValues
+}
+
+/**
+ * Determine a rule's ignore names.
+ */
+const getRuleIgnoreNames = (
+  config: LintConfig,
+  ruleSet: RuleSet,
+  ruleModule: RuleModule,
+): RegExp[] => {
+  const rawValues = getRuleOption(config, ruleSet, ruleModule, 'ignoreNames')
+  if (!Array.isArray(rawValues)) return []
+  const sanitizedValues: string[] = []
+  for (const value of rawValues) {
+    if (typeof value === 'string') {
+      sanitizedValues.push(value)
+    }
+  }
+  return sanitizedValues.map(value => new RegExp(value))
+}
+
+/**
  * An active ruleset is defined as a ruleset that has at least one
  * active rule.
  */
-const isRuleSetActive = (config: Config, ruleSet: RuleSet): boolean =>
+const isRuleSetActive = (config: LintConfig, ruleSet: RuleSet): boolean =>
   ruleSet.rules.filter(ruleModule =>
     isRuleConfigured(config, ruleSet, ruleModule),
   ).length > 0
@@ -133,4 +171,6 @@ export {
   getRuleSeverity,
   isRuleSetActive,
   isRuleConfigValid,
+  getRuleIgnoreClasses,
+  getRuleIgnoreNames,
 }

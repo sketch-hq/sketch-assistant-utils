@@ -83,22 +83,24 @@ export type PackageJSON = {
   }
 }
 
-export type Config = PackageJSON & {
+export type LintConfig = PackageJSON & {
   sketchLint: {
     defaultSeverity?: ViolationSeverity
     rules: {
-      [key: string]: Maybe<ConfigItem>
+      [key: string]: Maybe<RuleConfig>
     }
   }
 }
 
-export type ConfigItem = {
+export type RuleConfig = {
   active: boolean
   severity?: ViolationSeverity
-  [key: string]: Maybe<ConfigItemOption>
+  ignoreClasses?: string[]
+  ignoreNames?: string[]
+  [key: string]: Maybe<RuleOption>
 }
 
-export type ConfigItemOption =
+export type RuleOption =
   | string
   | number
   | boolean
@@ -117,7 +119,7 @@ export type LintOperationContext = {
   file: SketchFile
   cache: NodeCache
   createUtils: RuleUtilsCreator
-  config: Config
+  config: LintConfig
   operation: LintOperation
   getImageMetadata: GetImageMetadata
 }
@@ -148,16 +150,18 @@ export type RuleUtilsCreator = (
   ruleModule: RuleModule,
 ) => RuleUtils
 
+export type ParentIterator = (
+  node: Node | NodeArray,
+  callback: (
+    target: Node | NodeArray | Node<FileFormat.Contents['document']>,
+  ) => void,
+) => void
+
 export type RuleUtils = {
   report: (report: ReportItem | ReportItem[]) => void
   iterateCache: (config: NodeCacheIteratorConfig) => Promise<void>
-  iterateParents: (
-    node: Node | NodeArray,
-    callback: (
-      target: Node | NodeArray | Node<FileFormat.Contents['document']>,
-    ) => void,
-  ) => void
-  getOption: (option: string) => Maybe<ConfigItemOption>
+  iterateParents: ParentIterator
+  getOption: (option: string) => Maybe<RuleOption>
   getImageMetadata: (ref: string) => Promise<ImageMetadata>
   nodeToObject: <T extends FileFormat.AnyObject>(node: Node) => T
   objectHash: (o: {}, excludeKeys?: string[]) => string
