@@ -28,13 +28,14 @@ test('Short-circuits when passed a cancelled op', async (): Promise<void> => {
 })
 
 test('Augments objects with valid JSON Pointers', async (): Promise<void> => {
-  expect.assertions(1)
+  expect.assertions(2)
   const filepath = resolve(__dirname, '../fixtures/empty.sketch')
   const file = await fromFile(filepath)
   const cache = createCache()
   processFileContents(file.contents, cache, { cancelled: false })
   if (cache['page'] && cache['page'][0]._class === 'page') {
     const page = cache['page'][0]
+    expect(page.$pointer).toMatchInlineSnapshot(`"/document/pages/0"`)
     expect(page).toBe(get(page.$pointer, file.contents))
   }
 })

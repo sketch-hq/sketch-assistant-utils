@@ -32,7 +32,7 @@ test('Maps a single report to violations', (): void => {
       Object {
         "message": "Foo",
         "objectId": undefined,
-        "pointer": "/",
+        "pointer": "/document/pages/0/layers/0",
         "ruleModule": Object {
           "description": "",
           "name": "rule-1",
@@ -73,7 +73,7 @@ test('Maps multiple violations', (): void => {
       Object {
         "message": "Foo",
         "objectId": undefined,
-        "pointer": "/",
+        "pointer": "/document/pages/0/layers/0",
         "ruleModule": Object {
           "description": "",
           "name": "rule-1",
@@ -89,7 +89,7 @@ test('Maps multiple violations', (): void => {
       Object {
         "message": "Bar",
         "objectId": undefined,
-        "pointer": "/",
+        "pointer": "/document/pages/0/layers/0",
         "ruleModule": Object {
           "description": "",
           "name": "rule-1",

@@ -34,6 +34,21 @@ export type Node<T = FileFormat.AnyObject> = T & {
   $pointer: string
 }
 
+export interface NodeArray extends Array<Node> {
+  $pointer: string
+}
+
+export type PointerValue =
+  | Node
+  | NodeArray
+  | Node<FileFormat.Contents>
+  | Node<FileFormat.Contents['document']>
+  | Node<FileFormat.Contents['meta']>
+  | Node<FileFormat.Contents['user']>
+  | string
+  | number
+  | boolean
+
 export type NodeCacheVisitor =
   | ((data: Node) => Promise<void>)
   | ((data: Node) => void)
@@ -50,17 +65,6 @@ export type NodeCache = {
   $layers: Node[]
   $groups: Node[]
 } & { [key in SketchClass]?: Node[] }
-
-export type ProcessedContentsValue =
-  | Node
-  | Node[]
-  | Node<FileFormat.Contents>
-  | Node<FileFormat.Contents['document']>
-  | Node<FileFormat.Contents['meta']>
-  | Node<FileFormat.Contents['user']>
-  | string
-  | number
-  | boolean
 
 // Lint configurations
 
@@ -147,13 +151,19 @@ export type RuleUtilsCreator = (
 export type RuleUtils = {
   report: (report: ReportItem | ReportItem[]) => void
   iterateCache: (config: NodeCacheIteratorConfig) => Promise<void>
+  iterateParents: (
+    node: Node | NodeArray,
+    callback: (
+      target: Node | NodeArray | Node<FileFormat.Contents['document']>,
+    ) => void,
+  ) => void
   getOption: (option: string) => Maybe<ConfigItemOption>
   getImageMetadata: (ref: string) => Promise<ImageMetadata>
   nodeToObject: <T extends FileFormat.AnyObject>(node: Node) => T
   objectHash: (o: {}, excludeKeys?: string[]) => string
   objectsEqual: (o1: {}, o2: {}) => boolean
-  get: (pointer: string) => Maybe<ProcessedContentsValue>
-  parent: (pointer: string) => Maybe<ProcessedContentsValue>
+  get: (pointer: string) => Maybe<PointerValue>
+  parent: (pointer: string) => Maybe<PointerValue>
 }
 
 // Rulesets and rules

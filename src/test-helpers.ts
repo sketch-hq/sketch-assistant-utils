@@ -84,7 +84,7 @@ const createDummyRectNode = (): Node<FileFormat.Rect> => ({
   width: 10,
   x: 0,
   y: 0,
-  $pointer: '/',
+  $pointer: '/document/pages/0/layers/0',
 })
 
 const invokeRule = async (

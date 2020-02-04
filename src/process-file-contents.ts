@@ -1,5 +1,12 @@
 import FileFormat from '@sketch-hq/sketch-file-format-ts'
-import { NodeCache, LintOperation } from './types'
+import {
+  NodeCache,
+  LintOperation,
+  PointerValue,
+  Maybe,
+  Node,
+  NodeArray,
+} from './types'
 
 /**
  * Recursively prepare Sketch document data in preparation for performing a lint
@@ -10,56 +17,75 @@ import { NodeCache, LintOperation } from './types'
  *      object keys. The pointer values enable objects to indicate their location
  *      in the document structure, even when observed in isolation, for example
  *      in a lint rule.
- *   2. Populating a minimal cache of Sketch document objects keyed by their
+ *   3. Populating a minimal cache of Sketch document objects keyed by their
  *      `_class` prop values, for efficient access and iteration in rule logic.
- *
- * TODO: Can we use ts-ignore less here?
  */
 
-const DO_NOT_CACHE_KEYS = [
+const DO_NOT_PROCESS_KEYS = [
   'foreignLayerStyles',
   'foreignSymbols',
   'foreignTextStyles',
 ]
 
-const processFileContents = (
-  contents: FileFormat.Contents | null,
+const process = (
+  input: Maybe<PointerValue>,
   cache: NodeCache,
   op: LintOperation,
-  pointer = '',
+  pointer: string,
 ): void => {
-  const object = contents as {} | null
-  if (!object || op.cancelled) return
-  if (object.constructor === Array) {
-    for (let index = 0; index < (object as {}[]).length; index++) {
-      // eslint-disable-next-line
-      // @ts-ignore
-      processFileContents(object[index], cache, op, `${pointer}/${index}`)
+  // Bail early if we've been passed a falsey value or the operation is cancelled
+  if (!input || op.cancelled) return
+
+  // Bail early if input is not an object
+  if (typeof input !== 'object') return
+
+  // Inject the current pointer value
+  input.$pointer = pointer
+
+  // Test to see if we've been passed an array and if so process each element
+  // recursively and return
+  if (input.constructor === Array) {
+    const array = input as NodeArray
+    for (let index = 0; index < array.length; index++) {
+      process(array[index], cache, op, `${pointer}/${index}`)
     }
     return
   }
-  if (typeof object === 'object') {
-    // eslint-disable-next-line
-    // @ts-ignore
-    object.$pointer = pointer
-    for (const key in object) {
-      if (key === '_class') {
-        // eslint-disable-next-line
-        // @ts-ignore
-        if (!cache[object._class]) cache[object._class] = []
-        // eslint-disable-next-line
-        // @ts-ignore
-        cache[object._class].push(object)
-        if ('layers' in object) cache.$groups.push(object)
-        if ('frame' in object) cache.$layers.push(object)
-      }
-      if (!DO_NOT_CACHE_KEYS.includes(key)) {
-        // eslint-disable-next-line
-        // @ts-ignore
-        processFileContents(object[key], cache, op, `${pointer}/${key}`)
-      }
+
+  const obj = input as Node
+
+  for (const key in input) {
+    // Bail out of this loop iteration early if the key has been excluded
+    // from processing
+    if (DO_NOT_PROCESS_KEYS.includes(key)) continue
+
+    // If the current object has a `_class` prop it means the object should
+    // be cached in the NodeCache
+    if (key === '_class') {
+      if (!cache[obj._class]) cache[obj._class] = []
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      cache[obj._class]!.push(obj)
+
+      // Use presence of `layers` and `frame` props as heuristics to identify
+      // objects with group and layer traits respectively
+      if ('layers' in obj) cache.$groups.push(obj)
+      if ('frame' in obj) cache.$layers.push(obj)
     }
+
+    // Recurse into the input's sub values
+    process(
+      obj[key as keyof FileFormat.AnyObject],
+      cache,
+      op,
+      `${pointer}/${key}`,
+    )
   }
 }
+
+const processFileContents = (
+  contents: FileFormat.Contents,
+  cache: NodeCache,
+  op: LintOperation,
+): void => process(contents as PointerValue, cache, op, '')
 
 export { processFileContents }

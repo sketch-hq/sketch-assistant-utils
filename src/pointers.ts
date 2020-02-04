@@ -1,11 +1,11 @@
 import FileFormat from '@sketch-hq/sketch-file-format-ts'
 import Ptr from '@json-schema-spec/json-pointer'
-import { Maybe, ProcessedContentsValue } from './types'
+import { Maybe, PointerValue } from './types'
 
 const get = (
   pointer: string,
   instance: FileFormat.Contents,
-): Maybe<ProcessedContentsValue> => {
+): Maybe<PointerValue> => {
   try {
     const ptr = Ptr.parse(pointer)
     return ptr.eval(instance)
@@ -17,7 +17,7 @@ const get = (
 const parent = (
   pointer: string,
   instance: FileFormat.Contents,
-): Maybe<ProcessedContentsValue> => {
+): Maybe<PointerValue> => {
   try {
     const ptr = Ptr.parse(pointer)
     if (ptr.tokens.length === 0) {

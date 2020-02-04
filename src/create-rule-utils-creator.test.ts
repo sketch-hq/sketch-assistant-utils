@@ -142,3 +142,57 @@ test('pointers', async (): Promise<void> => {
     }
   }
 })
+
+test('iterateParents', async (): Promise<void> => {
+  expect.assertions(1)
+
+  const operation = { cancelled: false }
+  const cache = createCache()
+  const file: SketchFile = await fromFile(
+    resolve(__dirname, '../fixtures/layer-names.sketch'),
+  )
+  processFileContents(file.contents, cache, operation)
+
+  const createUtils = createRuleUtilsCreator(
+    cache,
+    [],
+    createDummyConfig(),
+    operation,
+    file,
+    getImageMetadata,
+  )
+
+  const ruleModule = createDummyRuleModule({
+    name: 'rule',
+  })
+
+  const ruleSet = createDummyRuleSet({
+    name: 'ruleset',
+    rules: [ruleModule],
+  })
+
+  const utils = createUtils(ruleSet, ruleModule)
+
+  const rect = cache.rectangle && cache.rectangle[0]
+  const parents: string[] = []
+
+  if (rect) {
+    utils.iterateParents(rect, parent => {
+      parents.push(parent.$pointer)
+    })
+  }
+
+  expect(parents).toMatchInlineSnapshot(`
+    Array [
+      "/document/pages/0/layers/0/layers/0/layers",
+      "/document/pages/0/layers/0/layers/0",
+      "/document/pages/0/layers/0/layers",
+      "/document/pages/0/layers/0",
+      "/document/pages/0/layers",
+      "/document/pages/0",
+      "/document/pages",
+      "/document",
+      "",
+    ]
+  `)
+})

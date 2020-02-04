@@ -51,7 +51,7 @@ test('No errors for working rules', async (): Promise<void> => {
       Object {
         "message": "Foo",
         "objectId": undefined,
-        "pointer": "/",
+        "pointer": "/document/pages/0/layers/0",
         "ruleModule": Object {
           "description": "",
           "name": "working",
