@@ -135,14 +135,19 @@ const getRuleIgnoreClasses = (
 }
 
 /**
- * Determine a rule's ignore names.
+ * Determine a rule's ignore name patterns.
  */
-const getRuleIgnoreNames = (
+const getRuleIgnoreNamePathPatterns = (
   config: LintConfig,
   ruleSet: RuleSet,
   ruleModule: RuleModule,
 ): RegExp[] => {
-  const rawValues = getRuleOption(config, ruleSet, ruleModule, 'ignoreNames')
+  const rawValues = getRuleOption(
+    config,
+    ruleSet,
+    ruleModule,
+    'ignoreNamePathPatterns',
+  )
   if (!Array.isArray(rawValues)) return []
   const sanitizedValues: string[] = []
   for (const value of rawValues) {
@@ -172,5 +177,5 @@ export {
   isRuleSetActive,
   isRuleConfigValid,
   getRuleIgnoreClasses,
-  getRuleIgnoreNames,
+  getRuleIgnoreNamePathPatterns,
 }

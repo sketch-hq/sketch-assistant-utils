@@ -9,7 +9,7 @@ import {
 import {
   getRuleSeverity,
   getRuleIgnoreClasses,
-  getRuleIgnoreNames,
+  getRuleIgnoreNamePathPatterns,
 } from './config-utils'
 
 /**
@@ -26,7 +26,11 @@ const report = (
   if (Array.isArray(report) && report.length === 0) return
   const severity = getRuleSeverity(config, ruleSet, ruleModule)
   const classesToIgnore = getRuleIgnoreClasses(config, ruleSet, ruleModule)
-  const namesToIgnore = getRuleIgnoreNames(config, ruleSet, ruleModule)
+  const namesToIgnore = getRuleIgnoreNamePathPatterns(
+    config,
+    ruleSet,
+    ruleModule,
+  )
   violations.push(
     ...(Array.isArray(report) ? report : [report])
       // Filter out reports involving nodes with ignored `_class` props
@@ -42,7 +46,7 @@ const report = (
             names.unshift(parent.name)
           }
         })
-        const namePath = names.join('/')
+        const namePath = `/${names.join('/')}`
         return !namesToIgnore.map(regex => regex.test(namePath)).includes(true)
       })
       .map(

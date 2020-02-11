@@ -259,7 +259,7 @@ test('Does not add reports for ignored name paths', async (): Promise<void> => {
       rules: {
         'ruleset/rule': {
           active: true,
-          ignoreNames: ['UI/Widgets'],
+          ignoreNamePathPatterns: ['^/Page 1/UI/Widgets/Thing$'],
         },
       },
     }),
