@@ -213,12 +213,12 @@ test('Adds reports to violations', async (): Promise<void> => {
 
   utils.report({
     node: createDummyRectNode(),
-    message: 'Violation encounterd',
+    message: 'Violation encountered',
   })
 
   expect(violations.map(violation => violation.message)).toMatchInlineSnapshot(`
     Array [
-      "Violation encounterd",
+      "Violation encountered",
     ]
   `)
 })
@@ -242,7 +242,7 @@ test('Does not add reports for ignored classes', async (): Promise<void> => {
 
   utils.report({
     node: createDummyRectNode(),
-    message: 'Violation encounterd',
+    message: 'Violation encountered',
   })
 
   expect(violations).toHaveLength(0)
@@ -269,9 +269,35 @@ test('Does not add reports for ignored name paths', async (): Promise<void> => {
   if (cache.symbolInstance) {
     utils.report({
       node: cache.symbolInstance[0],
-      message: 'Violation encounterd',
+      message: 'Violation encountered',
     })
   }
 
   expect(violations).toHaveLength(0)
+})
+
+test('Handles reports for report items without a node', async (): Promise<
+  void
+> => {
+  expect.assertions(1)
+  const violations: LintViolation[] = []
+  const cache = createCache()
+  const utils = await createDummyRuleUtils(
+    violations,
+    resolve(__dirname, '../fixtures/name-paths.sketch'),
+    createDummyConfig({
+      rules: {
+        'ruleset/rule': {
+          active: true,
+        },
+      },
+    }),
+    cache,
+  )
+
+  utils.report({
+    message: 'Violation encountered',
+  })
+
+  expect(violations).toHaveLength(1)
 })

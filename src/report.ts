@@ -35,7 +35,7 @@ const report = (
     ...(Array.isArray(report) ? report : [report])
       // Filter out reports involving nodes with ignored `_class` props
       .filter(item => {
-        return item.node ? !classesToIgnore.includes(item.node._class) : false
+        return item.node ? !classesToIgnore.includes(item.node._class) : true
       })
       // Filter out nodes with ignored name paths
       .filter(item => {
