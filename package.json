@@ -1,64 +1,61 @@
 {
-  "name": "@sketch-hq/sketch-lint-core",
-  "version": "1.0.0-alpha.15",
+  "name": "@sketch-hq/sketch-assistant-utils",
+  "version": "0.1.0",
+  "private": true,
   "module": "dist/esm/index",
   "main": "dist/cjs/index",
   "types": "dist/cjs/index",
   "sideEffects": false,
   "license": "MIT",
-  "repository": "github:sketch-hq/sketch-lint-core",
+  "repository": "github:sketch-hq/sketch-assistant-utils",
   "keywords": [
     "sketch",
     "sketch files",
-    "linting",
-    "lint",
-    "design linting"
+    "sketch assistants",
+    "assistants",
+    "design ops"
   ],
   "scripts": {
     "build": "rm -rf ./dist && yarn build:esm && yarn build:cjs",
-    "build:esm": "tsc --module es2015 --outDir dist/esm",
-    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "package-tarball": "yarn build && yarn pack --filename=sketch-lint-core-$(node -p -e \"require('./package.json').version\").tgz",
+    "build:esm": "tsc --project tsconfig.pkg.json --module es2015 --outDir dist/esm",
+    "build:cjs": "tsc --project tsconfig.pkg.json --module commonjs --outDir dist/cjs",
+    "package-tarball": "yarn build && yarn pack --filename=sketch-assistant-utils-$(node -p -e \"require('./package.json').version\").tgz",
     "test": "jest",
     "lint": "eslint --ext .ts src",
-    "format-check": "prettier --check **/*.{ts,md,json}",
-    "commitlint": "commitlint --from HEAD~1 --to HEAD --verbose",
-    "release": "HUSKY_SKIP_HOOKS=1 standard-version --no-verify",
-    "prepublishOnly": "yarn build"
+    "format-check": "prettier --check {*.js,*.json,*.md,src/{**/,*.ts}}",
+    "release": "yarn build && changeset publish"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "@json-schema-spec/json-pointer": "0.1.2",
-    "@sketch-hq/sketch-file-format-ts": "4.0.1",
-    "ajv": "6.10.2",
+    "@sketch-hq/sketch-file-format-ts": "4.0.2",
+    "ajv": "6.12.0",
     "humps": "2.0.1",
-    "mem": "6.0.0",
-    "node-stream-zip": "1.8.2",
-    "object-hash": "2.0.1",
+    "mem": "6.0.1",
+    "node-stream-zip": "1.9.1",
+    "object-hash": "2.0.3",
     "p-map": "3.0.0",
     "probe-image-size": "5.0.0"
   },
   "devDependencies": {
-    "@types/humps": "1.1.2",
-    "@types/jest": "24.0.22",
-    "@types/node": "12.12.7",
-    "@types/object-hash": "1.3.0",
-    "@typescript-eslint/eslint-plugin": "2.6.1",
-    "@typescript-eslint/parser": "2.6.1",
-    "eslint": "6.6.0",
-    "eslint-config-prettier": "6.5.0",
-    "eslint-plugin-import": "2.18.2",
-    "jest": "24.9.0",
+    "@changesets/cli": "2.5.2",
+    "@commitlint/cli": "8.3.5",
+    "@commitlint/config-conventional": "8.3.4",
+    "@commitlint/prompt-cli": "8.3.5",
+    "@types/humps": "1.1.3",
+    "@types/jest": "25.1.3",
+    "@types/node": "13.7.6",
+    "@types/object-hash": "1.3.1",
+    "@typescript-eslint/eslint-plugin": "2.21.0",
+    "@typescript-eslint/parser": "2.21.0",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.10.0",
+    "eslint-plugin-import": "2.20.1",
+    "jest": "25.1.0",
     "prettier": "1.19.1",
-    "standard-version": "7.0.0",
-    "ts-jest": "24.1.0",
-    "typescript": "3.7.2"
-  },
-  "standard-version": {
-    "scripts": {
-      "prerelease": "yarn build && yarn lint && yarn test && yarn format-check"
-    }
+    "ts-jest": "25.2.1",
+    "typescript": "3.8.2"
   }
 }

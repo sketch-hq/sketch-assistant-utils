@@ -5,6 +5,5 @@
   "typescript.validate.enable": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.formatOnSave": true,
-  "eslint.enable": true,
-  "eslint.validate": ["typescript"]
+  "eslint.enable": true
 }

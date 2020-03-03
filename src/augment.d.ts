@@ -8,32 +8,20 @@ declare module 'node-stream-zip' {
 
     public entryDataSync(name: string): string
 
-    public stream(
-      ref: string,
-      handler: (error: string, stream: NodeJS.ReadStream) => void,
-    ): void
+    public stream(ref: string, handler: (error: string, stream: NodeJS.ReadStream) => void): void
 
     public close(): void
   }
 }
 
 declare module 'probe-image-size' {
-  type ProbeImageSize = (
-    input: NodeJS.ReadStream,
-  ) => Promise<{ width: number; height: number }>
+  type ProbeImageSize = (input: NodeJS.ReadStream) => Promise<{ width: number; height: number }>
   const probeImageSize: ProbeImageSize
   export default probeImageSize
 }
 
 declare module 'json-ptr' {
-  type Pojo =
-    | string
-    | number
-    | boolean
-    | null
-    | Pojo[]
-    | undefined
-    | { [property: string]: Pojo }
+  type Pojo = string | number | boolean | null | Pojo[] | undefined | { [property: string]: Pojo }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export function get(data: any, pointer: string): Pojo | undefined
 }

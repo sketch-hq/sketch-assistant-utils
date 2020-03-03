@@ -27,6 +27,9 @@
       }
     ],
     "import/no-cycle": 2,
-    "import/default": "off"
+    "import/default": "off",
+    "require-await": "off",
+    "@typescript-eslint/require-await": "off",
+    "@typescript-eslint/no-empty-function": "off"
   }
 }

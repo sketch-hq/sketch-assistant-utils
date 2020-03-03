@@ -1,19 +1,13 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "declarationMap": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "sourceMap": true,
     "strict": true,
-    "target": "es6",
-    "removeComments": true,
     "rootDir": "./src",
-    "resolveJsonModule": true
+    "lib": ["ES2019"]
   },
-  "include": ["./src"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["./src"]
 }
