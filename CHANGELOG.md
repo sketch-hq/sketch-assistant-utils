@@ -1,5 +1,11 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 2.0.2
+
+### Patch Changes
+
+- ccbcfed: include json schema types dep
+
 ## 2.0.1
 
 ### Patch Changes
