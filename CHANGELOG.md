@@ -1,5 +1,11 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 2.0.1
+
+### Patch Changes
+
+- 504d095: add missing json-schema dependency
+
 ## 2.0.0
 
 ### Major Changes
