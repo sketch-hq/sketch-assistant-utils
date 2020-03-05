@@ -124,19 +124,6 @@ export type ProcessedSketchFile = {
 //
 
 /**
- * Contains all the values necessary to invoke a concrete assistant definition
- * against a Sketch file.
- */
-export type RunContext = {
-  file: ProcessedSketchFile
-  createUtils: RuleUtilsCreator
-  assistant: AssistantDefinition
-  operation: RunOperation
-  getImageMetadata: GetImageMetadata
-  env: AssistantEnv
-}
-
-/**
  * Contains a flag indicating whether the run operation has been cancelled by
  * the outer environment. All long running processes happening during a run
  * (like cache creation, rule invocation etc.) should exit early as soon as a
@@ -149,11 +136,26 @@ export type RunOperation =
   | { cancelled: 1 | 0 }
 
 /**
+ * The result of running an assistant. One or more `violations` implies the assistant's rules found
+ * issues with the Sketch document. One or more `errors` implies that some rules didn't run because
+ * they encountered errors.
+ */
+export type RunResult = {
+  violations: Violation[]
+  errors: Error[]
+}
+
+/**
  * Contains all the values and utils exposed to individual rule functions. The
  * values are scoped to the rule itself, to simplify the API surface.
  */
-export type RuleContext = Omit<RunContext, 'createUtils'> & {
+export type RuleContext = {
   utils: RuleUtils
+  file: ProcessedSketchFile
+  assistant: AssistantDefinition
+  operation: RunOperation
+  getImageMetadata: GetImageMetadata
+  env: AssistantEnv
 }
 
 /**

@@ -23,9 +23,9 @@ import {
 const assign = (...sources: AssistantDefinition[]): AssistantDefinition => {
   return sources.reduceRight((acc, curr) => {
     return {
-      title: acc.title,
-      description: acc.description,
-      name: acc.name,
+      title: acc.title || curr.title || '',
+      description: acc.description || curr.description || '',
+      name: acc.name || curr.name || '',
       config: {
         ...(typeof acc.config.defaultSeverity === 'undefined'
           ? {}

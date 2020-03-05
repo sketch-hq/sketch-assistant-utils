@@ -1,79 +1,97 @@
 import { resolve } from 'path'
 
-import { RunContext, AssistantEnv, Violation, RuleDefinition } from '../../types'
-import { createRunContext, runAssistant } from '..'
+import { AssistantEnv, RuleDefinition, RunResult, AssistantConfig } from '../../types'
+import { runAssistant, RuleInvocationError } from '..'
 import { fromFile } from '../../from-file'
 import { process } from '../../process'
-import { createAssistantDefinition, createRule } from '../../test-helpers'
+import { createAssistantDefinition, createRule, createAssistantConfig } from '../../test-helpers'
 import { getImageMetadata } from '../../get-image-metadata'
 
-const setupTest = async (
-  rule: RuleDefinition = createRule(),
-): Promise<{ context: RunContext; violations: Violation[] }> => {
+const testRunAssistant = async (
+  config: AssistantConfig,
+  rule: RuleDefinition,
+): Promise<RunResult> => {
   const op = { cancelled: false }
   const file = await fromFile(resolve(__dirname, './empty.sketch'))
   const processedFile = await process(file, op)
-  const assistant = createAssistantDefinition({ rules: [rule] })
+  const assistant = createAssistantDefinition({ rules: rule ? [rule] : [], config })
   const env: AssistantEnv = { locale: '', platform: 'node' }
-  const violations: Violation[] = []
-  return {
-    context: createRunContext(processedFile, assistant, env, violations, op, getImageMetadata),
-    violations,
-  }
+  return await runAssistant(processedFile, assistant, env, op, getImageMetadata)
 }
 
 describe('runAssistant', () => {
-  test('does not error or produce violations normally', async (): Promise<void> => {
-    const { context, violations } = await setupTest()
-    await runAssistant(context)
+  test('skips unconfigured rules', async (): Promise<void> => {
+    expect.assertions(2)
+    const { errors, violations } = await testRunAssistant(createAssistantConfig(), createRule())
     expect(violations).toHaveLength(0)
+    expect(errors).toHaveLength(0)
   })
 
   test('can produce violations', async (): Promise<void> => {
-    const { context, violations } = await setupTest(
+    expect.assertions(2)
+    const { errors, violations } = await testRunAssistant(
+      createAssistantConfig({
+        rules: {
+          rule: { active: true },
+        },
+      }),
       createRule({
+        name: 'rule',
         rule: async ruleContext => {
           ruleContext.utils.report({ message: 'Something went wrong' })
         },
       }),
     )
-    await runAssistant(context)
-    expect(violations.map(violation => violation.message)).toMatchInlineSnapshot(`
-      Array [
-        "Something went wrong",
-      ]
-    `)
+    expect(violations).toHaveLength(1)
+    expect(errors).toHaveLength(0)
+  })
+
+  test('skips inactive rules', async (): Promise<void> => {
+    expect.assertions(2)
+    const { errors, violations } = await testRunAssistant(
+      createAssistantConfig({
+        rules: {
+          rule: { active: false },
+        },
+      }),
+      createRule({
+        name: 'rule',
+        rule: async ruleContext => {
+          ruleContext.utils.report({ message: 'Something went wrong' })
+        },
+      }),
+    )
+    expect(violations).toHaveLength(0)
+    expect(errors).toHaveLength(0)
   })
 
   test('can produce rule errors', async (): Promise<void> => {
-    const { context } = await setupTest(
+    expect.assertions(2)
+    const { errors, violations } = await testRunAssistant(
+      createAssistantConfig({ rules: { rule: { active: true } } }),
       createRule({
+        name: 'rule',
         rule: async () => {
           throw new Error('Bang!')
         },
       }),
     )
-    const errors = await runAssistant(context)
-    expect(errors).toMatchInlineSnapshot(`
-      Array [
-        [RuleInvocationError: Error thrown during invocation of rule "dummy-assistant/dummy-rule" on assistant "dummy-assistant": Bang!],
-      ]
-    `)
+    expect(violations).toHaveLength(0)
+    expect(errors[0]).toBeInstanceOf(RuleInvocationError)
   })
 
   test('can produce rule errors for bad config', async (): Promise<void> => {
-    const { context } = await setupTest(
+    expect.assertions(2)
+    const { errors, violations } = await testRunAssistant(
+      createAssistantConfig({ rules: { rule: { active: true } } }),
       createRule({
+        name: 'rule',
         rule: async ruleContext => {
           ruleContext.utils.getOption('warpFieldIntegrity')
         },
       }),
     )
-    const errors = await runAssistant(context)
-    expect(errors).toMatchInlineSnapshot(`
-      Array [
-        [RuleInvocationError: Error thrown during invocation of rule "dummy-assistant/dummy-rule" on assistant "dummy-assistant": Invalid configuration found for rule "dummy-assistant/dummy-rule" on assistant "dummy-assistant": Option "warpFieldIntegrity" not found in assistant configuration],
-      ]
-    `)
+    expect(violations).toHaveLength(0)
+    expect(errors[0]).toBeInstanceOf(RuleInvocationError)
   })
 })

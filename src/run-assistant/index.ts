@@ -1,7 +1,6 @@
 import pMap from 'p-map'
 
 import {
-  RunContext,
   AssistantDefinition,
   RuleContext,
   ProcessedSketchFile,
@@ -9,8 +8,10 @@ import {
   Violation,
   RunOperation,
   GetImageMetadata,
+  RunResult,
 } from '../types'
 import { createRuleUtilsCreator } from '../rule-utils'
+import { isRuleActive } from '../assistant-config'
 
 class RuleInvocationError extends Error {
   public cause: Error
@@ -30,16 +31,17 @@ class RuleInvocationError extends Error {
 }
 
 /**
- * Create a RunContext object.
+ * Run an assistant, catching and returning any errors encountered during rule invocation.
  */
-const createRunContext = (
+const runAssistant = async (
   file: ProcessedSketchFile,
   assistant: AssistantDefinition,
   env: AssistantEnv,
-  violations: Violation[],
   operation: RunOperation,
   getImageMetadata: GetImageMetadata,
-): RunContext => {
+): Promise<RunResult> => {
+  const violations: Violation[] = []
+
   const createUtils = createRuleUtilsCreator(
     file,
     violations,
@@ -48,52 +50,42 @@ const createRunContext = (
     getImageMetadata,
   )
 
-  return {
+  const context = {
+    env,
     file,
-    createUtils,
+    assistant,
     operation,
     getImageMetadata,
-    assistant,
-    env,
   }
-}
 
-/**
- * Create a RuleContext object.
- */
-const createRuleContext = (runContext: RunContext, ruleName: string): RuleContext => {
-  const { createUtils, ...rest } = runContext
-  return {
-    ...rest,
-    utils: createUtils(ruleName),
-  }
-}
-
-/**
- * Run an assistant, catching and returning any errors encountered during rule invocation.
- */
-const runAssistant = async (runContext: RunContext): Promise<Error[]> => {
-  const { assistant } = runContext
   try {
     await pMap(
-      Array(assistant.rules.length).fill(runContext),
-      async (context: RunContext, i: number): Promise<void> => {
-        if (!context.operation.cancelled) {
-          const rule = assistant.rules[i]
-          const { rule: ruleFunction, name: ruleName } = rule
-          try {
-            await ruleFunction(createRuleContext(runContext, ruleName))
-          } catch (error) {
-            throw new RuleInvocationError(error, assistant.name, ruleName)
-          }
+      assistant.rules.filter(rule => isRuleActive(assistant.config, rule.name)),
+      async (rule): Promise<void> => {
+        if (operation.cancelled) return
+        const { rule: ruleFunction, name: ruleName } = rule
+        const ruleContext: RuleContext = {
+          ...context,
+          utils: createUtils(ruleName),
+        }
+        try {
+          await ruleFunction(ruleContext)
+        } catch (error) {
+          throw new RuleInvocationError(error, assistant.name, ruleName)
         }
       },
       { concurrency: 1, stopOnError: false },
     )
   } catch (error) {
-    return Array.from(error)
+    return {
+      violations,
+      errors: Array.from(error),
+    }
   }
-  return []
+  return {
+    violations,
+    errors: [],
+  }
 }
 
-export { runAssistant, createRunContext, createRuleContext }
+export { runAssistant, RuleInvocationError }
