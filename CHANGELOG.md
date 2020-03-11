@@ -1,5 +1,11 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 2.0.3
+
+### Patch Changes
+
+- ba23962: Support Assistants exported as default exports from an ES Module
+
 ## 2.0.2
 
 ### Patch Changes
