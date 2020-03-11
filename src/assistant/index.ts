@@ -5,6 +5,7 @@ import {
   AssistantEnv,
   Maybe,
   RuleDefinition,
+  ESModuleInterop,
 } from '../types'
 
 /**
@@ -54,9 +55,19 @@ const prepare = async (
   source: AssistantPackageExport,
   env: AssistantEnv,
 ): Promise<AssistantDefinition> => {
-  const functions: Assistant[] = Array.isArray(source) ? source.flat(Infinity) : [source]
-  const assistants: AssistantDefinition[] = await Promise.all(functions.map(f => f(env)))
-  return assign(...assistants)
+  const definitions = await Promise.all(
+    (Array.isArray(source) ? source : [source])
+      .flat(Infinity)
+      .map((item: Assistant | ESModuleInterop<Assistant>) => {
+        if ('__esModule' in item) {
+          return item.default
+        } else {
+          return item
+        }
+      })
+      .map(f => f(env)),
+  )
+  return assign(...definitions)
 }
 
 /**

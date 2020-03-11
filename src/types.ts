@@ -282,13 +282,22 @@ export type AssistantEnv = {
 export type Assistant = (env: AssistantEnv) => Promise<AssistantDefinition>
 
 /**
+ * The shape of an ES Module with a default export built with TypeScript or Babel with ES Module
+ * interoperability.
+ */
+export type ESModuleInterop<DefaultExport> = {
+  __esModule: true
+  default: DefaultExport
+}
+
+/**
  * Defines the expected type definition for the export from a 1st or 3rd party assistant package. It
  * allows an assistant to be expressed as either a single assistant or an array of assistants that
  * should be merged before a run operation. Via type recursion arbitrarily nested arrays of
  * assistant functions are supported to allow for incorporation of other assistant packages into
  * the final export.
  */
-export type AssistantPackageExport = ValueOrArray<Assistant>
+export type AssistantPackageExport = ValueOrArray<Assistant | ESModuleInterop<Assistant>>
 
 /**
  * Concrete assistant definition that can be invoked against a Sketch file during a lint run.
