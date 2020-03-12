@@ -138,11 +138,18 @@ export type RunOperation =
 /**
  * The result of running an assistant. One or more `violations` implies the assistant's rules found
  * issues with the Sketch document. One or more `errors` implies that some rules didn't run because
- * they encountered errors.
+ * they encountered errors. Metadata (`title`, `description` etc) relating to the Assistant that
+ * produced the result, and the rules that were invoked is also provided
  */
 export type RunResult = {
   violations: Violation[]
   errors: Error[]
+  metadata: {
+    assistant: Omit<AssistantDefinition, 'rules'>
+    rules: {
+      [ruleName: string]: Omit<RuleDefinition, 'rule' | 'getOptions' | 'name'>
+    }
+  }
 }
 
 /**
@@ -236,8 +243,8 @@ export type ReportItem = {
  */
 export type Violation = {
   message: string
-  assistant: Omit<AssistantDefinition, 'rules' | 'config'>
-  rule: Omit<RuleDefinition, 'rule' | 'getOptions'>
+  assistantName: string
+  ruleName: string
   severity: ViolationSeverity
   pointer: string | null
   objectId: string | null
@@ -257,6 +264,11 @@ export enum ViolationSeverity {
 //
 
 /**
+ * Platforms that can run Assistants.
+ */
+export type Platform = 'sketch' | 'node'
+
+/**
  * Ambient environmental information for assistants, typically provided by an outer assistant runner.
  */
 export type AssistantEnv = {
@@ -270,7 +282,7 @@ export type AssistantEnv = {
   /**
    * Indicates whether the assistant is running in either a Node or Sketch (JavaScriptCore) environment
    */
-  platform: 'sketch' | 'node'
+  platform: Platform
 }
 
 /**
@@ -356,6 +368,10 @@ export type RuleDefinition = {
    * Flags a rule as for internal/development purposes only
    */
   debug?: boolean
+  /**
+   * Indicates rule platform compatibility. For cross-platform rules this property can be omitted.
+   */
+  platform?: Platform
 }
 
 /**

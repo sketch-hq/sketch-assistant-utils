@@ -103,17 +103,8 @@ const addReportsToViolations = (
       .map(
         (item): Violation => {
           return {
-            assistant: {
-              title: assistant.title,
-              name: assistant.name,
-              description: assistant.description,
-            },
-            rule: {
-              title: rule.title,
-              name: rule.name,
-              description: rule.description,
-              debug: rule.debug,
-            },
+            assistantName: assistant.name,
+            ruleName: rule.name,
             message: item.message,
             severity,
             pointer: item.node?.$pointer || null,

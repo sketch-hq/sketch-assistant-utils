@@ -46,6 +46,45 @@ describe('runAssistant', () => {
     expect(errors).toHaveLength(0)
   })
 
+  test('skips rules that dont match the current platform', async (): Promise<void> => {
+    expect.assertions(2)
+    const { errors, violations } = await testRunAssistant(
+      createAssistantConfig({
+        rules: {
+          rule: { active: true },
+        },
+      }),
+      createRule({
+        name: 'rule',
+        platform: 'sketch',
+        rule: async ruleContext => {
+          ruleContext.utils.report({ message: 'Something went wrong' })
+        },
+      }),
+    )
+    expect(violations).toHaveLength(0)
+    expect(errors).toHaveLength(0)
+  })
+
+  test('includes metadata in the result', async (): Promise<void> => {
+    expect.assertions(3)
+    const { errors, metadata } = await testRunAssistant(
+      createAssistantConfig({
+        rules: {
+          rule: { active: true },
+        },
+      }),
+      createRule({ name: 'rule' }),
+    )
+    expect(metadata.assistant.name).toMatchInlineSnapshot(`"dummy-assistant"`)
+    expect(Object.keys(metadata.rules)).toMatchInlineSnapshot(`
+      Array [
+        "rule",
+      ]
+    `)
+    expect(errors).toHaveLength(0)
+  })
+
   test('skips inactive rules', async (): Promise<void> => {
     expect.assertions(2)
     const { errors, violations } = await testRunAssistant(

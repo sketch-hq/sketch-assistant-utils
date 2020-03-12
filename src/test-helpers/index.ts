@@ -11,6 +11,7 @@ import {
   RuleConfigGroup,
   AssistantEnv,
   RunResult,
+  Platform,
 } from '../types'
 import { fromFile } from '../from-file'
 import { process } from '../process'
@@ -28,6 +29,7 @@ const createRule = ({
   getOptions,
   name,
   debug,
+  platform,
 }: {
   title?: string
   description?: string
@@ -35,6 +37,7 @@ const createRule = ({
   name?: string
   getOptions?: RuleOptionsCreator
   debug?: boolean
+  platform?: Platform
 } = {}): RuleDefinition => ({
   name: name ?? 'dummy-assistant/dummy-rule',
   title: title ?? 'Dummy Rule',
@@ -42,6 +45,7 @@ const createRule = ({
   rule: rule || (async (): Promise<void> => {}),
   getOptions,
   debug,
+  platform: platform ?? 'node',
 })
 
 /**
@@ -110,13 +114,12 @@ const createDummyRectNode = (): Node<FileFormat.Rect> => ({
 })
 
 /**
- * Test an individual rule within the context of its assistant. A TestAssistant
- * is created which extends the rule's assistant with some custom configuration
- * which should activate the rule.
+ * Test an individual rule within the context of a specific assistant. The assistant has its config
+ * overwritten by the passed in value to enable testing rules in isolation.
  */
 export const testRule = async (
   filepath: string,
-  configGroup: RuleConfigGroup,
+  ruleConfig: RuleConfigGroup,
   assistant: Assistant,
   env: AssistantEnv = { locale: 'en', platform: 'node' },
 ): Promise<RunResult> => {
@@ -124,18 +127,11 @@ export const testRule = async (
   const op = { cancelled: false }
   const processedFile = await process(file, op)
 
-  const TestAssistant = [
-    assistant,
-    async (): Promise<AssistantDefinition> => ({
-      name: '',
-      description: '',
-      title: '',
-      rules: [],
-      config: { rules: { ...configGroup } },
-    }),
-  ]
+  const assistantDefinition = await prepare(assistant, env)
+  assistantDefinition.config = {
+    rules: ruleConfig,
+  }
 
-  const assistantDefinition = await prepare(TestAssistant, env)
   return await runAssistant(processedFile, assistantDefinition, env, op, getImageMetadata)
 }
 

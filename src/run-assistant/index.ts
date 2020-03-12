@@ -58,9 +58,33 @@ const runAssistant = async (
     getImageMetadata,
   }
 
+  const activeRules = assistant.rules
+    .filter(rule => isRuleActive(assistant.config, rule.name)) // Rule turned on in config
+    .filter(rule => (rule.platform ? rule.platform === env.platform : true)) // Rule platform is supported
+
+  const metadata = {
+    assistant: {
+      title: assistant.title,
+      description: assistant.description,
+      name: assistant.name,
+      config: assistant.config,
+    },
+    rules: activeRules.reduce((acc, curr) => {
+      return {
+        ...acc,
+        [curr.name]: {
+          title: curr.title,
+          description: curr.description,
+          debug: curr.debug,
+          platform: curr.platform,
+        },
+      }
+    }, {}),
+  }
+
   try {
     await pMap(
-      assistant.rules.filter(rule => isRuleActive(assistant.config, rule.name)),
+      activeRules,
       async (rule): Promise<void> => {
         if (operation.cancelled) return
         const { rule: ruleFunction, name: ruleName } = rule
@@ -80,11 +104,13 @@ const runAssistant = async (
     return {
       violations,
       errors: Array.from(error),
+      metadata,
     }
   }
   return {
     violations,
     errors: [],
+    metadata,
   }
 }
 
