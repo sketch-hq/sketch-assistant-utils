@@ -1,5 +1,12 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 3.0.1
+
+### Patch Changes
+
+- 97d2d36: Map rule errors into plain objects with type PlainRuleError
+- 97d2d36: Fix `createRule` test helper to create dummy rules with an undefined platform by default
+
 ## 3.0.0
 
 ### Major Changes
