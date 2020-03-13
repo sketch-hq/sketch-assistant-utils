@@ -45,7 +45,7 @@ const createRule = ({
   rule: rule || (async (): Promise<void> => {}),
   getOptions,
   debug,
-  platform: platform ?? 'node',
+  platform,
 })
 
 /**

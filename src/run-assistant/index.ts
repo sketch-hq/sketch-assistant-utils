@@ -103,7 +103,12 @@ const runAssistant = async (
   } catch (error) {
     return {
       violations,
-      errors: Array.from(error),
+      errors: Array.from<RuleInvocationError>(error).map(error => ({
+        assistantName: error.assistantName,
+        ruleName: error.ruleName,
+        message: error.cause.message,
+        stack: error.cause.stack || '',
+      })),
       metadata,
     }
   }

@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 
 import { AssistantEnv, RuleDefinition, RunResult, AssistantConfig } from '../../types'
-import { runAssistant, RuleInvocationError } from '..'
+import { runAssistant } from '..'
 import { fromFile } from '../../from-file'
 import { process } from '../../process'
 import { createAssistantDefinition, createRule, createAssistantConfig } from '../../test-helpers'
@@ -116,7 +116,7 @@ describe('runAssistant', () => {
       }),
     )
     expect(violations).toHaveLength(0)
-    expect(errors[0]).toBeInstanceOf(RuleInvocationError)
+    expect(errors).toHaveLength(1)
   })
 
   test('can produce rule errors for bad config', async (): Promise<void> => {
@@ -131,6 +131,6 @@ describe('runAssistant', () => {
       }),
     )
     expect(violations).toHaveLength(0)
-    expect(errors[0]).toBeInstanceOf(RuleInvocationError)
+    expect(errors).toHaveLength(1)
   })
 })

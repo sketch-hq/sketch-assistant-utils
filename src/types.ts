@@ -136,6 +136,16 @@ export type RunOperation =
   | { cancelled: 1 | 0 }
 
 /**
+ * JavaScript errors encountered during rule invocation normalised into plain objects.
+ */
+export type PlainRuleError = {
+  assistantName: string
+  ruleName: string
+  message: string
+  stack: string
+}
+
+/**
  * The result of running an assistant. One or more `violations` implies the assistant's rules found
  * issues with the Sketch document. One or more `errors` implies that some rules didn't run because
  * they encountered errors. Metadata (`title`, `description` etc) relating to the Assistant that
@@ -143,7 +153,7 @@ export type RunOperation =
  */
 export type RunResult = {
   violations: Violation[]
-  errors: Error[]
+  errors: PlainRuleError[]
   metadata: {
     assistant: Omit<AssistantDefinition, 'rules'>
     rules: {
