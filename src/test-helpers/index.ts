@@ -15,7 +15,7 @@ import {
 } from '../types'
 import { fromFile } from '../from-file'
 import { process } from '../process'
-import { prepare } from '../assistant'
+import { prepare, getRuleDefinition } from '../assistant'
 import { runAssistant } from '../run-assistant'
 import { getImageMetadata } from '../get-image-metadata'
 
@@ -116,6 +116,8 @@ const createDummyRectNode = (): Node<FileFormat.Rect> => ({
 /**
  * Test an individual rule within the context of a specific assistant. The assistant has its config
  * overwritten by the passed in value to enable testing rules in isolation.
+ *
+ * If the rule referenced in the config isn't available in the Assistant an error is thrown.
  */
 export const testRule = async (
   filepath: string,
@@ -131,6 +133,12 @@ export const testRule = async (
   assistantDefinition.config = {
     rules: ruleConfig,
   }
+
+  Object.keys(ruleConfig).forEach(ruleName => {
+    if (!getRuleDefinition(assistantDefinition, ruleName)) {
+      throw new Error(`Rule "${ruleName}" not found on Assistant "${assistantDefinition.name}"`)
+    }
+  })
 
   return await runAssistant(processedFile, assistantDefinition, env, op, getImageMetadata)
 }
