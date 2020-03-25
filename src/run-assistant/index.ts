@@ -9,7 +9,7 @@ import {
   RunOperation,
   GetImageMetadata,
   RunResult,
-} from '../types'
+} from '@sketch-hq/sketch-assistant-types'
 import { createRuleUtilsCreator } from '../rule-utils'
 import { isRuleActive } from '../assistant-config'
 

@@ -1,6 +1,6 @@
 import Ptr from '@json-schema-spec/json-pointer'
 
-import { Maybe, PointerValue, FileFormat } from '../types'
+import { Maybe, PointerValue, FileFormat } from '@sketch-hq/sketch-assistant-types'
 
 /**
  * Resolve a JSON Pointer to a value within a SketchFile.

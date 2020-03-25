@@ -8,7 +8,7 @@ import {
   NodeArray,
   ProcessedSketchFile,
   SketchFile,
-} from '../types'
+} from '@sketch-hq/sketch-assistant-types'
 import { createCache } from '../file-cache'
 
 const DO_NOT_PROCESS_KEYS = ['foreignLayerStyles', 'foreignSymbols', 'foreignTextStyles']

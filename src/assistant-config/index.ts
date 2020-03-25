@@ -1,6 +1,12 @@
 import Ajv, { ErrorObject } from 'ajv'
 
-import { AssistantConfig, Maybe, RuleConfig, ViolationSeverity, RuleDefinition } from '../types'
+import {
+  AssistantConfig,
+  Maybe,
+  RuleConfig,
+  ViolationSeverity,
+  RuleDefinition,
+} from '@sketch-hq/sketch-assistant-types'
 import { helpers, buildRuleOptionSchema } from '../rule-option-schemas'
 
 /**

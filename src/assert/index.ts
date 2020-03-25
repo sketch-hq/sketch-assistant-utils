@@ -1,4 +1,4 @@
-import { Node } from '../types'
+import { Node } from '@sketch-hq/sketch-assistant-types'
 
 class AssertionError extends Error {
   public constructor(message: string) {

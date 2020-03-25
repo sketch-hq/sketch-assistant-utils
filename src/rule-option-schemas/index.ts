@@ -10,7 +10,7 @@ import {
   RuleOptionHelpers,
   ObjectArrayOptionCreator,
   ReservedRuleOptionNames,
-} from '../types'
+} from '@sketch-hq/sketch-assistant-types'
 
 class ReservedRuleOptionNameError extends Error {
   public optionName: string

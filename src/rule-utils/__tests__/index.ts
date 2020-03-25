@@ -3,7 +3,12 @@ import { resolve } from 'path'
 import { createRuleUtilsCreator } from '..'
 import { process } from '../../process'
 import { fromFile } from '../../from-file'
-import { Violation, AssistantDefinition, RuleUtils, ViolationSeverity } from '../../types'
+import {
+  Violation,
+  AssistantDefinition,
+  RuleUtils,
+  ViolationSeverity,
+} from '@sketch-hq/sketch-assistant-types'
 import { getImageMetadata } from '../../get-image-metadata'
 import { createAssistantDefinition, createAssistantConfig, createRule } from '../../test-helpers'
 import { assertNode } from '../../assert'

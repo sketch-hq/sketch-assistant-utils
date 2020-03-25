@@ -12,7 +12,7 @@ import {
   AssistantEnv,
   RunResult,
   Platform,
-} from '../types'
+} from '@sketch-hq/sketch-assistant-types'
 import { fromFile } from '../from-file'
 import { process } from '../process'
 import { prepare, getRuleDefinition } from '../assistant'

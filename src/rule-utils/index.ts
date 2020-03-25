@@ -19,7 +19,7 @@ import {
   AssistantDefinition,
   RuleDefinition,
   ProcessedSketchFile,
-} from '../types'
+} from '@sketch-hq/sketch-assistant-types'
 import { createCacheIterator } from '../file-cache'
 import {
   getRuleOption,

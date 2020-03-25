@@ -1,5 +1,5 @@
 import { createAssistantDefinition, createRule, createAssistant } from '../../test-helpers'
-import { AssistantEnv, AssistantDefinition } from '../../types'
+import { AssistantEnv, AssistantDefinition } from '@sketch-hq/sketch-assistant-types'
 import { prepare, assign } from '../'
 
 describe('assign', () => {

@@ -4,7 +4,7 @@ import {
   NodeCacheIteratorConfig,
   RunOperation,
   SketchClass,
-} from '../types'
+} from '@sketch-hq/sketch-assistant-types'
 
 /**
  * Create a Sketch file cache iterator, a function that iterators across objects

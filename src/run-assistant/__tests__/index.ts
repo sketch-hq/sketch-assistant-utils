@@ -1,6 +1,11 @@
 import { resolve } from 'path'
 
-import { AssistantEnv, RuleDefinition, RunResult, AssistantConfig } from '../../types'
+import {
+  AssistantEnv,
+  RuleDefinition,
+  RunResult,
+  AssistantConfig,
+} from '@sketch-hq/sketch-assistant-types'
 import { runAssistant } from '..'
 import { fromFile } from '../../from-file'
 import { process } from '../../process'

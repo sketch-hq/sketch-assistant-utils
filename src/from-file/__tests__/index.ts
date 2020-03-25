@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 
 import { fromFile } from '..'
-import { SketchFile } from '../../types'
+import { SketchFile } from '@sketch-hq/sketch-assistant-types'
 
 describe('fromFile', () => {
   test('parses document entry', async (): Promise<void> => {

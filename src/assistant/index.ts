@@ -6,7 +6,7 @@ import {
   Maybe,
   RuleDefinition,
   ESModuleInterop,
-} from '../types'
+} from '@sketch-hq/sketch-assistant-types'
 
 /**
  * Merge assistant definitions together to form a single assistant definition, with a syntax similar

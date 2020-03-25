@@ -1,6 +1,6 @@
 import hash from 'object-hash'
 
-import { Node, FileFormat } from '../types'
+import { Node, FileFormat } from '@sketch-hq/sketch-assistant-types'
 
 /**
  * Convert a Sketch file-walking Node to a specific file format object. Use this

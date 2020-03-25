@@ -9,7 +9,7 @@ import {
   getRuleIgnoreNamePathPatterns,
 } from '..'
 import { createAssistantConfig, createRule } from '../../test-helpers'
-import { ViolationSeverity } from '../../types'
+import { ViolationSeverity } from '@sketch-hq/sketch-assistant-types'
 
 describe('getRuleConfig', () => {
   test('can retrieve rule configuration', () => {
