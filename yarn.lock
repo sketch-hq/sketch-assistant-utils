@@ -679,10 +679,10 @@
   dependencies:
     type-detect "4.0.8"
 
-"@sketch-hq/sketch-assistant-types@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@sketch-hq/sketch-assistant-types/-/sketch-assistant-types-2.0.0.tgz#0cc7bd81f1b6d37b08b643dbbb9dbc786714405a"
-  integrity sha512-PKPhwjtAE57xWgQl+oV0j38c9tQIQ0OFtfpmHClqrK6TxLyscebzVB2L96GVrNmUWSb8ggOUjOeHiHFPgBGz0A==
+"@sketch-hq/sketch-assistant-types@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@sketch-hq/sketch-assistant-types/-/sketch-assistant-types-2.0.1.tgz#e6a7809901bb0f36da89a66cb1bc287272245420"
+  integrity sha512-sQsai2zvJGNNoPCy5PIk/IK3L3MFW3xloo5RQRI6gindxEOabktdi/A0hu5jAkBD7ZlTYiJaMEmmkCl/n5Hn/w==
   dependencies:
     "@schemastore/package" "0.0.5"
     "@sketch-hq/sketch-file-format-ts" "4.0.3"
@@ -774,10 +774,10 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.4.tgz#38fd73ddfd9b55abb1e1b2ed578cb55bd7b7d339"
   integrity sha512-8+KAKzEvSUdeo+kmqnKrqgeE+LcA0tjYWFY7RPProVYwnqDjukzO+3b6dLD56rYX5TdWejnEOLJYOIeh4CXKuA==
 
-"@types/node@13.7.6":
-  version "13.7.6"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.7.6.tgz#cb734a7c191472ae6a2b3a502b4dfffcea974113"
-  integrity sha512-eyK7MWD0R1HqVTp+PtwRgFeIsemzuj4gBFSQxfPHY5iMjS7474e5wq+VFgTcdpyHeNxyKSaetYAjdMLJlKoWqA==
+"@types/node@13.11.1":
+  version "13.11.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.11.1.tgz#49a2a83df9d26daacead30d0ccc8762b128d53c7"
+  integrity sha512-eWQGP3qtxwL8FGneRrC5DwrJLGN4/dH1clNTuLfN81HCrxVtxRjygDTUoZJ5ASlDEeo0ppYFQjQIlXhtXpOn6g==
 
 "@types/node@^12.7.1":
   version "12.12.35"
