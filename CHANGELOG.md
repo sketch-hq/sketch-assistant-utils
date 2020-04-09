@@ -1,5 +1,15 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 4.0.0
+
+### Major Changes
+
+- 9e4acca: Update to `@sketch-hq/sketch-assistant-types@2.0.0`
+
+### Patch Changes
+
+- 57c7d16: Update dependencies
+
 ## 3.0.2
 
 ### Patch Changes
