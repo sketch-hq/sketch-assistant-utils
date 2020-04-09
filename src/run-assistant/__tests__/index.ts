@@ -42,7 +42,7 @@ describe('runAssistant', () => {
       }),
       createRule({
         name: 'rule',
-        rule: async ruleContext => {
+        rule: async (ruleContext) => {
           ruleContext.utils.report({ message: 'Something went wrong' })
         },
       }),
@@ -62,7 +62,7 @@ describe('runAssistant', () => {
       createRule({
         name: 'rule',
         platform: 'sketch',
-        rule: async ruleContext => {
+        rule: async (ruleContext) => {
           ruleContext.utils.report({ message: 'Something went wrong' })
         },
       }),
@@ -100,7 +100,7 @@ describe('runAssistant', () => {
       }),
       createRule({
         name: 'rule',
-        rule: async ruleContext => {
+        rule: async (ruleContext) => {
           ruleContext.utils.report({ message: 'Something went wrong' })
         },
       }),
@@ -130,7 +130,7 @@ describe('runAssistant', () => {
       createAssistantConfig({ rules: { rule: { active: true } } }),
       createRule({
         name: 'rule',
-        rule: async context => {
+        rule: async (context) => {
           await context.utils.iterateCache({
             page: async () => {
               throw new Error()
@@ -149,7 +149,7 @@ describe('runAssistant', () => {
       createAssistantConfig({ rules: { rule: { active: true } } }),
       createRule({
         name: 'rule',
-        rule: async ruleContext => {
+        rule: async (ruleContext) => {
           ruleContext.utils.getOption('warpFieldIntegrity')
         },
       }),

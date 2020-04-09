@@ -65,7 +65,7 @@ const prepare = async (
           return item
         }
       })
-      .map(f => f(env)),
+      .map((f) => f(env)),
   )
   return assign(...definitions)
 }
@@ -76,6 +76,6 @@ const prepare = async (
 const getRuleDefinition = (
   assistant: AssistantDefinition,
   ruleName: string,
-): Maybe<RuleDefinition> => assistant.rules.find(rule => rule.name === ruleName)
+): Maybe<RuleDefinition> => assistant.rules.find((rule) => rule.name === ruleName)
 
 export { prepare, assign, getRuleDefinition }

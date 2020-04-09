@@ -33,7 +33,7 @@ function assertOptionNameNotReserved(optionName: string): asserts optionName is 
  * Combine multiple rule option schemas into one. We treat _all_ custom options
  * as required.
  */
-const buildRuleOptionSchema: RuleOptionSchemaCreator = ops => ({
+const buildRuleOptionSchema: RuleOptionSchemaCreator = (ops) => ({
   type: 'object',
   properties: ops.reduce<JSONSchemaProps>(
     (acc, props: JSONSchemaProps) => ({
@@ -42,13 +42,13 @@ const buildRuleOptionSchema: RuleOptionSchemaCreator = ops => ({
     }),
     {},
   ),
-  required: ops.map(props => Object.keys(props)).reduce((acc, val) => acc.concat(val), []), // flatten
+  required: ops.map((props) => Object.keys(props)).reduce((acc, val) => acc.concat(val), []), // flatten
 })
 
 /**
  * Create a floating point number option.
  */
-const numberOption: NumberOptionCreator = ops => {
+const numberOption: NumberOptionCreator = (ops) => {
   assertOptionNameNotReserved(ops.name)
   return {
     [ops.name]: {
@@ -65,7 +65,7 @@ const numberOption: NumberOptionCreator = ops => {
 /**
  * Create an integer option.
  */
-const integerOption: IntegerOptionCreator = ops => {
+const integerOption: IntegerOptionCreator = (ops) => {
   assertOptionNameNotReserved(ops.name)
   return {
     [ops.name]: {
@@ -82,7 +82,7 @@ const integerOption: IntegerOptionCreator = ops => {
 /**
  * Create a string option.
  */
-const stringOption: StringOptionCreator = ops => {
+const stringOption: StringOptionCreator = (ops) => {
   assertOptionNameNotReserved(ops.name)
   return {
     [ops.name]: {
@@ -100,7 +100,7 @@ const stringOption: StringOptionCreator = ops => {
 /**
  * Create a boolean option.
  */
-const booleanOption: BoolOptionCreator = ops => {
+const booleanOption: BoolOptionCreator = (ops) => {
   assertOptionNameNotReserved(ops.name)
   return {
     [ops.name]: {
@@ -115,7 +115,7 @@ const booleanOption: BoolOptionCreator = ops => {
 /**
  * Create a string option limited to a set of values.
  */
-const stringEnumOption: StringEnumOptionCreator = ops => {
+const stringEnumOption: StringEnumOptionCreator = (ops) => {
   assertOptionNameNotReserved(ops.name)
   return {
     [ops.name]: {
@@ -132,7 +132,7 @@ const stringEnumOption: StringEnumOptionCreator = ops => {
 /**
  * Create a string list option.
  */
-const stringArrayOption: StringArrayOptionCreator = ops => {
+const stringArrayOption: StringArrayOptionCreator = (ops) => {
   assertOptionNameNotReserved(ops.name)
   return {
     [ops.name]: {
@@ -153,7 +153,7 @@ const stringArrayOption: StringArrayOptionCreator = ops => {
 /**
  * Create an object list option.
  */
-const objectArrayOption: ObjectArrayOptionCreator = ops => {
+const objectArrayOption: ObjectArrayOptionCreator = (ops) => {
   assertOptionNameNotReserved(ops.name)
   return {
     [ops.name]: {

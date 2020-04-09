@@ -134,7 +134,7 @@ export const testRule = async (
     rules: ruleConfig,
   }
 
-  Object.keys(ruleConfig).forEach(ruleName => {
+  Object.keys(ruleConfig).forEach((ruleName) => {
     if (!getRuleDefinition(assistantDefinition, ruleName)) {
       throw new Error(`Rule "${ruleName}" not found on Assistant "${assistantDefinition.name}"`)
     }

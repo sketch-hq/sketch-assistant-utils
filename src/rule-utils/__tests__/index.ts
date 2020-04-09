@@ -96,7 +96,7 @@ describe('getOption', () => {
         rules: [
           createRule({
             name: 'foo',
-            getOptions: helpers => [
+            getOptions: (helpers) => [
               helpers.numberOption({ name: 'custom', title: '', description: '' }),
             ],
           }),
@@ -159,7 +159,7 @@ describe('iterateCache', () => {
     )
     const pointers: string[] = []
     await utils.iterateCache({
-      page: async node => {
+      page: async (node) => {
         pointers.push(node.$pointer)
       },
     })
@@ -183,7 +183,7 @@ describe('report', () => {
       'foo',
     )
     await utils.iterateCache({
-      page: async node => {
+      page: async (node) => {
         utils.report({ message: "Something isn't right here", node })
       },
     })
@@ -204,7 +204,7 @@ describe('report', () => {
       'foo',
     )
     await utils.iterateCache({
-      page: async node => {
+      page: async (node) => {
         utils.report({ message: "Something isn't right here", node })
       },
     })
@@ -224,7 +224,7 @@ describe('report', () => {
       'foo',
     )
     await utils.iterateCache({
-      page: async node => {
+      page: async (node) => {
         utils.report({ message: "Something isn't right here", node })
       },
     })
@@ -244,7 +244,7 @@ describe('report', () => {
       'foo',
     )
     await utils.iterateCache({
-      page: async node => {
+      page: async (node) => {
         utils.report({ message: "Something isn't right here", node })
       },
     })
@@ -264,7 +264,7 @@ describe('report', () => {
       'foo',
     )
     await utils.iterateCache({
-      page: async node => {
+      page: async (node) => {
         utils.report({ message: "Something isn't right here", node })
       },
     })
@@ -285,7 +285,7 @@ describe('iterateParents', () => {
     )
     const page = utils.get('/document/pages/0')
     const pointers: string[] = []
-    utils.iterateParents(page, parent => {
+    utils.iterateParents(page, (parent) => {
       pointers.push(parent.$pointer)
     })
     expect(pointers).toMatchInlineSnapshot(`

@@ -85,20 +85,20 @@ const addReportsToViolations = (
   violations.push(
     ...(Array.isArray(report) ? report : [report])
       // Filter out reports involving nodes with ignored `_class` props
-      .filter(item => {
+      .filter((item) => {
         return item.node ? !classesToIgnore.includes(item.node._class) : true
       })
       // Filter out nodes with ignored name paths
-      .filter(item => {
+      .filter((item) => {
         if (!item.node || namesToIgnore.length === 0) return true
         const names: string[] = 'name' in item.node ? [item.node.name] : []
-        iterateParents(item.node, parent => {
+        iterateParents(item.node, (parent) => {
           if (typeof parent === 'object' && 'name' in parent) {
             names.unshift(parent.name)
           }
         })
         const namePath = `/${names.join('/')}`
-        return !namesToIgnore.map(regex => regex.test(namePath)).includes(true)
+        return !namesToIgnore.map((regex) => regex.test(namePath)).includes(true)
       })
       .map(
         (item): Violation => {
@@ -131,7 +131,7 @@ const createOptionGetter = (assistant: AssistantDefinition, rule: RuleDefinition
   const result = isRuleConfigValid(assistant.config, rule)
   if (result !== true) {
     const details = result
-      .map(error => {
+      .map((error) => {
         if (error.dataPath === '') {
           return error.message
         } else {

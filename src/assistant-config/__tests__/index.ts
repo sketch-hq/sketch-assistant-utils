@@ -171,7 +171,7 @@ describe('isRuleConfigValid', () => {
         }),
         createRule({
           name: 'foo',
-          getOptions: helpers => [
+          getOptions: (helpers) => [
             helpers.stringOption({
               name: 'option',
               title: '',
@@ -193,7 +193,7 @@ describe('isRuleConfigValid', () => {
         }),
         createRule({
           name: 'foo',
-          getOptions: helpers => [
+          getOptions: (helpers) => [
             helpers.stringOption({
               name: 'option',
               title: '',

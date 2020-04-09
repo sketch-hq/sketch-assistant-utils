@@ -22,7 +22,7 @@ const objectHash = (obj: {}, excludeKeys: string[] = []): string =>
   hash(obj, {
     unorderedObjects: true,
     algorithm: 'md5',
-    excludeKeys: key => excludeKeys.includes(key),
+    excludeKeys: (key) => excludeKeys.includes(key),
   })
 
 /**

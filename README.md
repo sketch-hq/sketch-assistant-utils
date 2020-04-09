@@ -19,7 +19,8 @@ Coming soon.
 
 ## Development
 
-This section of the readme is related to developing the package. If you just want to consume the package you can safely ignore this.
+This section of the readme is related to developing the package. If you just want to consume the
+package you can safely ignore this.
 
 ### Scripts
 
@@ -35,15 +36,16 @@ This section of the readme is related to developing the package. If you just wan
 
 #### Conventional commits
 
-Try and use the [conventional commits](https://www.conventionalcommits.org/)
-convention when writing commit messages. This isn't enforced, but you can use
-the `yarn commit` command (in place of `git commit -m "foo"`) to open an
-interactive CLI to walk you through generating a properly formatted commit
-message.
+Try and use the [conventional commits](https://www.conventionalcommits.org/) convention when writing
+commit messages.
 
 #### Releases
 
-This repo uses [Atlassian Changesets](https://github.com/atlassian/changesets) to automate the npm release process. Read the docs for more information, but the top-level summary is:
+This repo uses [Atlassian Changesets](https://github.com/atlassian/changesets) to automate the npm
+release process. Read the docs for more information, but the top-level summary is:
 
-- A GitHub Action maintains a permanently open PR that when merged will publish the package to npm with the latest changes and an automatically determined semver
-- If the work you do in a PR should affect the next release, then you need to commit a "changeset" to the repo together with the rest of your code changes - do this by running `yarn changeset`. You'll be asked to provide a change type (major, minor or patch) and a message
+- A GitHub Action maintains a permanently open PR that when merged will publish the package to npm
+  with the latest changes and an automatically determined semver
+- If the work you do in a PR should affect the next release, then you need to commit a "changeset"
+  to the repo together with the rest of your code changes - do this by running `yarn changeset`.
+  You'll be asked to provide a change type (major, minor or patch) and a message

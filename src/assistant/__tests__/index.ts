@@ -111,7 +111,7 @@ describe('assign', () => {
         createAssistantDefinition({
           rules: [createRule({ name: 'bar' })],
         }),
-      ).rules.map(rule => rule.name),
+      ).rules.map((rule) => rule.name),
     ).toMatchInlineSnapshot(`
       Array [
         "foo",
@@ -140,7 +140,7 @@ describe('prepare', () => {
       ],
       env,
     )
-    expect(assistant.rules.map(rule => rule.name)).toMatchInlineSnapshot(`
+    expect(assistant.rules.map((rule) => rule.name)).toMatchInlineSnapshot(`
       Array [
         "foo",
         "bar",
@@ -160,7 +160,7 @@ describe('prepare', () => {
       ],
       env,
     )
-    expect(assistant.rules.map(rule => rule.name)).toMatchInlineSnapshot(`
+    expect(assistant.rules.map((rule) => rule.name)).toMatchInlineSnapshot(`
       Array [
         "foo",
         "bar",
@@ -191,7 +191,7 @@ describe('prepare', () => {
       ],
       env,
     )
-    expect(assistant.rules.map(rule => rule.name)).toMatchInlineSnapshot(`
+    expect(assistant.rules.map((rule) => rule.name)).toMatchInlineSnapshot(`
       Array [
         "foo",
         "bar",

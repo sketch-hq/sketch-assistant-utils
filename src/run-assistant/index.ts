@@ -59,8 +59,8 @@ const runAssistant = async (
   }
 
   const activeRules = assistant.rules
-    .filter(rule => isRuleActive(assistant.config, rule.name)) // Rule turned on in config
-    .filter(rule => (rule.platform ? rule.platform === env.platform : true)) // Rule platform is supported
+    .filter((rule) => isRuleActive(assistant.config, rule.name)) // Rule turned on in config
+    .filter((rule) => (rule.platform ? rule.platform === env.platform : true)) // Rule platform is supported
 
   const metadata = {
     assistant: {
@@ -103,7 +103,7 @@ const runAssistant = async (
   } catch (error) {
     return {
       violations,
-      errors: Array.from<RuleInvocationError>(error).map(error => ({
+      errors: Array.from<RuleInvocationError>(error).map((error) => ({
         assistantName: error.assistantName,
         ruleName: error.ruleName,
         message: error.cause.message,

@@ -100,7 +100,7 @@ const getRuleIgnoreNamePathPatterns = (config: AssistantConfig, ruleName: string
       sanitizedValues.push(value)
     }
   }
-  return sanitizedValues.map(value => new RegExp(value))
+  return sanitizedValues.map((value) => new RegExp(value))
 }
 
 export {
