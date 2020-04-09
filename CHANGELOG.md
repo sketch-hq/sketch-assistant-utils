@@ -1,5 +1,14 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 3.0.2
+
+### Patch Changes
+
+- b20482b: Ensure testRule function throws when a rule that isn't available in the Assistant is
+  invoked
+- 63350f0: Swap to exernal Assistant types package
+- f9d64d8: Update dev dependencies
+
 ## 3.0.1
 
 ### Patch Changes
@@ -11,16 +20,19 @@
 
 ### Major Changes
 
-- 0833437: Do not repeat rule and Assistant metadata per violation, instead move the metadata up a level to the result object where it only needs including once
+- 0833437: Do not repeat rule and Assistant metadata per violation, instead move the metadata up a
+  level to the result object where it only needs including once
 
 ### Minor Changes
 
-- 0833437: Rules can now optionally declare their platform compatibility, and this is respected by the Assistant runner function
+- 0833437: Rules can now optionally declare their platform compatibility, and this is respected by
+  the Assistant runner function
 
 ### Patch Changes
 
 - 0833437: Fix `testRule` so that the test config overwrites fully the Assistant's config
-- 0833437: Do not strip comments during package compilation, it's useful to retain these so the type comments pop up in intellisense when using the utils in other projects
+- 0833437: Do not strip comments during package compilation, it's useful to retain these so the type
+  comments pop up in intellisense when using the utils in other projects
 
 ## 2.0.3
 

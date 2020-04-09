@@ -1,6 +1,6 @@
 {
   "name": "@sketch-hq/sketch-assistant-utils",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "module": "dist/esm/index",
   "main": "dist/cjs/index",
   "types": "dist/cjs/index",
@@ -24,9 +24,7 @@
     "format-check": "prettier --check {*.js,*.json,*.md,src/{**/,*.ts}}",
     "release": "yarn build && changeset publish"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "dependencies": {
     "@json-schema-spec/json-pointer": "0.1.2",
     "@sketch-hq/sketch-assistant-types": "1.0.0",
