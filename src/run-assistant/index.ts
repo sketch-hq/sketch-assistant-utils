@@ -64,8 +64,6 @@ const runAssistant = async (
 
   const metadata = {
     assistant: {
-      title: assistant.title,
-      description: assistant.description,
       name: assistant.name,
       config: assistant.config,
     },

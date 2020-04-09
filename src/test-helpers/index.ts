@@ -66,8 +66,6 @@ const createAssistantConfig = ({
  * Create a dummy assistant definition.
  */
 const createAssistantDefinition = ({
-  title,
-  description,
   name,
   config,
   rules,
@@ -78,8 +76,6 @@ const createAssistantDefinition = ({
   config?: AssistantConfig
   rules?: RuleDefinition[]
 } = {}): AssistantDefinition => ({
-  title: title ?? 'Dummy Assistant',
-  description: description ?? 'Dummy assistant created as a test helper',
   name: name ?? 'dummy-assistant',
   config: config || createAssistantConfig(),
   rules: rules || [],

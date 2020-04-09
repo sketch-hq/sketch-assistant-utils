@@ -667,6 +667,11 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
+"@schemastore/package@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@schemastore/package/-/package-0.0.5.tgz#67b621d5c833ad2d5a29a1acf868717b7839bb8a"
+  integrity sha512-0XEiMT/Rh8I0SEIO81fo5MN3AHhONFv9SJ1IIJ5OTI3PN/jG032OPlHUMxvrun7yc6YUGtufVg2WPQVK8PaH5Q==
+
 "@sinonjs/commons@^1.7.0":
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.7.2.tgz#505f55c74e0272b43f6c52d81946bed7058fc0e2"
@@ -674,18 +679,19 @@
   dependencies:
     type-detect "4.0.8"
 
-"@sketch-hq/sketch-assistant-types@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@sketch-hq/sketch-assistant-types/-/sketch-assistant-types-1.0.0.tgz#7f2685a8261d1274bab7f540e3a846d8e0546df5"
-  integrity sha512-4xtlRC5BhMRRAznraoSCgQzF8hq0fRM/m+J3dXgCQwE1vStFw+J5UuvjlNncrCbJ8qrr+jWjxJqTZAFNspFfog==
+"@sketch-hq/sketch-assistant-types@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sketch-hq/sketch-assistant-types/-/sketch-assistant-types-2.0.0.tgz#0cc7bd81f1b6d37b08b643dbbb9dbc786714405a"
+  integrity sha512-PKPhwjtAE57xWgQl+oV0j38c9tQIQ0OFtfpmHClqrK6TxLyscebzVB2L96GVrNmUWSb8ggOUjOeHiHFPgBGz0A==
   dependencies:
-    "@sketch-hq/sketch-file-format-ts" "4.0.2"
+    "@schemastore/package" "0.0.5"
+    "@sketch-hq/sketch-file-format-ts" "4.0.3"
     "@types/json-schema" "7.0.4"
 
-"@sketch-hq/sketch-file-format-ts@4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@sketch-hq/sketch-file-format-ts/-/sketch-file-format-ts-4.0.2.tgz#a21ff0d0c3b63ab737e8641f85dc0c074fdd7a9e"
-  integrity sha512-CIu1kAmbxi4tX3Xt4SY/l/QoOaZ3DBe2pr666x7E2aegmzuy4dneOXSOdZarhwXmNE1PzfbjLy1NnhcSyPD22Q==
+"@sketch-hq/sketch-file-format-ts@4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@sketch-hq/sketch-file-format-ts/-/sketch-file-format-ts-4.0.3.tgz#4f2c44e7a61622e977e40bd89d67ab2f9fe5f95f"
+  integrity sha512-Ndgb5GtPi53bp2jOmCcVYiz9Mwx9Mjox7uMQxaNrD2Qm0C8doc2mejzPWPOOiruK7qpHtFBPFX3hXl9pkMkxIA==
 
 "@types/babel__core@^7.1.7":
   version "7.1.7"

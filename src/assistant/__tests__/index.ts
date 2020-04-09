@@ -16,32 +16,6 @@ describe('assign', () => {
     ).toMatchInlineSnapshot(`"bar"`)
   })
 
-  test('descriptions are merged right to left', () => {
-    expect(
-      assign(
-        createAssistantDefinition({
-          description: 'foo',
-        }),
-        createAssistantDefinition({
-          description: 'bar',
-        }),
-      ).description,
-    ).toMatchInlineSnapshot(`"bar"`)
-  })
-
-  test('titles are merged right to left', () => {
-    expect(
-      assign(
-        createAssistantDefinition({
-          title: 'foo',
-        }),
-        createAssistantDefinition({
-          title: 'bar',
-        }),
-      ).title,
-    ).toMatchInlineSnapshot(`"bar"`)
-  })
-
   test('do not overwrite with values that are the empty string', () => {
     expect(
       assign(
@@ -61,10 +35,8 @@ describe('assign', () => {
         "config": Object {
           "rules": Object {},
         },
-        "description": "baz",
         "name": "bar",
         "rules": Array [],
-        "title": "foo",
       }
     `)
   })

@@ -13,19 +13,15 @@ import {
  * to Object.assign(). Assistants are merged from the right-most argument to the left into
  * preceeding arguments, according to the following algorithm:
  *
- *   1. Primitive metadata values like `title` and `description` from the right-most assistant
- *      override the values from the next assistant to the left
- *   2. Rule configuration objects are merged together, with values from right-most assistants
+ *   1. Rule configuration objects are merged together, with values from right-most assistants
  *      overriding those from the next assistant to the left
- *   3. Assistant rule function arrays are concatenated
+ *   2. Assistant rule function arrays are concatenated
  *
  * @param sources Assistant definitions to merge
  */
 const assign = (...sources: AssistantDefinition[]): AssistantDefinition => {
   return sources.reduceRight((acc, curr) => {
     return {
-      title: acc.title || curr.title || '',
-      description: acc.description || curr.description || '',
       name: acc.name || curr.name || '',
       config: {
         ...(typeof acc.config.defaultSeverity === 'undefined'
