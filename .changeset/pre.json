@@ -1,0 +1,8 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "@sketch-hq/sketch-assistant-utils": "4.0.0"
+  },
+  "changesets": []
+}
