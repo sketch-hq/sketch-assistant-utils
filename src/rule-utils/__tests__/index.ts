@@ -230,46 +230,6 @@ describe('report', () => {
     })
     expect(violations[0].severity).toBe(ViolationSeverity.info)
   })
-
-  test('violations can be filtered by `_class` value', async (): Promise<void> => {
-    expect.assertions(1)
-    const { utils, violations } = await buildUtils(
-      './empty.sketch',
-      createAssistantDefinition({
-        config: createAssistantConfig({
-          rules: { foo: { active: true, ignoreClasses: ['page'] } },
-        }),
-        rules: [createRule({ name: 'foo' })],
-      }),
-      'foo',
-    )
-    await utils.iterateCache({
-      page: async (node) => {
-        utils.report({ message: "Something isn't right here", node })
-      },
-    })
-    expect(violations).toHaveLength(0)
-  })
-
-  test('violations can be filtered by name path', async (): Promise<void> => {
-    expect.assertions(1)
-    const { utils, violations } = await buildUtils(
-      './empty.sketch',
-      createAssistantDefinition({
-        config: createAssistantConfig({
-          rules: { foo: { active: true, ignoreNames: ['Page 1'] } },
-        }),
-        rules: [createRule({ name: 'foo' })],
-      }),
-      'foo',
-    )
-    await utils.iterateCache({
-      page: async (node) => {
-        utils.report({ message: "Something isn't right here", node })
-      },
-    })
-    expect(violations).toHaveLength(0)
-  })
 })
 
 describe('iterateParents', () => {

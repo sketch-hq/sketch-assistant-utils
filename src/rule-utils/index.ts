@@ -21,13 +21,7 @@ import {
   ProcessedSketchFile,
 } from '@sketch-hq/sketch-assistant-types'
 import { createCacheIterator } from '../file-cache'
-import {
-  getRuleOption,
-  isRuleConfigValid,
-  getRuleSeverity,
-  getRuleIgnoreClasses,
-  getRuleIgnoreNamePathPatterns,
-} from '../assistant-config'
+import { getRuleOption, isRuleConfigValid, getRuleSeverity } from '../assistant-config'
 import { nodeToObject, objectHash, objectsEqual } from '../object-utils'
 import * as pointers from '../pointers'
 import { getRuleDefinition } from '../assistant'
@@ -72,50 +66,30 @@ const addReportsToViolations = (
   violations: Violation[],
   assistant: AssistantDefinition,
   rule: RuleDefinition,
-  iterateParents: ParentIterator,
 ): void => {
   if (Array.isArray(report) && report.length === 0) return
   const { config } = assistant
   const { name: ruleName } = rule
 
   const severity = getRuleSeverity(config, ruleName)
-  const classesToIgnore = getRuleIgnoreClasses(config, ruleName)
-  const namesToIgnore = getRuleIgnoreNamePathPatterns(config, ruleName)
 
   violations.push(
-    ...(Array.isArray(report) ? report : [report])
-      // Filter out reports involving nodes with ignored `_class` props
-      .filter((item) => {
-        return item.node ? !classesToIgnore.includes(item.node._class) : true
-      })
-      // Filter out nodes with ignored name paths
-      .filter((item) => {
-        if (!item.node || namesToIgnore.length === 0) return true
-        const names: string[] = 'name' in item.node ? [item.node.name] : []
-        iterateParents(item.node, (parent) => {
-          if (typeof parent === 'object' && 'name' in parent) {
-            names.unshift(parent.name)
-          }
-        })
-        const namePath = `/${names.join('/')}`
-        return !namesToIgnore.map((regex) => regex.test(namePath)).includes(true)
-      })
-      .map(
-        (item): Violation => {
-          return {
-            assistantName: assistant.name,
-            ruleName: rule.name,
-            message: item.message,
-            severity,
-            pointer: item.node?.$pointer || null,
-            objectId: item.node
-              ? 'do_objectID' in item.node
-                ? item.node.do_objectID || null
-                : null
-              : null,
-          }
-        },
-      ),
+    ...(Array.isArray(report) ? report : [report]).map(
+      (item): Violation => {
+        return {
+          assistantName: assistant.name,
+          ruleName: rule.name,
+          message: item.message,
+          severity,
+          pointer: item.node?.$pointer || null,
+          objectId: item.node
+            ? 'do_objectID' in item.node
+              ? item.node.do_objectID || null
+              : null
+            : null,
+        }
+      },
+    ),
   )
 }
 
@@ -201,7 +175,7 @@ const createRuleUtilsCreator = (
         return pointers.parent(pointer, file.contents)
       },
       report(items: ReportItem | ReportItem[]): void {
-        addReportsToViolations(items, violations, assistant, rule, iterateParents)
+        addReportsToViolations(items, violations, assistant, rule)
       },
       iterateCache: createCacheIterator(cache, operation),
       getImageMetadata: (ref: string): Promise<ImageMetadata> => {

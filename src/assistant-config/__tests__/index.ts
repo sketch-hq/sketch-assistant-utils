@@ -5,8 +5,6 @@ import {
   isRuleActive,
   getRuleSeverity,
   isRuleConfigValid,
-  getRuleIgnoreClasses,
-  getRuleIgnoreNamePathPatterns,
 } from '..'
 import { createAssistantConfig, createRule } from '../../test-helpers'
 import { ViolationSeverity } from '@sketch-hq/sketch-assistant-types'
@@ -213,58 +211,6 @@ describe('isRuleConfigValid', () => {
           },
           "schemaPath": "#/properties/option/type",
         },
-      ]
-    `)
-  })
-})
-
-describe('getRuleIgnoreClasses', () => {
-  test('returns ignore classes', () => {
-    expect(
-      getRuleIgnoreClasses(
-        createAssistantConfig({
-          rules: {
-            foo: { active: true, ignoreClasses: ['artboard', 'oval'] },
-          },
-        }),
-        'foo',
-      ),
-    ).toMatchInlineSnapshot(`
-      Array [
-        "artboard",
-        "oval",
-      ]
-    `)
-  })
-
-  test('returns empty array when not configured', () => {
-    expect(
-      getRuleIgnoreClasses(
-        createAssistantConfig({
-          rules: {
-            foo: { active: true },
-          },
-        }),
-        'foo',
-      ),
-    ).toMatchInlineSnapshot(`Array []`)
-  })
-})
-
-describe('getRuleIgnoreNamePathPatterns', () => {
-  test('returns ignore name path patterns', () => {
-    expect(
-      getRuleIgnoreNamePathPatterns(
-        createAssistantConfig({
-          rules: {
-            foo: { active: true, ignoreNames: ['/Page 1/Group 1'] },
-          },
-        }),
-        'foo',
-      ),
-    ).toMatchInlineSnapshot(`
-      Array [
-        /\\\\/Page 1\\\\/Group 1/,
       ]
     `)
   })

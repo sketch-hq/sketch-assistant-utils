@@ -73,36 +73,6 @@ const getRuleSeverity = (config: AssistantConfig, ruleName: string): ViolationSe
   }
 }
 
-/**
- * Determine a rule's ignore classes.
- */
-const getRuleIgnoreClasses = (config: AssistantConfig, ruleName: string): string[] => {
-  const rawValues = getRuleOption(config, ruleName, 'ignoreClasses')
-  if (!Array.isArray(rawValues)) return []
-  const sanitizedValues: string[] = []
-  for (const value of rawValues) {
-    if (typeof value === 'string') {
-      sanitizedValues.push(value)
-    }
-  }
-  return sanitizedValues
-}
-
-/**
- * Determine a rule's ignore name patterns.
- */
-const getRuleIgnoreNamePathPatterns = (config: AssistantConfig, ruleName: string): RegExp[] => {
-  const rawValues = getRuleOption(config, ruleName, 'ignoreNames')
-  if (!Array.isArray(rawValues)) return []
-  const sanitizedValues: string[] = []
-  for (const value of rawValues) {
-    if (typeof value === 'string') {
-      sanitizedValues.push(value)
-    }
-  }
-  return sanitizedValues.map((value) => new RegExp(value))
-}
-
 export {
   getRuleConfig,
   getRuleOption,
@@ -110,6 +80,4 @@ export {
   isRuleActive,
   getRuleSeverity,
   isRuleConfigValid,
-  getRuleIgnoreClasses,
-  getRuleIgnoreNamePathPatterns,
 }
