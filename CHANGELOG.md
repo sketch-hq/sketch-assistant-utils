@@ -1,5 +1,11 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 5.0.0-next.0
+
+### Major Changes
+
+- fe07f0b: Remove support for config level ignore options `ignoreNames` and `ignoreClasses`
+
 ## 4.0.0
 
 ### Major Changes

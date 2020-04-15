@@ -4,5 +4,7 @@
   "initialVersions": {
     "@sketch-hq/sketch-assistant-utils": "4.0.0"
   },
-  "changesets": []
+  "changesets": [
+    "tall-roses-invent"
+  ]
 }

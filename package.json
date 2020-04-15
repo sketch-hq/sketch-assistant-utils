@@ -1,6 +1,6 @@
 {
   "name": "@sketch-hq/sketch-assistant-utils",
-  "version": "4.0.0",
+  "version": "5.0.0-next.0",
   "module": "dist/esm/index",
   "main": "dist/cjs/index",
   "types": "dist/cjs/index",
