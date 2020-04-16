@@ -1,5 +1,15 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 5.0.0-next.1
+
+### Major Changes
+
+- e986bed: Adjust `testRule` function signature to favour testing rules in isolation
+
+### Patch Changes
+
+- 4a60dae: Update to `next.1` types
+
 ## 5.0.0-next.0
 
 ### Major Changes

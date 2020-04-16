@@ -5,6 +5,8 @@
     "@sketch-hq/sketch-assistant-utils": "4.0.0"
   },
   "changesets": [
+    "four-eagles-rescue",
+    "friendly-beers-vanish",
     "tall-roses-invent"
   ]
 }
