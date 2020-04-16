@@ -62,15 +62,16 @@ const runAssistant = async (
     .filter((rule) => isRuleActive(assistant.config, rule.name)) // Rule turned on in config
     .filter((rule) => (rule.platform ? rule.platform === env.platform : true)) // Rule platform is supported
 
-  const metadata = {
+  const metadata: RunResult['metadata'] = {
     assistant: {
       name: assistant.name,
       config: assistant.config,
     },
-    rules: activeRules.reduce((acc, curr) => {
+    rules: activeRules.reduce<RunResult['metadata']['rules']>((acc, curr) => {
       return {
         ...acc,
         [curr.name]: {
+          name: curr.name,
           title: curr.title,
           description: curr.description,
           debug: curr.debug,
