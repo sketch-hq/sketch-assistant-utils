@@ -6,8 +6,8 @@ describe('testRule', () => {
     expect.assertions(2)
     const res = await testRule(
       resolve(__dirname, './empty.sketch'),
-      { rule: { active: true } },
       createAssistant({ rules: [createRule({ name: 'rule' })] }),
+      'rule',
     )
     expect(res.violations).toHaveLength(0)
     expect(res.errors).toHaveLength(0)
@@ -17,7 +17,6 @@ describe('testRule', () => {
     expect.assertions(2)
     const res = await testRule(
       resolve(__dirname, './empty.sketch'),
-      { rule: { active: true } },
       createAssistant({
         rules: [
           createRule({
@@ -26,6 +25,7 @@ describe('testRule', () => {
           }),
         ],
       }),
+      'rule',
     )
     expect(res.violations).toHaveLength(1)
     expect(res.errors).toHaveLength(0)
@@ -35,7 +35,6 @@ describe('testRule', () => {
     expect.assertions(2)
     const res = await testRule(
       resolve(__dirname, './empty.sketch'),
-      { rule: { active: true } },
       createAssistant({
         rules: [
           createRule({
@@ -46,6 +45,7 @@ describe('testRule', () => {
           }),
         ],
       }),
+      'rule',
     )
     expect(res.violations).toHaveLength(0)
     expect(res.errors).toHaveLength(1)
@@ -56,10 +56,10 @@ describe('testRule', () => {
     try {
       await testRule(
         resolve(__dirname, './empty.sketch'),
-        { 'reticulating-splines': { active: true } },
         createAssistant({
           rules: [createRule({ name: 'rule' })],
         }),
+        'reticulating-splines',
       )
     } catch (error) {
       expect(error).toBeDefined()

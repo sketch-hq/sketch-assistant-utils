@@ -12,6 +12,7 @@ import {
   AssistantEnv,
   RunResult,
   Platform,
+  RuleConfig,
 } from '@sketch-hq/sketch-assistant-types'
 import { fromFile } from '../from-file'
 import { process } from '../process'
@@ -109,16 +110,11 @@ const createDummyRectNode = (): Node<FileFormat.Rect> => ({
   $pointer: '/document/pages/0/layers/0',
 })
 
-/**
- * Test an individual rule within the context of a specific assistant. The assistant has its config
- * overwritten by the passed in value to enable testing rules in isolation.
- *
- * If the rule referenced in the config isn't available in the Assistant an error is thrown.
- */
 export const testRule = async (
   filepath: string,
-  ruleConfig: RuleConfigGroup,
   assistant: Assistant,
+  ruleName: string,
+  ruleConfig: RuleConfig = { active: true },
   env: AssistantEnv = { locale: 'en', platform: 'node' },
 ): Promise<RunResult> => {
   const file = await fromFile(filepath)
@@ -127,14 +123,14 @@ export const testRule = async (
 
   const assistantDefinition = await prepare(assistant, env)
   assistantDefinition.config = {
-    rules: ruleConfig,
+    rules: {
+      [ruleName]: ruleConfig,
+    },
   }
 
-  Object.keys(ruleConfig).forEach((ruleName) => {
-    if (!getRuleDefinition(assistantDefinition, ruleName)) {
-      throw new Error(`Rule "${ruleName}" not found on Assistant "${assistantDefinition.name}"`)
-    }
-  })
+  if (!getRuleDefinition(assistantDefinition, ruleName)) {
+    throw new Error(`Rule "${ruleName}" not found on Assistant "${assistantDefinition.name}"`)
+  }
 
   return await runAssistant(processedFile, assistantDefinition, env, op, getImageMetadata)
 }
