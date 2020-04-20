@@ -1,5 +1,11 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 5.0.0-next.2
+
+### Patch Changes
+
+- c165b13: Support rule titles and descriptions as functions that can interpolate config values.
+
 ## 5.0.0-next.1
 
 ### Major Changes
