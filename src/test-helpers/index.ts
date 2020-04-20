@@ -10,7 +10,7 @@ import {
   ViolationSeverity,
   RuleConfigGroup,
   AssistantEnv,
-  RunResult,
+  AssistantResult,
   Platform,
   RuleConfig,
 } from '@sketch-hq/sketch-assistant-types'
@@ -32,8 +32,8 @@ const createRule = ({
   debug,
   platform,
 }: {
-  title?: string
-  description?: string
+  title?: RuleDefinition['title']
+  description?: RuleDefinition['description']
   rule?: RuleFunction
   name?: string
   getOptions?: RuleOptionsCreator
@@ -116,7 +116,7 @@ export const testRule = async (
   ruleName: string,
   ruleConfig: RuleConfig = { active: true },
   env: AssistantEnv = { locale: 'en', platform: 'node' },
-): Promise<RunResult> => {
+): Promise<AssistantResult> => {
   const file = await fromFile(filepath)
   const op = { cancelled: false }
   const processedFile = await process(file, op)

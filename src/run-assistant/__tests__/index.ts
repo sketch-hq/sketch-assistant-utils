@@ -3,7 +3,7 @@ import { resolve } from 'path'
 import {
   AssistantEnv,
   RuleDefinition,
-  RunResult,
+  AssistantResult,
   AssistantConfig,
 } from '@sketch-hq/sketch-assistant-types'
 import { runAssistant } from '..'
@@ -15,7 +15,7 @@ import { getImageMetadata } from '../../get-image-metadata'
 const testRunAssistant = async (
   config: AssistantConfig,
   rule: RuleDefinition,
-): Promise<RunResult> => {
+): Promise<AssistantResult> => {
   const op = { cancelled: false }
   const file = await fromFile(resolve(__dirname, './empty.sketch'))
   const processedFile = await process(file, op)
@@ -88,6 +88,23 @@ describe('runAssistant', () => {
       ]
     `)
     expect(errors).toHaveLength(0)
+  })
+
+  test('config values can be interpolated into rule metadata', async (): Promise<void> => {
+    expect.assertions(2)
+    const { errors, metadata } = await testRunAssistant(
+      createAssistantConfig({
+        rules: {
+          rule: { active: true, subspaceFrequency: 12 },
+        },
+      }),
+      createRule({
+        name: 'rule',
+        title: (ruleConfig) => `Subspace frequency ${ruleConfig.subspaceFrequency}`,
+      }),
+    )
+    expect(errors).toHaveLength(0)
+    expect(metadata.rules['rule'].title).toMatchInlineSnapshot(`"Subspace frequency 12"`)
   })
 
   test('skips inactive rules', async (): Promise<void> => {

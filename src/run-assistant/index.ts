@@ -8,10 +8,10 @@ import {
   Violation,
   RunOperation,
   GetImageMetadata,
-  RunResult,
+  AssistantResult,
 } from '@sketch-hq/sketch-assistant-types'
 import { createRuleUtilsCreator } from '../rule-utils'
-import { isRuleActive } from '../assistant-config'
+import { isRuleActive, getRuleConfig } from '../assistant-config'
 
 class RuleInvocationError extends Error {
   public cause: Error
@@ -39,7 +39,7 @@ const runAssistant = async (
   env: AssistantEnv,
   operation: RunOperation,
   getImageMetadata: GetImageMetadata,
-): Promise<RunResult> => {
+): Promise<AssistantResult> => {
   const violations: Violation[] = []
 
   const createUtils = createRuleUtilsCreator(
@@ -62,20 +62,27 @@ const runAssistant = async (
     .filter((rule) => isRuleActive(assistant.config, rule.name)) // Rule turned on in config
     .filter((rule) => (rule.platform ? rule.platform === env.platform : true)) // Rule platform is supported
 
-  const metadata: RunResult['metadata'] = {
+  const metadata: AssistantResult['metadata'] = {
     assistant: {
       name: assistant.name,
       config: assistant.config,
     },
-    rules: activeRules.reduce<RunResult['metadata']['rules']>((acc, curr) => {
+    rules: activeRules.reduce((acc, rule) => {
+      const ruleConfig = getRuleConfig(assistant.config, rule.name)
       return {
         ...acc,
-        [curr.name]: {
-          name: curr.name,
-          title: curr.title,
-          description: curr.description,
-          debug: curr.debug,
-          platform: curr.platform,
+        [rule.name]: {
+          name: rule.name,
+          title:
+            typeof rule.title === 'function' && ruleConfig && 'active' in ruleConfig
+              ? rule.title(ruleConfig)
+              : rule.title,
+          description:
+            typeof rule.description === 'function' && ruleConfig && 'active' in ruleConfig
+              ? rule.description(ruleConfig)
+              : rule.description,
+          debug: rule.debug,
+          platform: rule.platform,
         },
       }
     }, {}),

@@ -679,10 +679,10 @@
   dependencies:
     type-detect "4.0.8"
 
-"@sketch-hq/sketch-assistant-types@3.0.0-next.1":
-  version "3.0.0-next.1"
-  resolved "https://registry.yarnpkg.com/@sketch-hq/sketch-assistant-types/-/sketch-assistant-types-3.0.0-next.1.tgz#5652f9e398c54a50e678b957702887663b96da1e"
-  integrity sha512-zttYrn3F7wdzyVE4OKFkLCVbMOdPrbGjL5FdVsw+dtnpknk2smq8TmgOEGwInRo82XEISY7EcFOHK2Y0K+Lo6A==
+"@sketch-hq/sketch-assistant-types@3.0.0-next.2":
+  version "3.0.0-next.2"
+  resolved "https://registry.yarnpkg.com/@sketch-hq/sketch-assistant-types/-/sketch-assistant-types-3.0.0-next.2.tgz#ea5c62127c8ba0b51e4965ff020962311e19492e"
+  integrity sha512-lI4X+dF3JMVtyz6I2YclhvZwt/URnjuy5Z7QcWdp+MibuxNOAfUMx6sMzB0Nv/AxYLj20u9KUp5aCDCdb4gnAQ==
   dependencies:
     "@schemastore/package" "0.0.5"
     "@sketch-hq/sketch-file-format-ts" "4.0.3"
