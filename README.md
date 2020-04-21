@@ -3,19 +3,15 @@
 Utility functions and types for Sketch Assistants.
 
 > 🙋‍♀️ These utility functions are mainly of use when creating Sketch Assistant Runners, i.e. tools
-> that invoke Assistants against Sketch files and present the results to a user. The types exported
-> from this module are generally useful to any TypeScript project related to Assistants, including
-> the development of individual Assistant packages themselves.
+> that invoke Assistants against Sketch files and present the results to a user.
 
 ## Usage
 
 ```sh
-yarn add @sketch-hq/sketch-assistant-utils
+yarn add @sketch-hq/sketch-assistant-utils@next
 ```
 
-## Documentation
-
-Coming soon.
+> ⚠️ The repo is in pre-release mode using the `next` tag.
 
 ## Development
 
