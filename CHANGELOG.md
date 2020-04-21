@@ -1,5 +1,12 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 5.0.0-next.3
+
+### Patch Changes
+
+- 78760f5: Support `ruleTitle` values in rule config
+- ac80655: Make package public
+
 ## 5.0.0-next.2
 
 ### Patch Changes
