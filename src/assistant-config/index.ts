@@ -6,6 +6,7 @@ import {
   RuleConfig,
   ViolationSeverity,
   RuleDefinition,
+  ReservedRuleOptionNames,
 } from '@sketch-hq/sketch-assistant-types'
 import { helpers, buildRuleOptionSchema } from '../rule-option-schemas'
 
@@ -54,7 +55,7 @@ const isRuleConfigValid = (config: AssistantConfig, rule: RuleDefinition): true 
  * config and have its `active` option set to `true`.
  */
 const isRuleActive = (config: AssistantConfig, ruleName: string): boolean => {
-  const active = getRuleOption(config, ruleName, 'active')
+  const active = getRuleOption(config, ruleName, ReservedRuleOptionNames.active)
   return typeof active === 'boolean' ? active : false
 }
 
@@ -62,7 +63,7 @@ const isRuleActive = (config: AssistantConfig, ruleName: string): boolean => {
  * Determine a rule's severity, falling back to default values if not specified.
  */
 const getRuleSeverity = (config: AssistantConfig, ruleName: string): ViolationSeverity => {
-  const severity = getRuleOption(config, ruleName, 'severity')
+  const severity = getRuleOption(config, ruleName, ReservedRuleOptionNames.severity)
   switch (severity) {
     case ViolationSeverity.info:
     case ViolationSeverity.warn:
@@ -73,6 +74,14 @@ const getRuleSeverity = (config: AssistantConfig, ruleName: string): ViolationSe
   }
 }
 
+/**
+ * Return the custom title for a rule if its been defined at configuration-time.
+ */
+const getRuleTitle = (config: AssistantConfig, ruleName: string): string | null => {
+  const ruleTitle = getRuleOption(config, ruleName, ReservedRuleOptionNames.ruleTitle)
+  return typeof ruleTitle === 'string' ? ruleTitle : null
+}
+
 export {
   getRuleConfig,
   getRuleOption,
@@ -80,4 +89,5 @@ export {
   isRuleActive,
   getRuleSeverity,
   isRuleConfigValid,
+  getRuleTitle,
 }

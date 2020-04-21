@@ -100,11 +100,29 @@ describe('runAssistant', () => {
       }),
       createRule({
         name: 'rule',
-        title: (ruleConfig) => `Subspace frequency ${ruleConfig.subspaceFrequency}`,
+        title: (ruleConfig) => `Subspace frequency should be ${ruleConfig.subspaceFrequency}Hz`,
       }),
     )
     expect(errors).toHaveLength(0)
-    expect(metadata.rules['rule'].title).toMatchInlineSnapshot(`"Subspace frequency 12"`)
+    expect(metadata.rules['rule'].title).toMatchInlineSnapshot(
+      `"Subspace frequency should be 12Hz"`,
+    )
+  })
+
+  test('configs can set a custom title', async (): Promise<void> => {
+    expect.assertions(2)
+    const { errors, metadata } = await testRunAssistant(
+      createAssistantConfig({
+        rules: {
+          rule: { active: true, ruleTitle: 'Warp speed should not exceed 9.9' },
+        },
+      }),
+      createRule({
+        name: 'rule',
+      }),
+    )
+    expect(errors).toHaveLength(0)
+    expect(metadata.rules['rule'].title).toMatchInlineSnapshot(`"Warp speed should not exceed 9.9"`)
   })
 
   test('skips inactive rules', async (): Promise<void> => {

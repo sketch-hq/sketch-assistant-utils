@@ -11,7 +11,7 @@ import {
   AssistantResult,
 } from '@sketch-hq/sketch-assistant-types'
 import { createRuleUtilsCreator } from '../rule-utils'
-import { isRuleActive, getRuleConfig } from '../assistant-config'
+import { isRuleActive, getRuleConfig, getRuleTitle } from '../assistant-config'
 
 class RuleInvocationError extends Error {
   public cause: Error
@@ -69,18 +69,25 @@ const runAssistant = async (
     },
     rules: activeRules.reduce((acc, rule) => {
       const ruleConfig = getRuleConfig(assistant.config, rule.name)
+      const configTitle = getRuleTitle(assistant.config, rule.name)
+
+      const title = configTitle
+        ? configTitle
+        : ruleConfig && 'active' in ruleConfig && typeof rule.title === 'function'
+        ? rule.title(ruleConfig)
+        : rule.title
+
+      const description =
+        ruleConfig && 'active' in ruleConfig && typeof rule.description === 'function'
+          ? rule.description(ruleConfig)
+          : rule.description
+
       return {
         ...acc,
         [rule.name]: {
           name: rule.name,
-          title:
-            typeof rule.title === 'function' && ruleConfig && 'active' in ruleConfig
-              ? rule.title(ruleConfig)
-              : rule.title,
-          description:
-            typeof rule.description === 'function' && ruleConfig && 'active' in ruleConfig
-              ? rule.description(ruleConfig)
-              : rule.description,
+          title,
+          description,
           debug: rule.debug,
           platform: rule.platform,
         },
