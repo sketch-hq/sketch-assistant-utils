@@ -1,5 +1,11 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 5.0.0-next.4
+
+### Patch Changes
+
+- 6e4e4f6: Support Assistant extension arrays in testRule function
+
 ## 5.0.0-next.3
 
 ### Patch Changes
