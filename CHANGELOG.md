@@ -1,5 +1,11 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 5.0.0-next.5
+
+### Patch Changes
+
+- 9212903: Handle Assistants exported as ESM default exports
+
 ## 5.0.0-next.4
 
 ### Patch Changes
