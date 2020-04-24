@@ -48,11 +48,12 @@ const assign = (...sources: AssistantDefinition[]): AssistantDefinition => {
  * @param context The env within which the assistant package is being prepared
  */
 const prepare = async (
-  source: AssistantPackageExport,
+  pkgExport: AssistantPackageExport,
   env: AssistantEnv,
 ): Promise<AssistantDefinition> => {
+  const assistant = '__esModule' in pkgExport ? pkgExport.default : pkgExport
   const definitions = await Promise.all(
-    (Array.isArray(source) ? source : [source])
+    (Array.isArray(assistant) ? assistant : [assistant])
       .flat(Infinity)
       .map((item: Assistant | ESModuleInterop<Assistant>) => {
         if ('__esModule' in item) {

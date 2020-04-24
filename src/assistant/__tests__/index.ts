@@ -151,7 +151,7 @@ describe('prepare', () => {
     expect(assistant.name).toMatchInlineSnapshot(`"bar"`)
   })
 
-  test('handles assistants exported as ES Module default exports', async () => {
+  test('handles assistants containing ESM default exports', async () => {
     const assistant: AssistantDefinition = await prepare(
       [
         { __esModule: true, default: createAssistant({ rules: [createRule({ name: 'foo' })] }) },
@@ -161,6 +161,34 @@ describe('prepare', () => {
         ],
         createAssistant({ rules: [createRule({ name: 'qux' })] }),
       ],
+      env,
+    )
+    expect(assistant.rules.map((rule) => rule.name)).toMatchInlineSnapshot(`
+      Array [
+        "foo",
+        "bar",
+        "baz",
+        "qux",
+      ]
+    `)
+  })
+
+  test('handles assistants themselves exported as ESM default exports', async () => {
+    const assistant: AssistantDefinition = await prepare(
+      {
+        __esModule: true,
+        default: [
+          { __esModule: true, default: createAssistant({ rules: [createRule({ name: 'foo' })] }) },
+          [
+            createAssistant({ rules: [createRule({ name: 'bar' })] }),
+            {
+              __esModule: true,
+              default: createAssistant({ rules: [createRule({ name: 'baz' })] }),
+            },
+          ],
+          createAssistant({ rules: [createRule({ name: 'qux' })] }),
+        ],
+      },
       env,
     )
     expect(assistant.rules.map((rule) => rule.name)).toMatchInlineSnapshot(`
