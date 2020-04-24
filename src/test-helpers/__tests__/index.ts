@@ -31,6 +31,34 @@ describe('testRule', () => {
     expect(res.errors).toHaveLength(0)
   })
 
+  test('works when passed an array of extendable Assistants', async (): Promise<void> => {
+    expect.assertions(2)
+    const res = await testRule(
+      resolve(__dirname, './empty.sketch'),
+      [
+        createAssistant({
+          rules: [
+            createRule({
+              name: 'rule-a',
+              rule: async (context) => context.utils.report({ message: '' }),
+            }),
+          ],
+        }),
+        createAssistant({
+          rules: [
+            createRule({
+              name: 'rule-b',
+              rule: async (context) => context.utils.report({ message: '' }),
+            }),
+          ],
+        }),
+      ],
+      'rule-a',
+    )
+    expect(res.violations).toHaveLength(1)
+    expect(res.errors).toHaveLength(0)
+  })
+
   test('can return rule errors', async (): Promise<void> => {
     expect.assertions(2)
     const res = await testRule(

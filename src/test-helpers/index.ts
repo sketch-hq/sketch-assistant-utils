@@ -13,6 +13,7 @@ import {
   AssistantResult,
   Platform,
   RuleConfig,
+  AssistantPackageExport,
 } from '@sketch-hq/sketch-assistant-types'
 import { fromFile } from '../from-file'
 import { process } from '../process'
@@ -112,7 +113,7 @@ const createDummyRectNode = (): Node<FileFormat.Rect> => ({
 
 export const testRule = async (
   filepath: string,
-  assistant: Assistant,
+  assistant: AssistantPackageExport,
   ruleName: string,
   ruleConfig: RuleConfig = { active: true },
   env: AssistantEnv = { locale: 'en', platform: 'node' },
