@@ -26,6 +26,49 @@ import { nodeToObject, objectHash, objectsEqual } from '../object-utils'
 import * as pointers from '../pointers'
 import { getRuleDefinition } from '../assistant'
 
+/**
+ * Helper function that creates a string hash from a set of attributes of a style
+ * object.
+ */
+const styleHash = (style: Partial<FileFormat.Style> | undefined): string =>
+  objectHash({
+    borders: style?.borders,
+    borderOptions: style?.borderOptions,
+    blur: style?.blur,
+    fills: style?.fills,
+    shadows: style?.shadows,
+    innerShadows: style?.innerShadows,
+  })
+
+/**
+ * Returns a boolean from the equality comparison between two style objects. Useful when
+ * comparing two layer styles.
+ */
+const styleEq = (s1: FileFormat.Style | undefined, s2: FileFormat.Style | undefined): boolean =>
+  styleHash(s1) === styleHash(s2)
+
+/**
+ * Helper function that creates a string hash from a set of attributes of a text style
+ * object.
+ */
+const textStyleHash = (style: Partial<FileFormat.Style> | undefined): string =>
+  objectHash({
+    borders: style?.borders,
+    borderOptions: style?.borderOptions,
+    blur: style?.blur,
+    fills: style?.fills,
+    shadows: style?.shadows,
+    innerShadows: style?.innerShadows,
+    textStyle: style && style.textStyle ? objectHash(style?.textStyle) : null,
+  })
+
+/**
+ * Returns a boolean from the equality comparison between two text style objects. Useful when
+ * comparing two text layer styles.
+ */
+const textStyleEq = (s1: FileFormat.Style | undefined, s2: FileFormat.Style | undefined): boolean =>
+  textStyleHash(s1) === textStyleHash(s2)
+
 class RuleNotFoundError extends Error {
   public assistant: AssistantDefinition
   public ruleName: string
@@ -190,10 +233,14 @@ const createRuleUtilsCreator = (
       objectsEqual(obj1: {}, obj2: {}, excludeKeys: string[] = []): boolean {
         return objectsEqual(obj1, obj2, [...excludeKeys, 'do_objectID', '$pointer'])
       },
+      styleEq,
+      textStyleEq,
+      styleHash,
+      textStyleHash,
     }
   }
 
   return utilsCreator
 }
 
-export { createRuleUtilsCreator }
+export { styleHash, styleEq, textStyleHash, textStyleEq, createRuleUtilsCreator }

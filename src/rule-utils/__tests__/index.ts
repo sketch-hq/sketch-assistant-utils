@@ -1,9 +1,10 @@
 import { resolve } from 'path'
 
-import { createRuleUtilsCreator } from '..'
+import { createRuleUtilsCreator, styleEq, textStyleEq } from '..'
 import { process } from '../../process'
 import { fromFile } from '../../from-file'
 import {
+  FileFormat,
   Violation,
   AssistantDefinition,
   RuleUtils,
@@ -317,5 +318,54 @@ describe('objectHash', () => {
     expect(utils.objectHash({ foo: 'bar', $pointer: '1', do_objectID: '1' })).toBe(
       utils.objectHash({ foo: 'bar', $pointer: '2', do_objectID: '2' }),
     )
+  })
+})
+
+describe('styleEq', () => {
+  test('can test style objects for equality', async (): Promise<void> => {
+    expect.assertions(2)
+    await buildUtils(
+      './empty.sketch',
+      createAssistantDefinition({
+        config: createAssistantConfig({ rules: { foo: { active: true } } }),
+        rules: [createRule({ name: 'foo' })],
+      }),
+      'foo',
+    )
+
+    const file1 = await fromFile(resolve(__dirname, './simple-style.sketch'))
+    const file2 = await fromFile(resolve(__dirname, './simple-style.sketch'))
+    const style1 = file1.contents.document.pages[0].layers[0].style
+    const style2 = file2.contents.document.pages[0].layers[0].style
+
+    if (style2 && style2.blur) style2.blur.center = '{0.6, 0.5}'
+
+    expect(styleEq(style1, style1)).toBe(true)
+    expect(styleEq(style1, style2)).toBe(false)
+  })
+
+  test('can test text style objects for equality', async (): Promise<void> => {
+    expect.assertions(2)
+    await buildUtils(
+      './empty.sketch',
+      createAssistantDefinition({
+        config: createAssistantConfig({ rules: { foo: { active: true } } }),
+        rules: [createRule({ name: 'foo' })],
+      }),
+      'foo',
+    )
+
+    const file1 = await fromFile(resolve(__dirname, './simple-textstyle.sketch'))
+    const file2 = await fromFile(resolve(__dirname, './simple-textstyle.sketch'))
+    const style1 = file1.contents.document.pages[0].layers[0].style
+    const style2 = file2.contents.document.pages[0].layers[0].style
+
+    expect(textStyleEq(style1, style1)).toBe(true)
+
+    if (style2 && style2.textStyle) {
+      style2.textStyle.encodedAttributes.underlineStyle = 1
+    }
+
+    expect(textStyleEq(style1, style2 as FileFormat.Style)).toBe(false)
   })
 })
