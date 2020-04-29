@@ -1,5 +1,11 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 5.0.0-next.6
+
+### Minor Changes
+
+- 02f4b7e: Style equality functions added to rule-utils
+
 ## 5.0.0-next.5
 
 ### Patch Changes

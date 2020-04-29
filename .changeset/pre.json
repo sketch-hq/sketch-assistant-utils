@@ -5,6 +5,7 @@
     "@sketch-hq/sketch-assistant-utils": "4.0.0"
   },
   "changesets": [
+    "eighty-bikes-kneel",
     "four-eagles-rescue",
     "four-ears-move",
     "friendly-beers-vanish",
