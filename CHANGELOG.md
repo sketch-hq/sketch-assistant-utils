@@ -1,5 +1,11 @@
 # @sketch-hq/sketch-assistant-utils
 
+## 5.0.0-next.7
+
+### Patch Changes
+
+- f48a2de: Exclude 'do_objectID' and '\$pointer' attributes from the object hash function
+
 ## 5.0.0-next.6
 
 ### Minor Changes
