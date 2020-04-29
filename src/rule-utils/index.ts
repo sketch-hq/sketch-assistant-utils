@@ -27,11 +27,18 @@ import * as pointers from '../pointers'
 import { getRuleDefinition } from '../assistant'
 
 /**
+ * Object hash comparison function that ignores 'do_objectID' and '$pointer' attributes
+ */
+const stableObjectHash = (obj: {}, excludeKeys: string[] = []): string => {
+  return objectHash(obj, [...excludeKeys, 'do_objectID', '$pointer'])
+}
+
+/**
  * Helper function that creates a string hash from a set of attributes of a style
  * object.
  */
 const styleHash = (style: Partial<FileFormat.Style> | undefined): string =>
-  objectHash({
+  stableObjectHash({
     borders: style?.borders,
     borderOptions: style?.borderOptions,
     blur: style?.blur,
@@ -52,14 +59,14 @@ const styleEq = (s1: FileFormat.Style | undefined, s2: FileFormat.Style | undefi
  * object.
  */
 const textStyleHash = (style: Partial<FileFormat.Style> | undefined): string =>
-  objectHash({
+  stableObjectHash({
     borders: style?.borders,
     borderOptions: style?.borderOptions,
     blur: style?.blur,
     fills: style?.fills,
     shadows: style?.shadows,
     innerShadows: style?.innerShadows,
-    textStyle: style && style.textStyle ? objectHash(style?.textStyle) : null,
+    textStyle: style && style.textStyle ? stableObjectHash(style?.textStyle) : null,
   })
 
 /**
@@ -227,9 +234,7 @@ const createRuleUtilsCreator = (
       iterateParents,
       getOption,
       nodeToObject,
-      objectHash(obj: {}, excludeKeys: string[] = []): string {
-        return objectHash(obj, [...excludeKeys, 'do_objectID', '$pointer'])
-      },
+      objectHash: stableObjectHash,
       objectsEqual(obj1: {}, obj2: {}, excludeKeys: string[] = []): boolean {
         return objectsEqual(obj1, obj2, [...excludeKeys, 'do_objectID', '$pointer'])
       },
