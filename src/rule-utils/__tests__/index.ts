@@ -369,3 +369,22 @@ describe('styleEq', () => {
     expect(textStyleEq(style1, style2 as FileFormat.Style)).toBe(false)
   })
 })
+
+describe('iterators', () => {
+  test('can iterate through node cache attributes', async (): Promise<void> => {
+    expect.assertions(1)
+    const { utils } = await buildUtils(
+      './simple-textstyle.sketch',
+      createAssistantDefinition({
+        config: createAssistantConfig({ rules: { foo: { active: true } } }),
+        rules: [createRule({ name: 'foo' })],
+      }),
+      'foo',
+    )
+    if (utils.iterators.textStyle) {
+      for (const textStyle of utils.iterators.textStyle) {
+        expect(textStyle._class).toBe('textStyle')
+      }
+    }
+  })
+})

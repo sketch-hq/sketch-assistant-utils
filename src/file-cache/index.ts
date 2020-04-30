@@ -1,4 +1,5 @@
 import {
+  Node,
   NodeCache,
   NodeCacheIterator,
   NodeCacheIteratorConfig,
@@ -34,4 +35,15 @@ const createCache = (): NodeCache => ({
   $groups: [],
 })
 
-export { createCacheIterator, createCache }
+function* cacheGenerator(cache: NodeCache, key: keyof NodeCache): Generator<Node> {
+  const cacheItem = cache[key as SketchClass]
+  if (!cacheItem) {
+    // don't yield anything if the cacheItem could not be found
+    return
+  }
+  for (const node of cacheItem) {
+    yield node
+  }
+}
+
+export { createCacheIterator, createCache, cacheGenerator }

@@ -1,8 +1,9 @@
 import { resolve } from 'path'
 
-import { createCacheIterator } from '..'
+import { cacheGenerator, createCacheIterator } from '..'
 import { fromFile } from '../../from-file'
 import { process } from '../../process'
+import { Node, FileFormat } from '@sketch-hq/sketch-assistant-types'
 
 describe('createCacheIterator', () => {
   test('calls visitors for nodes', async (): Promise<void> => {
@@ -37,5 +38,27 @@ describe('createCacheIterator', () => {
       },
     })
     expect(results).toMatchInlineSnapshot(`Array []`)
+  })
+})
+
+describe('cacheGenerator', () => {
+  test('can iterate through $layers', async (): Promise<void> => {
+    expect.assertions(1)
+    const file = await fromFile(resolve(__dirname, './empty.sketch'))
+    const op = { cancelled: false }
+    const res = await process(file, op)
+    for (const page of cacheGenerator(res.cache, '$layers')) {
+      expect((page as Node<FileFormat.AnyLayer>).name).toBe('Page 1')
+    }
+  })
+
+  test('can iterate through sharedStyles', async (): Promise<void> => {
+    expect.assertions(1)
+    const file = await fromFile(resolve(__dirname, './simple-layer.sketch'))
+    const op = { cancelled: false }
+    const res = await process(file, op)
+    for (const style of cacheGenerator(res.cache, 'sharedStyle')) {
+      expect((style as Node<FileFormat.AnyLayer>).name).toBe('Rectangle Style')
+    }
   })
 })

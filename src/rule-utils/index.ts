@@ -15,12 +15,14 @@ import {
   PointerValue,
   NodeArray,
   Node,
+  NodeCache,
   ParentIterator,
   AssistantDefinition,
   RuleDefinition,
   ProcessedSketchFile,
+  IteratorsProxyConstructor,
 } from '@sketch-hq/sketch-assistant-types'
-import { createCacheIterator } from '../file-cache'
+import { cacheGenerator, createCacheIterator } from '../file-cache'
 import { getRuleOption, isRuleConfigValid, getRuleSeverity } from '../assistant-config'
 import { nodeToObject, objectHash, objectsEqual } from '../object-utils'
 import * as pointers from '../pointers'
@@ -242,6 +244,17 @@ const createRuleUtilsCreator = (
       textStyleEq,
       styleHash,
       textStyleHash,
+      iterators: new (Proxy as IteratorsProxyConstructor)(
+        {},
+        {
+          get: function* (_, attrib: keyof NodeCache): Generator<Node> {
+            // Use the generic generator by default:
+            // it will look for the attrib in the NodeCache
+            // and yield its nodes
+            yield* cacheGenerator(cache, attrib)
+          },
+        },
+      ),
     }
   }
 
